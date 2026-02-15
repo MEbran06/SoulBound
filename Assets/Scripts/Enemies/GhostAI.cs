@@ -38,27 +38,35 @@ public class GhostAI : MonoBehaviour
     }
 
     void Update() {
-        // first check if the player is visible
-        CheckIfPlayerVisible();
-        if (isPlayerVisible)
+        // ignore the player if it's hidden
+        if (!player.GetComponent<PlayerController>().isHidden)
         {
-            lastTimePlayerSeen = Time.time;
-            enemyState = EnemyState.FOLLOW;
-        }
-        // if we didn't see the player but enough seconds have not pass for the enemy to forget
-        else if (Time.time < lastTimePlayerSeen + rememberPlayer)
-        {
-            enemyState = EnemyState.FOLLOW;
+            // first check if the player is visible
+            CheckIfPlayerVisible();
+            if (isPlayerVisible)
+            {
+                lastTimePlayerSeen = Time.time;
+                enemyState = EnemyState.FOLLOW;
+            }
+            // if we didn't see the player but enough seconds have not pass for the enemy to forget
+            else if (Time.time < lastTimePlayerSeen + rememberPlayer)
+            {
+                enemyState = EnemyState.FOLLOW;
+            }
+            else
+            {
+                // keep patroling
+                enemyState = EnemyState.PATROL;
+            }
         }
         else
         {
-            // keep patroling
             enemyState = EnemyState.PATROL;
         }
         // repeadetly call our enemy state manager.
         ManageEnemyState();
         // handle rotation depending whether the player is in FOV or not
-        Rotate();
+        Rotate();   
     }
 
     private void OnDrawGizmos()

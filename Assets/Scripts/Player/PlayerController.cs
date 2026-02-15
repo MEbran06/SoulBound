@@ -8,10 +8,20 @@ public class PlayerController : MonoBehaviour
     float gravity = -20f;
     float verticalVelocity;
     private Vector3 move;
+    public bool isHidden = false;
+    public CharacterController cc { get; private set; }
+
+    void Awake()
+    {
+        cc = GetComponent<CharacterController>();
+    }
 
     // Update is called once per frame
     void Update()
     {
+        // disable movement while hidden
+        if (isHidden) return;
+
         bool isGrounded = characterController.isGrounded;
 
         if (isGrounded && verticalVelocity < 0) {
