@@ -32,9 +32,6 @@ public class HideSpot : Interactable
         player.cc.enabled = true;
 
         player.isHidden = true;
-
-        promptMessage = "Press E to Exit";
-        ShowPrompt();
     }
 
     void ExitHide()
@@ -44,7 +41,5 @@ public class HideSpot : Interactable
         player.cc.enabled = true;
 
         player.isHidden = false;
-
-        promptMessage = "Press E to Hide";
     }
 }
