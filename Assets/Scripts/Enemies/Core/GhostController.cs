@@ -1,4 +1,4 @@
-using GhostStates;
+using AI.Ghosts.States;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;

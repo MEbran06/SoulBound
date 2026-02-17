@@ -1,4 +1,4 @@
-using GhostStates;
+using AI.Ghosts.States;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GhostPersonality", menuName = "Scriptable Objects/GhostPersonality")]

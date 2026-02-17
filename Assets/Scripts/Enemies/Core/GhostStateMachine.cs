@@ -1,4 +1,5 @@
-using GhostStates;
+using AI.Ghosts.States;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 // class for handling switching states
@@ -8,6 +9,8 @@ public class GhostStateMachine
     public GhostController controller;
     public  IGhostState CurrentState { get; private set; }
     public GhostStateID CurrentStateID {get; private set; }
+    private Dictionary<GhostStateID, IGhostState> cachedStates = new Dictionary<GhostStateID, IGhostState>();
+
 
     public GhostStateMachine(GhostController control)
     {
@@ -25,17 +28,17 @@ public class GhostStateMachine
     public IGhostState GetGhostState(GhostStateID state)
     {
         IGhostState ghostState = null;
-        if (CachedStates.states.ContainsKey(state))
+        if (cachedStates.ContainsKey(state))
         {
             // returned the cached state if it's already created
-            ghostState = CachedStates.states[state];
+            ghostState = cachedStates[state];
         }
         else
         {
             // factory for creating new states
             ghostState = CreateGhostState(state);
             // save it for later
-            CachedStates.states.Add(state, ghostState); 
+            cachedStates.Add(state, ghostState); 
         }
         // may return null
         return ghostState;

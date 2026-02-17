@@ -1,5 +1,5 @@
+using AI.Ghosts.States;
 using UnityEngine;
-using GhostStates;
 
 [CreateAssetMenu(fileName = "FatherPersonality", menuName = "Scriptable Objects/FatherPersonality")]
 public class FatherPersonality : GhostPersonality
@@ -12,14 +12,12 @@ public class FatherPersonality : GhostPersonality
         // follow the player if you see it
         if (context.canSeePlayer)
         {
-            Debug.Log("Vision check: " + context.canSeePlayer);
             return GhostStateID.Chase;
         }
 
         // follow the player if you still remember it
         if (controller.StillRemembersPlayer())
         {
-            Debug.Log("Remembers Player: " + controller.StillRemembersPlayer());
             return GhostStateID.Chase;
         }
 
