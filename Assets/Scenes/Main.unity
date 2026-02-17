@@ -2451,33 +2451,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 122.874, y: 21.4527}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7590826864611852779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7636340632445402384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd23c1f11c01b8dec9263a64d40a44a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GhostAI
-  player: {fileID: 4008439663775087468}
-  pathPoints:
-  - {fileID: 1446503807}
-  - {fileID: 2099002090}
-  - {fileID: 1288926717}
-  - {fileID: 339160499}
-  viewDistance: 13
-  maxRemainingDistance: 0.5
-  distanceThreshold: 0.5
-  rememberPlayer: 5
-  lineOfSight: 1.5
-  viewAngle: 90
-  searchAngle: 25
-  searchSpeed: 2
-  rotSpeed: 5
 --- !u!1 &7636340632445402384
 GameObject:
   m_ObjectHideFlags: 0
@@ -2491,7 +2464,7 @@ GameObject:
   - component: {fileID: 5762718888473539750}
   - component: {fileID: 7816028990887754672}
   - component: {fileID: 3027752617171605711}
-  - component: {fileID: 7590826864611852779}
+  - component: {fileID: 8603221186033803298}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -2764,6 +2737,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1668801004}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8603221186033803298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7636340632445402384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1df0788e88870e579b39d008e9141cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostController
+  agent: {fileID: 3027752617171605711}
+  personality: {fileID: 11400000, guid: 915c2263a2b4b28e988b9adbc57ec638, type: 2}
+  viewDistance: 10
+  viewAngle: 90
+  eyeHeight: 1.5
+  rememberPlayerTime: 5
+  searchAngle: 25
+  searchSpeed: 2
+  rotSpeed: 5
+  patrolPoints:
+  - {fileID: 1446503807}
+  - {fileID: 2099002090}
+  - {fileID: 1288926717}
+  - {fileID: 339160499}
+  minDistance: 0.3
+  player: {fileID: 4008439663775087468}
 --- !u!1 &8646995364511875589
 GameObject:
   m_ObjectHideFlags: 0
