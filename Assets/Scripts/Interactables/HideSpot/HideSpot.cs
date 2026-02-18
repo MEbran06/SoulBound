@@ -27,18 +27,18 @@ public class HideSpot : Interactable
 
     void EnterHide()
     {
-        player.cc.enabled = false;
+        player.characterController.enabled = false;
         player.transform.position = hidePosition.position;
-        player.cc.enabled = true;
+        player.characterController.enabled = true;
 
         player.isHidden = true;
     }
 
     void ExitHide()
     {
-        player.cc.enabled = false;
+        player.characterController.enabled = false;
         player.transform.position = exitPosition.position;
-        player.cc.enabled = true;
+        player.characterController.enabled = true;
 
         player.isHidden = false;
     }

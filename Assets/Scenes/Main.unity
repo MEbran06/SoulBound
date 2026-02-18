@@ -1501,6 +1501,10 @@ MonoBehaviour:
   characterController: {fileID: 2736789069899062823}
   speed: 4
   isHidden: 0
+  maxStamina: 5
+  staminaDrainRate: 1
+  staminaRegenRate: 0.75
+  sprintThreshold: 2
 --- !u!224 &436615703202104013
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2753,7 +2757,7 @@ MonoBehaviour:
   personality: {fileID: 11400000, guid: 915c2263a2b4b28e988b9adbc57ec638, type: 2}
   viewDistance: 10
   viewAngle: 90
-  eyeHeight: 1.5
+  lineOfSight: 1.5
   rememberPlayerTime: 5
   searchAngle: 25
   searchSpeed: 2
