@@ -11,6 +11,12 @@ public class FatherPersonality : GhostPersonality
     {
         GhostContext context = controller.context;
 
+        if (controller.context.GetEmotion(EmotionType.Confusion) >= confusionThreshold)
+        {
+            Debug.Log("Stunned");
+            return GhostStateID.Stunned;
+        }
+
         // follow the player if you see it
         if (context.canSeePlayer)
         {
@@ -29,6 +35,7 @@ public class FatherPersonality : GhostPersonality
 
     public override void ApplyGhostItemEffect(GhostController controller, GhostItemData data)
     {
+        Debug.Log("Applying the effect on the ghost");
         foreach (var mod in data.modifiers)
         {
             float sensitivity = GetSensitivity(mod.emotion);

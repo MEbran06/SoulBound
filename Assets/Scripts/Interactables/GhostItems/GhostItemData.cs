@@ -7,12 +7,18 @@ namespace Items.Ghosts
         Aggression,
         Confusion
     }
+    [System.Serializable]
+    public struct EmotionValues
+    {
+        public EmotionType emotion;
+        [Range(0f, 100f)] public float value;
+    }
 
     [System.Serializable]
     public struct EmotionModifier
     {
         public EmotionType emotion;
-        public float value;
+        [Range(-100f, 100f)] public float value;
     }
 
     [CreateAssetMenu(menuName = "Ghosts/GhostItemData")]

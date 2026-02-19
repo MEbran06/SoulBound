@@ -47,6 +47,9 @@ public class GhostController : MonoBehaviour
 
     private void Start()
     {
+        // initialize this ghost with the personality values initially set
+        personality.InitializeGhost(this);
+
         stateMachine.ChangeState(GhostStateID.Patrol);
     }
 
@@ -80,11 +83,12 @@ public class GhostController : MonoBehaviour
     // check if ghost is within an activation radius
     private void HandleMemoryActivated(GhostItemData data, Vector3 position)
     {
+        Debug.Log("Inside HandleMemoryActivated");
         float distance = Vector3.Distance(transform.position, position);
 
         if (distance <= data.activationRadius)
         {
-            ApplyMemory(data);
+            ApplyGhostItem(data);
         }
     }
 
@@ -101,6 +105,10 @@ public class GhostController : MonoBehaviour
         // calculate the distance to the player
         context.distanceToPlayer =
             Vector3.Distance(transform.position, player.position);
+
+        // gradually decrease confusion
+        context.ModifyEmotion(EmotionType.Confusion, context.confusionDecayRate * Time.deltaTime);
+
 
         UpdateVision();
     }
@@ -178,8 +186,9 @@ public class GhostController : MonoBehaviour
         agent.ResetPath();
     }
 
-    public void ApplyMemory(GhostItemData data)
+    public void ApplyGhostItem(GhostItemData data)
     {
+        Debug.Log("inside ApplyGhostItem");
         personality.ApplyGhostItemEffect(this, data);
     }
 

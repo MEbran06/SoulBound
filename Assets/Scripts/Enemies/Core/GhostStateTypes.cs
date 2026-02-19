@@ -4,6 +4,7 @@ namespace AI.Ghosts.States
     public enum GhostStateID
     {
         Patrol,
-        Chase
+        Chase,
+        Stunned
     }
 }

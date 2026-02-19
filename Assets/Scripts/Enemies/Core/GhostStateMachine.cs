@@ -54,6 +54,8 @@ public class GhostStateMachine
                 return new PatrolState(controller);
             case GhostStateID.Chase:
                 return new ChaseState(controller);
+            case GhostStateID.Stunned:
+                return new StunnedState(controller);
         }
 
         return null;

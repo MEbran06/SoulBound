@@ -18,13 +18,14 @@ public class GhostContext
 
 
     public Vector3 currentTargetPosition;
-    public float timeEnteredState;
     public bool playerIsHidden;
     // max distance between the ghost and the target point
-    public float maxTargetDistance = 0.5f;
+    public float maxTargetDistance;
 
-    const float maxEmotionValue = 100f;
-    
+    // passively reduce confusion over time (only increase with item interaction)
+    public float confusionDecayRate;
+
+
     /*
     public bool playerMadeNoise;
     public bool ghostIsSearchingClosets;
@@ -39,8 +40,9 @@ public class GhostContext
         distanceToPlayer = -1f; // undefined
         awarenessLevel = 0f;
         emotionStates = getEmotionStates(); // create an empty dictionary to keep track of emotions
-        timeEnteredState = -999f; // we don't know this yet
         playerIsHidden = false;
+        confusionDecayRate = -0.5f;
+        maxTargetDistance = 0.5f;
 
     }
     public Dictionary<EmotionType, float> getEmotionStates()
@@ -69,6 +71,11 @@ public class GhostContext
     public float GetEmotion(EmotionType emotion)
     {
         return emotionStates[emotion];
+    }
+
+    public void SetEmotion(EmotionType emotion, float value)
+    {
+        emotionStates[emotion] = value;
     }
 
 }
