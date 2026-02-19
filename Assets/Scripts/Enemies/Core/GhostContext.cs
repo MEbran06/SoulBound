@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
+using Items.Ghosts;
+using System;
 public class GhostContext
 {
     public bool canSeePlayer;
@@ -11,10 +14,9 @@ public class GhostContext
     public float distanceToPlayer;
     public float awarenessLevel;
 
-    public float aggression;
-    public float fear;
-    public float trust;
-    public float suspicion;
+    Dictionary<EmotionType, float> emotionStates;
+
+
     public Vector3 currentTargetPosition;
     public float timeEnteredState;
     public bool playerIsHidden;
@@ -36,12 +38,37 @@ public class GhostContext
         lastTimePlayerSeen = -999f; // never seen the player before
         distanceToPlayer = -1f; // undefined
         awarenessLevel = 0f;
-        aggression = 0f;
-        fear = 0f;
-        trust = 0f;
-        suspicion = 0f;
+        emotionStates = getEmotionStates(); // create an empty dictionary to keep track of emotions
         timeEnteredState = -999f; // we don't know this yet
         playerIsHidden = false;
 
     }
+    public Dictionary<EmotionType, float> getEmotionStates()
+    {
+        Dictionary<EmotionType, float> emotions = new Dictionary<EmotionType, float>();
+
+        // initialize this dictionary with 0s for all emotions
+        foreach (EmotionType emotion in Enum.GetValues(typeof(EmotionType)))
+        {
+            emotions.Add(emotion, 0f);
+        }
+
+        return emotions;
+    }
+
+    public void ModifyEmotion(EmotionType emotion, float value)
+    {
+        // safete measure
+        if (!emotionStates.ContainsKey(emotion))
+            emotionStates[emotion] = 0f;
+
+        emotionStates[emotion] += value;
+        emotionStates[emotion] = Mathf.Clamp(emotionStates[emotion], 0f, 100f);
+    }
+
+    public float GetEmotion(EmotionType emotion)
+    {
+        return emotionStates[emotion];
+    }
+
 }

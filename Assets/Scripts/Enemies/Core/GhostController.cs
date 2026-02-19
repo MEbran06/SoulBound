@@ -1,4 +1,5 @@
 using AI.Ghosts.States;
+using Items.Ghosts;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
@@ -65,6 +66,29 @@ public class GhostController : MonoBehaviour
         // execute the state
         stateMachine.Update();
     }
+
+    private void OnEnable()
+    {
+        GhostItem.OnMemoryActivated += HandleMemoryActivated;
+    }
+
+    private void OnDisable()
+    {
+        GhostItem.OnMemoryActivated -= HandleMemoryActivated;
+    }
+
+    // check if ghost is within an activation radius
+    private void HandleMemoryActivated(GhostItemData data, Vector3 position)
+    {
+        float distance = Vector3.Distance(transform.position, position);
+
+        if (distance <= data.activationRadius)
+        {
+            ApplyMemory(data);
+        }
+    }
+
+
 
     void UpdateContext()
     {
@@ -153,6 +177,12 @@ public class GhostController : MonoBehaviour
     {
         agent.ResetPath();
     }
+
+    public void ApplyMemory(GhostItemData data)
+    {
+        personality.ApplyGhostItemEffect(this, data);
+    }
+
 
     private void OnDrawGizmos()
     {

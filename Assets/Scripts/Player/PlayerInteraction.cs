@@ -8,7 +8,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] LayerMask interactLayer;
     [SerializeField] PlayerController player;
     [SerializeField] private GameObject exitUI;
-
+    [SerializeField] float interactRadius = 0.5f; 
 
     private Interactable currentInteractable;
 
@@ -57,7 +57,7 @@ public class PlayerInteraction : MonoBehaviour
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         RaycastHit hit;
         // shoot a ray, if we received somthing, it must be interactable 
-        if (Physics.Raycast(ray, out hit, interactRange, interactLayer))
+        if (Physics.SphereCast(ray, interactRadius, out hit, interactRange, interactLayer))
         {
             currentInteractable = hit.collider.GetComponent<Interactable>();
 

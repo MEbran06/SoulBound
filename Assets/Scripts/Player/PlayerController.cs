@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -24,6 +25,11 @@ public class PlayerController : MonoBehaviour
     private bool canSprint = true;
 
     private float currentStamina;
+
+    // Basic Inventory -> to be replaced by actual inventory system
+    public Transform handTransform;
+    private List<Item> inventory = new List<Item>();
+    private Item currentHeldItem;
 
 
     void Start()
@@ -54,6 +60,16 @@ public class PlayerController : MonoBehaviour
         {
             isCrouching = !isCrouching;
             Crouch();
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            DropCurrentItem();
+        }
+
+        // left click on mouse to use item
+        if (Input.GetMouseButtonDown(0))
+        {
+            currentHeldItem?.Use();
         }
 
         if (currentStamina <= 0f)
@@ -121,5 +137,34 @@ public class PlayerController : MonoBehaviour
                 playerCamera.transform.localPosition = cameraPosition;
             }
         }
+    }
+
+    public void AddToInventory(Item item)
+    {
+        inventory.Add(item);
+    }
+
+    public void HoldItem(Item item)
+    {
+        if (currentHeldItem != null)
+            DropCurrentItem();
+
+        currentHeldItem = item;
+
+        item.transform.SetParent(handTransform);
+        item.transform.localPosition = Vector3.zero;
+        item.transform.localRotation = Quaternion.identity;
+
+        item.OnHeld();
+    }
+
+    public void DropCurrentItem()
+    {
+        if (currentHeldItem == null)
+            return;
+
+        currentHeldItem.OnDropped();
+        currentHeldItem.transform.SetParent(null);
+        currentHeldItem = null;
     }
 }

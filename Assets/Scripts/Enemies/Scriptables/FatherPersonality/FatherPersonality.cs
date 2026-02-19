@@ -1,10 +1,12 @@
 using AI.Ghosts.States;
+using Items.Ghosts;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FatherPersonality", menuName = "Scriptable Objects/FatherPersonality")]
 public class FatherPersonality : GhostPersonality
 {
     [Range(0f, 100f)] public float aggressionThreshold;
+    [Range(0f, 100f)] public float confusionThreshold;
     public override GhostStateID DecideNextState(GhostController controller)
     {
         GhostContext context = controller.context;
@@ -21,8 +23,30 @@ public class FatherPersonality : GhostPersonality
             return GhostStateID.Chase;
         }
 
-
         // keep patrolling otherwise
         return GhostStateID.Patrol;
     }
+
+    public override void ApplyGhostItemEffect(GhostController controller, GhostItemData data)
+    {
+        foreach (var mod in data.modifiers)
+        {
+            float sensitivity = GetSensitivity(mod.emotion);
+            controller.context.ModifyEmotion(mod.emotion, mod.value * sensitivity);
+        }
+    }
+
+    private float GetSensitivity(EmotionType emotion)
+    {
+        // sensitivities will be part of the scriptable object, and initialized on the inspector
+        foreach (var s in sensitivities)
+        {
+            if (s.emotion == emotion)
+                return s.multiplier;
+        }
+
+        return 1f; // default multiplier if not found
+    }
+
+
 }
