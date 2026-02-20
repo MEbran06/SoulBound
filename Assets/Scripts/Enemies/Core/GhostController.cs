@@ -4,6 +4,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.XR;
 
 public class GhostController : MonoBehaviour
 {
@@ -83,7 +84,6 @@ public class GhostController : MonoBehaviour
     // check if ghost is within an activation radius
     private void HandleMemoryActivated(GhostItemData data, Vector3 position)
     {
-        Debug.Log("Inside HandleMemoryActivated");
         float distance = Vector3.Distance(transform.position, position);
 
         if (distance <= data.activationRadius)
@@ -107,7 +107,7 @@ public class GhostController : MonoBehaviour
             Vector3.Distance(transform.position, player.position);
 
         // gradually decrease confusion
-        context.ModifyEmotion(EmotionType.Confusion, context.confusionDecayRate * Time.deltaTime);
+        //context.ModifyEmotion(EmotionType.Confusion, context.confusionDecayRate * Time.deltaTime);
 
 
         UpdateVision();
@@ -188,7 +188,6 @@ public class GhostController : MonoBehaviour
 
     public void ApplyGhostItem(GhostItemData data)
     {
-        Debug.Log("inside ApplyGhostItem");
         personality.ApplyGhostItemEffect(this, data);
     }
 

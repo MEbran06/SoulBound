@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     float verticalVelocity;
     private Vector3 move;
     public bool isHidden = false;
+    public bool InputDisabled { private get; set; }
 
     private float standingHeight;
     private bool isCrouching = false;
@@ -50,7 +51,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     { 
         // disable movement while hidden
-        if (isHidden) return;
+        if (isHidden || InputDisabled) return;
 
         bool isGrounded = characterController.isGrounded;
         float currentSpeed = speed;

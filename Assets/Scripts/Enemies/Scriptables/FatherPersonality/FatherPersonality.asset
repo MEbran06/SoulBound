@@ -17,10 +17,15 @@ MonoBehaviour:
     multiplier: 2
   - emotion: 1
     multiplier: 1.5
+  thresholds:
+  - emotion: 0
+    value: 50
+  - emotion: 1
+    value: 50
   startingEmotions:
   - emotion: 0
     value: 70
   - emotion: 1
     value: 0
-  aggressionThreshold: 80
-  confusionThreshold: 79
+  baseDuration: 3
+  catchRadius: 1

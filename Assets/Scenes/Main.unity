@@ -626,7 +626,7 @@ GameObject:
   - component: {fileID: 703069080}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -643,6 +643,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c64890b10d6906c9143f2adcc840ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  Seed: 123
+  isGameOver: 0
+  player: {fileID: 6985081622403450542}
 --- !u!4 &703069081
 Transform:
   m_ObjectHideFlags: 0
@@ -1496,7 +1499,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2710269964976398502, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 24.14
+      value: 21.01
       objectReference: {fileID: 0}
     - target: {fileID: 2710269964976398502, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1504,7 +1507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2710269964976398502, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 31.42
+      value: 31.8
       objectReference: {fileID: 0}
     - target: {fileID: 2710269964976398502, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2283,6 +2286,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3978453999663552901, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
   m_PrefabInstance: {fileID: 75605304859994827}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6985081622403450542 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8408793482117773430, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
+  m_PrefabInstance: {fileID: 75605304859994827}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae20d6fed789515949aa35918fd4e8d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!20 &7124475463582361686 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 8335652544391277852, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
@@ -2360,6 +2374,8 @@ GameObject:
   - component: {fileID: 7816028990887754672}
   - component: {fileID: 3027752617171605711}
   - component: {fileID: 8603221186033803298}
+  - component: {fileID: 8603221186033803299}
+  - component: {fileID: 8603221186033803300}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -2555,6 +2571,43 @@ MonoBehaviour:
   - {fileID: 339160499}
   minDistance: 0.3
   player: {fileID: 6985081622403450538}
+--- !u!136 &8603221186033803299
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7636340632445402384}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.48
+  m_Height: 2.1208587
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.44, z: 0}
+--- !u!114 &8603221186033803300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7636340632445402384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8feadd91d579a4746b173845d94f5c0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostTrigger
+  ghostPersona: {fileID: 11400000, guid: 915c2263a2b4b28e988b9adbc57ec638, type: 2}
+  controller: {fileID: 8603221186033803298}
 --- !u!1 &8646995364511875589
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,16 @@
+using UnityEngine;
+
+public class GhostTrigger : MonoBehaviour
+{
+    [SerializeField] GhostPersonality ghostPersona; 
+    [SerializeField] GhostController controller;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (ghostPersona != null)
+        {
+            // Call a function in the ScriptableObject to handle the logic
+            ghostPersona.HandleTriggerEnter(other, controller);
+        }
+    }
+}

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Items.Ghosts;
 using System;
+using UnityEngine.LowLevel;
 public class GhostContext
 {
     public bool canSeePlayer;
