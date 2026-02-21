@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ef30eefd4635544898a5fa27024081, type: 3}
+  m_Name: PeripheralSilhouetteEffect
+  m_EditorClassIdentifier: Assembly-CSharp::PeripheralSilhouetteEffect
+  prefab: {fileID: 2765780738865551553, guid: 9079b2cd5b5ce314cad6a575f3379b98, type: 3}
+  forwardDistance: 6
+  sideOffset: 2
+  verticalOffset: 0
+  lifetime: 1
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
+  groundRayHeight: 3
+  groundRayDistance: 10
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 128
+  clearanceRadius: 0.4
+  clearanceHeight: 1
+  wallBackoff: 0.75

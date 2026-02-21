@@ -36,9 +36,12 @@ public class GhostController : MonoBehaviour
     // player
     public Transform player;
 
+    // hallucination effects (if needed)
+    public HallucinationDirector director;
+
     private void Awake()
     {
-        context = new GhostContext();
+        context = new GhostContext(player.GetComponent<InsanitySystem>());
         stateMachine = new GhostStateMachine(this);
 
         // get components
@@ -56,6 +59,9 @@ public class GhostController : MonoBehaviour
 
     private void Update()
     {
+        // stop everything if the game is over
+        if (FindAnyObjectByType<GameManager>().isGameOver) return;
+
         UpdateContext();
 
         // decide what state to choose based on the personality

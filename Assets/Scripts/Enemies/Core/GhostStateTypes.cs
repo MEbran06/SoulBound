@@ -5,6 +5,8 @@ namespace AI.Ghosts.States
     {
         Patrol,
         Chase,
-        Stunned
+        Stunned,
+        Hallucination,
+        Idle
     }
 }

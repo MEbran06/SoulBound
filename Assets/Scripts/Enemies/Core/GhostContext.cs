@@ -7,6 +7,7 @@ public class GhostContext
 {
     public bool canSeePlayer;
     //public bool canHearPlayer;
+    public InsanitySystem insanitySystem;
 
     public Vector3 lastKnownPlayerPosition;
     public float lastTimePlayerSeen;
@@ -32,7 +33,7 @@ public class GhostContext
     public bool ghostIsSearchingClosets;
     */
 
-    public GhostContext()
+    public GhostContext(InsanitySystem insanity)
     {
         // initial assumptions
         canSeePlayer = false;
@@ -44,6 +45,7 @@ public class GhostContext
         playerIsHidden = false;
         confusionDecayRate = -0.5f;
         maxTargetDistance = 0.5f;
+        insanitySystem = insanity;
 
     }
     public Dictionary<EmotionType, float> getEmotionStates()

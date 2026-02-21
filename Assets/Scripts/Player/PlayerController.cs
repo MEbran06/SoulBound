@@ -32,6 +32,9 @@ public class PlayerController : MonoBehaviour
     private List<Item> inventory = new List<Item>();
     private Item currentHeldItem;
 
+    // give player insanity
+    public InsanitySystem insanitySystem;
+
 
     void Start()
     {

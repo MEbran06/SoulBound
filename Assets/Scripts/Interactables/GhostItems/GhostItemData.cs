@@ -5,7 +5,8 @@ namespace Items.Ghosts
     public enum EmotionType
     {
         Aggression,
-        Confusion
+        Confusion,
+        Fear
     }
     [System.Serializable]
     public struct EmotionValues

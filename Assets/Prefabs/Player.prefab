@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 7106509542089470732}
   - component: {fileID: 6084098229259945379}
   - component: {fileID: 6647225648891415258}
-  - component: {fileID: 8408793482117773430}
   - component: {fileID: 7684823440371262119}
   - component: {fileID: 1761680263550212589}
+  - component: {fileID: 8408793482117773430}
   - component: {fileID: 7569172374745740343}
+  - component: {fileID: 5421987685114136814}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -120,26 +121,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8408793482117773430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4581312256484634068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae20d6fed789515949aa35918fd4e8d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  characterController: {fileID: 7684823440371262119}
-  speed: 4
-  isHidden: 0
-  maxStamina: 5
-  staminaDrainRate: 1
-  staminaRegenRate: 0.75
-  sprintThreshold: 2
-  handTransform: {fileID: 6789474061170763340}
 --- !u!143 &7684823440371262119
 CharacterController:
   m_ObjectHideFlags: 0
@@ -181,6 +162,27 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &8408793482117773430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581312256484634068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae20d6fed789515949aa35918fd4e8d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  characterController: {fileID: 7684823440371262119}
+  speed: 4
+  isHidden: 0
+  maxStamina: 5
+  staminaDrainRate: 1
+  staminaRegenRate: 0.75
+  sprintThreshold: 2
+  handTransform: {fileID: 6789474061170763340}
+  insanitySystem: {fileID: 5421987685114136814}
 --- !u!114 &7569172374745740343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,6 +202,22 @@ MonoBehaviour:
   player: {fileID: 8408793482117773430}
   exitUI: {fileID: 0}
   interactRadius: 0.5
+--- !u!114 &5421987685114136814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581312256484634068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483a6162dfc683741909fd3d0a875300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InsanitySystem
+  maxInsanity: 100
+  drainRate: 10
+  recoveryRate: 5
+  HasLight: 0
 --- !u!1 &5161818738246378197
 GameObject:
   m_ObjectHideFlags: 0
