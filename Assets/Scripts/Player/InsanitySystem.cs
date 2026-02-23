@@ -3,23 +3,35 @@ using UnityEngine;
 public class InsanitySystem : MonoBehaviour
 {
     [Header("Insanity Settings")]
-    [SerializeField] float maxInsanity = 100f;
-    [SerializeField] float drainRate = 10f;
-    [SerializeField] float recoveryRate = 5f;
+    public float maxInsanity = 100f;
+    public float drainRate = 1f;
+    public float recoveryRate = 3f;
+    public float disturbanceThreshold = 50f;
+    public float disturbaceRecoveryRate = 1f;
 
     public float CurrentInsanity { get; private set; }
+    public float CurrentDisturbance { get; private set; }
 
     // reference your lamp item (use a boolean for now)
     [SerializeField] bool HasLight = false;
 
+    public void Disturb()
+    {
+        CurrentDisturbance = CurrentDisturbance - (drainRate*Time.deltaTime);
+        CurrentDisturbance = Mathf.Clamp(CurrentDisturbance, 0f, maxInsanity);
+    }
+
+    public bool IsDisturbed => CurrentDisturbance < disturbanceThreshold;
+
     void Awake()
     {
         CurrentInsanity = maxInsanity;
+        CurrentDisturbance = maxInsanity;
     }
 
     void Update()
     {
-        if (!HasLight)
+        if (!HasLight || IsDisturbed)
         {
             ModifyInsanity(-drainRate * Time.deltaTime);
         }
@@ -27,7 +39,6 @@ public class InsanitySystem : MonoBehaviour
         {
             ModifyInsanity(recoveryRate * Time.deltaTime);
         }
-        if (CurrentInsanity == 0f) Debug.Log("Intensity is now 0");
     }
 
     public void ModifyInsanity(float amount)
@@ -35,6 +46,4 @@ public class InsanitySystem : MonoBehaviour
         CurrentInsanity += amount;
         CurrentInsanity = Mathf.Clamp(CurrentInsanity, 0f, maxInsanity);
     }
-
-    public float Normalized => CurrentInsanity / maxInsanity;
 }

@@ -3,6 +3,8 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine.AI;
 
+using Items.Ghosts;
+
 public class HallucinationState : GhostState
 {
     private HallucinationDirector director;
@@ -20,8 +22,12 @@ public class HallucinationState : GhostState
         if (director == null) return;
 
         float insanity = controller.context.insanitySystem.CurrentInsanity;
+        float sanityDrainRate = controller.context.insanitySystem.drainRate;
+        // drive the mom's aggressing up as sanity of the player goes down
+        controller.context.ModifyEmotion(EmotionType.Aggression, sanityDrainRate*Time.deltaTime);
+
         // tick expects insanity normalized
-        director.Tick(insanity/100f);
+        director.Tick(insanity/ controller.context.insanitySystem.maxInsanity);
     }
 
     public override void Exit() 

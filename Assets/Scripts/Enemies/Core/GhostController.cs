@@ -33,6 +33,8 @@ public class GhostController : MonoBehaviour
     // minimum distance between ghost and target position in order to move
     public float minDistance = 0.3f;
 
+    public LayerMask environmentMask;
+
     // player
     public Transform player;
 

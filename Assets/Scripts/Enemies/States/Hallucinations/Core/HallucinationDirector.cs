@@ -26,6 +26,7 @@ public class HallucinationDirector : MonoBehaviour
     public Transform Player => controller.player;
     public Transform Ghost => controller.transform;
 
+    [HideInInspector]
     public Transform PlayerCamera;
 
     public void Begin(GhostController ghost)

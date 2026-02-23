@@ -58,6 +58,10 @@ public class GhostStateMachine
                 return new StunnedState(controller);
             case GhostStateID.Hallucination:
                 return new HallucinationState(controller);
+            case GhostStateID.Stalk:
+                return new StalkState(controller);
+            case GhostStateID.ManifestAttack:
+                return new ManifestAttackState(controller);
         }
 
         return null;
