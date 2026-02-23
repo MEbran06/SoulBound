@@ -22,9 +22,9 @@ public class HallucinationState : GhostState
         if (director == null) return;
 
         float insanity = controller.context.insanitySystem.CurrentInsanity;
-        float sanityDrainRate = controller.context.insanitySystem.drainRate;
+        float buildUpRate = controller.personality.aggressionBuildUpRate;
         // drive the mom's aggressing up as sanity of the player goes down
-        controller.context.ModifyEmotion(EmotionType.Aggression, sanityDrainRate*Time.deltaTime);
+        controller.context.ModifyEmotion(EmotionType.Aggression, buildUpRate*Time.deltaTime);
 
         // tick expects insanity normalized
         director.Tick(insanity/ controller.context.insanitySystem.maxInsanity);
@@ -34,5 +34,8 @@ public class HallucinationState : GhostState
     {
         director?.End();
         director = null;
+        // appear close to the player
+        controller.GetVisibleSpawnPoint(Camera.main.transform);
+        controller.GetComponent<Renderer>().enabled = true;
     }
 }

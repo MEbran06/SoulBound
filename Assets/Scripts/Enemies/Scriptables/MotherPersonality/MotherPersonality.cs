@@ -1,6 +1,7 @@
 using AI.Ghosts.States;
 using Items.Ghosts;
 using UnityEngine;
+using UnityEngine.AI;
 
 [CreateAssetMenu(fileName = "MotherPersonality", menuName = "Scriptable Objects/MotherPersonality")]
 public class MotherPersonality : GhostPersonality
@@ -12,7 +13,7 @@ public class MotherPersonality : GhostPersonality
 
         if (agressiveness >= GetThreshold(EmotionType.Aggression))
         {
-            return GhostStateID.Stalk;
+            return GhostStateID.Chase;
         }
 
         // if player insanity falls bellow the necessary threshold for hallucinations to start

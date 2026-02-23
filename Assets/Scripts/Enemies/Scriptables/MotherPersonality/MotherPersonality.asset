@@ -15,10 +15,11 @@ MonoBehaviour:
   sensitivities: []
   thresholds:
   - emotion: 2
-    value: 70
+    value: 95.6
   - emotion: 0
-    value: 80
+    value: 81.6
   startingEmotions:
   - emotion: 0
-    value: 20
+    value: 68
+  aggressionBuildUpRate: 10.02
   baseDuration: 2

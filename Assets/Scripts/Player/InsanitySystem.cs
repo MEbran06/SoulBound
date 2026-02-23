@@ -7,7 +7,8 @@ public class InsanitySystem : MonoBehaviour
     public float drainRate = 1f;
     public float recoveryRate = 3f;
     public float disturbanceThreshold = 50f;
-    public float disturbaceRecoveryRate = 1f;
+    public float disturbanceRecoveryRate = 0.5f;
+    public float disturbanceDrainRate = 5f;
 
     public float CurrentInsanity { get; private set; }
     public float CurrentDisturbance { get; private set; }
@@ -17,7 +18,7 @@ public class InsanitySystem : MonoBehaviour
 
     public void Disturb()
     {
-        CurrentDisturbance = CurrentDisturbance - (drainRate*Time.deltaTime);
+        CurrentDisturbance = CurrentDisturbance - (disturbanceDrainRate*Time.deltaTime);
         CurrentDisturbance = Mathf.Clamp(CurrentDisturbance, 0f, maxInsanity);
     }
 
@@ -31,6 +32,7 @@ public class InsanitySystem : MonoBehaviour
 
     void Update()
     {
+        Debug.Log($"Is disturbed: {IsDisturbed}, current disturbance: {CurrentDisturbance}");
         if (!HasLight || IsDisturbed)
         {
             ModifyInsanity(-drainRate * Time.deltaTime);
@@ -38,6 +40,12 @@ public class InsanitySystem : MonoBehaviour
         else
         {
             ModifyInsanity(recoveryRate * Time.deltaTime);
+        }
+
+        if (HasLight && IsDisturbed)
+        {
+            CurrentDisturbance = CurrentDisturbance + (disturbanceRecoveryRate*Time.deltaTime);
+            CurrentDisturbance = Mathf.Clamp(CurrentDisturbance, 0f, maxInsanity);
         }
     }
 

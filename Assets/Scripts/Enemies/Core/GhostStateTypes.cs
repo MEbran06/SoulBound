@@ -7,7 +7,6 @@ namespace AI.Ghosts.States
         Chase,
         Stunned,
         Hallucination,
-        ManifestAttack,
         Stalk
     }
 }

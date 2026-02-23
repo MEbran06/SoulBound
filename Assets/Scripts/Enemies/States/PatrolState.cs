@@ -13,7 +13,7 @@ public class PatrolState : GhostState
             moveDir = controller.transform.forward;
 
         Quaternion baseRot = Quaternion.LookRotation(moveDir);
-        float offset = Mathf.Sin(Time.time * controller.searchSpeed) * controller.searchAngle;
+        float offset = Mathf.Sin(Time.time * controller.speed) * controller.searchAngle;
         baseRot *= Quaternion.Euler(0, offset, 0);
 
         // move towards the current target
