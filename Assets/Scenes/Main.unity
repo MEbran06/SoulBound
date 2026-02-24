@@ -1723,7 +1723,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2710269964976398502, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.01
+      value: 49.9
       objectReference: {fileID: 0}
     - target: {fileID: 2710269964976398502, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1731,7 +1731,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2710269964976398502, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 31.8
+      value: -18.5
       objectReference: {fileID: 0}
     - target: {fileID: 2710269964976398502, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1761,10 +1761,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3978453999663552901, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3978453999663552901, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 20.95
+      objectReference: {fileID: 0}
     - target: {fileID: 5161818738246378197, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5161818738246378197, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5421987685114136814, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 6985081622403450542}
     - target: {fileID: 5421987685114136814, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: HasLight
       value: 1
@@ -1779,7 +1795,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5421987685114136814, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: disturbanceDrainRate
-      value: 10.01
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5421987685114136814, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
       propertyPath: disturbanceThreshold
@@ -1833,13 +1849,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2345621345997561659}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -21.94, y: 1, z: 39.189796}
+  m_LocalRotation: {x: -0, y: 0.71399266, z: -0, w: 0.70015323}
+  m_LocalPosition: {x: -49.1, y: 1, z: 39.189796}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1668801004}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 91.121, z: 0}
 --- !u!4 &299668329611807947
 Transform:
   m_ObjectHideFlags: 0
@@ -2061,6 +2077,7 @@ MonoBehaviour:
   intervalAtLow: {x: 3, y: 5}
   intervalAtHigh: {x: 1, y: 2}
   intensityExponent: 2.028
+  controller: {fileID: 0}
   PlayerCamera: {fileID: 0}
 --- !u!1 &606296934206988659
 GameObject:
@@ -2260,6 +2277,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  interactMask:
     serializedVersion: 2
     m_Bits: 0
   player: {fileID: 6985081622403450538}
@@ -2786,13 +2806,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GhostController
   agent: {fileID: 3845016059131127981}
   personality: {fileID: 11400000, guid: 558a82bee4ba0e147a23037a60cb6f38, type: 2}
-  viewDistance: 10
-  viewAngle: 90
+  viewDistance: 85.6
+  viewAngle: 8.9
   lineOfSight: 1.5
   rememberPlayerTime: 5
   searchAngle: 25
   speed: 14
-  rotSpeed: 14
+  rotSpeed: 135
   patrolPoints: []
   minDistance: 0.3
   spawnRadius: 5
@@ -2801,7 +2821,10 @@ MonoBehaviour:
     m_Bits: 128
   groundMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
+  interactMask:
+    serializedVersion: 2
+    m_Bits: 64
   player: {fileID: 6985081622403450538}
   director: {fileID: 577199860983732261}
   forwardDistance: 6

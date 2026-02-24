@@ -15,7 +15,7 @@ public class PlayerInteraction : MonoBehaviour
     void Update()
     {
 
-        // ---------- Hidden Mode ----------
+        // Hidden
         if (player.isHidden)
         {
             // prompt player to press E to exit
@@ -31,7 +31,7 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
-        // ---------- Normal Mode ----------
+        // Not Hidden
         exitUI.SetActive(false);
 
         // check if the player is seeing an interactable object

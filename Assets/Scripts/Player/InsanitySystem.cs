@@ -15,12 +15,7 @@ public class InsanitySystem : MonoBehaviour
 
     // reference your lamp item (use a boolean for now)
     [SerializeField] bool HasLight = false;
-
-    public void Disturb()
-    {
-        CurrentDisturbance = CurrentDisturbance - (disturbanceDrainRate*Time.deltaTime);
-        CurrentDisturbance = Mathf.Clamp(CurrentDisturbance, 0f, maxInsanity);
-    }
+    [SerializeField] PlayerController player;
 
     public bool IsDisturbed => CurrentDisturbance < disturbanceThreshold;
 
@@ -32,26 +27,38 @@ public class InsanitySystem : MonoBehaviour
 
     void Update()
     {
-        Debug.Log($"Is disturbed: {IsDisturbed}, current disturbance: {CurrentDisturbance}");
-        if (!HasLight || IsDisturbed)
+        if (!player.isHidden)
         {
-            ModifyInsanity(-drainRate * Time.deltaTime);
+            if (!HasLight || IsDisturbed)
+            {
+                ModifyInsanity(-drainRate * Time.deltaTime);
+            }
+            else
+            {
+                ModifyInsanity(recoveryRate * Time.deltaTime);
+            }
         }
+        // allow sanity to recuperate if the player is hidden
         else
         {
             ModifyInsanity(recoveryRate * Time.deltaTime);
         }
 
-        if (HasLight && IsDisturbed)
-        {
-            CurrentDisturbance = CurrentDisturbance + (disturbanceRecoveryRate*Time.deltaTime);
-            CurrentDisturbance = Mathf.Clamp(CurrentDisturbance, 0f, maxInsanity);
-        }
+        //if (HasLight && IsDisturbed)
+        //{
+        //    ModifyDisturbance(disturbanceRecoveryRate * Time.deltaTime);
+        //}
     }
 
     public void ModifyInsanity(float amount)
     {
         CurrentInsanity += amount;
         CurrentInsanity = Mathf.Clamp(CurrentInsanity, 0f, maxInsanity);
+    }
+
+    public void ModifyDisturbance(float amount)
+    {
+        CurrentDisturbance += amount;
+        CurrentDisturbance = Mathf.Clamp(CurrentDisturbance, 0f, maxInsanity);
     }
 }

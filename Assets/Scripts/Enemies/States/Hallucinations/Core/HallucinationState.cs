@@ -13,6 +13,8 @@ public class HallucinationState : GhostState
 
     public override void Enter()
     {
+        // we assume that ghost can see the player
+        controller.context.canSeePlayer = true;
         director = controller.director;
         director?.Begin(controller);
     }

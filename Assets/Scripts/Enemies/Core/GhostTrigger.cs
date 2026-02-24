@@ -7,7 +7,7 @@ public class GhostTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (ghostPersona != null)
+        if (ghostPersona != null && other.CompareTag("Player"))
         {
             // Call a function in the ScriptableObject to handle the logic
             ghostPersona.HandleTriggerEnter(other, controller);

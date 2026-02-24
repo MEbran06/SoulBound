@@ -36,6 +36,7 @@ public class GhostController : MonoBehaviour
 
     public LayerMask environmentMask;
     public LayerMask groundMask;
+    public LayerMask interactMask;
 
     // player
     public Transform player;
@@ -43,7 +44,7 @@ public class GhostController : MonoBehaviour
     // hallucination effects (if needed)
     public HallucinationDirector director;
 
-    [Header("Placement")]
+    [Header("Spawn Placement Fields")]
     public float forwardDistance = 6f;
     public float sideOffset = 2f;
     public float clearanceRadius = 0.4f;
@@ -204,6 +205,20 @@ public class GhostController : MonoBehaviour
         agent.ResetPath();
     }
 
+    public void HardStop()
+    {
+        if (!agent || !agent.enabled) return;
+
+        agent.isStopped = true;
+        agent.ResetPath();
+
+        // Kill motion immediately
+        agent.velocity = Vector3.zero;
+
+        // Keep agent's internal position from "catching up" and pushing you forward
+        agent.nextPosition = agent.transform.position;
+    }
+
     public void ApplyGhostItem(GhostItemData data)
     {
         personality.ApplyGhostItemEffect(this, data);
@@ -232,7 +247,7 @@ public class GhostController : MonoBehaviour
         if (Physics.Raycast(rayStart, Vector3.down, out var groundHit, 50f, groundMask, QueryTriggerInteraction.Ignore))
             desired.y = groundHit.point.y;
 
-        //  clearance check (don�t spawn inside props)
+        //  clearance check (don't spawn inside props)
         Vector3 clearanceCenter = desired + Vector3.up * clearanceHeight;
         if (Physics.CheckSphere(clearanceCenter, clearanceRadius, environmentMask, QueryTriggerInteraction.Ignore))
         {

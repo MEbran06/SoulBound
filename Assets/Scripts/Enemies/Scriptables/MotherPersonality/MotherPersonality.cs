@@ -9,20 +9,22 @@ public class MotherPersonality : GhostPersonality
     public override GhostStateID DecideNextState(GhostController controller)
     {
         float sanity = controller.context.insanitySystem.CurrentInsanity;
-        float agressiveness = controller.context.GetEmotion(EmotionType.Aggression);
+        float aggressiveness = controller.context.GetEmotion(EmotionType.Aggression);
+        Debug.Log($"Aggressiveness: {controller.context.GetEmotion(EmotionType.Aggression)}");
+        bool remembersPlayer = Time.time < controller.context.lastTimePlayerSeen + controller.rememberPlayerTime;
+        bool shouldChase = controller.context.canSeePlayer || remembersPlayer;
 
-        if (agressiveness >= GetThreshold(EmotionType.Aggression))
+        if (aggressiveness >= GetThreshold(EmotionType.Aggression))
         {
-            return GhostStateID.Chase;
+            return shouldChase ? GhostStateID.Chase : GhostStateID.Stalk;
         }
-
-        // if player insanity falls bellow the necessary threshold for hallucinations to start
-        if (sanity <= GetThreshold(EmotionType.Fear))
+        else
         {
-            return GhostStateID.Hallucination;
-        }
+            if (sanity <= GetThreshold(EmotionType.Fear))
+                return GhostStateID.Hallucination;
 
-        return GhostStateID.Stalk; // stalk the player
+            return GhostStateID.Stalk;
+        }
     }
 
     public override void ApplyGhostItemEffect(GhostController controller, GhostItemData data)
@@ -33,6 +35,7 @@ public class MotherPersonality : GhostPersonality
     public override void HandleTriggerEnter(Collider other, GhostController controller)
     {
         // player loses
+        controller.HardStop();
         FindAnyObjectByType<GameManager>().PlayerCaught(controller);
     }
 }

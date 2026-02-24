@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class StalkState : GhostState
 {
-    float recoveryFactor = 5f;
     Transform[] manifestationPoints;
     Renderer[] renderers;
     Transform currentPoint;
@@ -24,6 +23,8 @@ public class StalkState : GhostState
 
     public override void Enter()
     {
+        // make it stop if it was moving
+        controller.StopMoving();
         renderers = controller.GetComponentsInChildren<Renderer>(true);
         SetVisible(false);
 
@@ -41,7 +42,7 @@ public class StalkState : GhostState
     public override void Execute()
     {
         // Calm aggression slowly while player is recovering sanity
-        float calmRate = controller.context.insanitySystem.recoveryRate / recoveryFactor;
+        float calmRate = controller.personality.aggressionDecayRate;
         controller.context.ModifyEmotion(EmotionType.Aggression, -calmRate * Time.deltaTime);
 
         if (manifestationPoints == null || manifestationPoints.Length == 0)
@@ -55,7 +56,6 @@ public class StalkState : GhostState
             Transform first = FindClosestVisiblePoint(controller, manifestationPoints, exclude: currentPoint);
             if (first != null)
             {
-                Debug.Log("Position Found");
                 controller.transform.position = first.position;
                 currentPoint = first;
                 // make ghost look at player
@@ -71,7 +71,6 @@ public class StalkState : GhostState
             }
             else
             {
-                Debug.LogWarning("No Position Found");
                 nextRepositionTime = Time.time + Random.Range(0.5f, 1.2f);
             }
 
@@ -91,7 +90,8 @@ public class StalkState : GhostState
         if (isLooking)
         {
             lookAwayQueued = false;
-            controller.context.insanitySystem.Disturb();
+            float drain = controller.context.insanitySystem.disturbanceDrainRate;
+            controller.context.insanitySystem.ModifyDisturbance(-drain*Time.deltaTime);
         }
 
         // If player just stopped looking, relocate (instead of vanishing)

@@ -16,7 +16,7 @@ public class HallucinationDirector : MonoBehaviour
     [Header("Intensity Curve")]
     [Range(1f, 3f)] public float intensityExponent = 1.6f;
 
-    private GhostController controller;
+    public GhostController controller;
 
     private float nextBeatTime;
     private readonly Dictionary<string, float> cooldownUntilById = new();

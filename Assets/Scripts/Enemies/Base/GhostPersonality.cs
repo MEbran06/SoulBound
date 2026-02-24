@@ -24,6 +24,7 @@ public abstract class GhostPersonality : ScriptableObject
     public EmotionValues[] startingEmotions;
 
     public float aggressionBuildUpRate = 5f;
+    public float aggressionDecayRate = 1.0f;
 
     // Base duration for reactions
     public float baseDuration = 3f;

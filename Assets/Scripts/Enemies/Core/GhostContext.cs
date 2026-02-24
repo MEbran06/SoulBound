@@ -27,6 +27,8 @@ public class GhostContext
     // passively reduce confusion over time (only increase with item interaction)
     public float confusionDecayRate;
 
+    public HideSpot playerHideSpot = null;
+
 
     /*
     public bool playerMadeNoise;
@@ -38,7 +40,7 @@ public class GhostContext
         // initial assumptions
         canSeePlayer = false;
         lastKnownPlayerPosition = Vector3.zero;
-        lastTimePlayerSeen = -999f; // never seen the player before
+        lastTimePlayerSeen = -Mathf.Infinity; // never seen the player before
         distanceToPlayer = -1f; // undefined
         awarenessLevel = 0f;
         emotionStates = getEmotionStates(); // create an empty dictionary to keep track of emotions

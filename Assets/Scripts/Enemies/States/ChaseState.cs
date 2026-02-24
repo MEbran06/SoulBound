@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ChaseState : GhostState
 {
+    const float MAX_DISTANCE_FROM_HIDING = 3f;
     public ChaseState(GhostController controller) : base(controller) {}
 
     public override void Execute()
@@ -25,8 +26,27 @@ public class ChaseState : GhostState
         Quaternion baseRotation = Quaternion.LookRotation(finalDirection);
         controller.RotateTo(baseRotation);
         controller.MoveTo(controller.player.position);
+
+        // if the player is hidden, but ghost still remembers where the player went, force player out of hidding
+        if (controller.context.playerIsHidden && 
+            Time.time < controller.rememberPlayerTime + controller.context.lastTimePlayerSeen)
+        {
+            // detect the HideSpot
+            var hideSpot = controller.context.playerHideSpot; // set by HideSpot when player enters
+            if (hideSpot != null)
+            {
+                if (Vector3.Distance(controller.transform.position, hideSpot.transform.position) < MAX_DISTANCE_FROM_HIDING)
+                {
+                    hideSpot.ExitHide();
+                }
+            }
+        }
     }
 
     public override void Exit() {}
-    public override void Enter() {}
+    public override void Enter() 
+    {
+        // we're chasing because we can see them
+        controller.context.lastTimePlayerSeen = Time.time;
+    }
 }
