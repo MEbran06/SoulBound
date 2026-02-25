@@ -373,6 +373,7 @@ GameObject:
   - component: {fileID: 9114191965193309032}
   - component: {fileID: 9200906549214516598}
   - component: {fileID: 1438891152774395068}
+  - component: {fileID: 7937086115505984325}
   m_Layer: 0
   m_Name: Lamp
   m_TagString: Untagged
@@ -491,3 +492,30 @@ MonoBehaviour:
   dotDistance: 3
   item: {fileID: 11400000, guid: 8a388b4d9dbfcfe4194b797368447a29, type: 2}
   amount: 1
+--- !u!54 &7937086115505984325
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9180333920830386146}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

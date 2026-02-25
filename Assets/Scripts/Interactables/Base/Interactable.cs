@@ -42,6 +42,7 @@ public abstract class Interactable : MonoBehaviour
     {
         return keyToPress;
     }
+    
     public float GetDotDistance()
     {
         return dotDistance;

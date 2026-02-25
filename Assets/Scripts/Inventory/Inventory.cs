@@ -14,6 +14,18 @@ public class Inventory : MonoBehaviour
 
     public Image dragIcon;
 
+    public float pickupRange = 3f;
+    private Item lookedAtItem = null;
+    public Material highlightMaterial;
+    private Material originalMaterial;
+    private Renderer lookedAtRenderer = null; 
+
+    private int equippedHotbarIndex = 0; // goes from 0-5
+    public float equippedOpacity = 0.9f;
+    public float normalOpacity = 0.58f;
+    public Transform hand;
+    private GameObject currentHandItem;
+
     private List<Slot> inventorySlots = new List<Slot>();
     private List<Slot> hotbarSlots = new List<Slot>();
     private List<Slot> allSlots = new List<Slot>();
@@ -52,9 +64,16 @@ public class Inventory : MonoBehaviour
                 camera.enabled = !opening;
         }
 
+        DetectLookedAtItem();
+        Pickup();
+
         StartDrag();
         UpdateDragItemPosition();
         EndDrag();
+
+        HandleHotBarSelection();
+        HandleDropEquippedItem();
+        UpdateHotbarOpacity();
     }
 
     public void AddItem(ItemSO itemToAdd, int amount)
@@ -63,7 +82,7 @@ public class Inventory : MonoBehaviour
 
         foreach(Slot slot in allSlots)
         {
-            if(slot.HasItem() && slot.GetItem() == itemToAdd)
+            if (slot.HasItem() && slot.GetItem() == itemToAdd)
             {
                 int currentAmount = slot.GetAmount();
                 int maxStack = itemToAdd.maxStackSize;
@@ -84,7 +103,7 @@ public class Inventory : MonoBehaviour
 
         foreach(Slot slot in allSlots)
         {
-            if(!slot.HasItem())
+            if (!slot.HasItem())
             {
                 int amountToPlace = Mathf.Min(itemToAdd.maxStackSize, remaining);
                 slot.SetItem(itemToAdd, amountToPlace);
@@ -103,11 +122,11 @@ public class Inventory : MonoBehaviour
 
     private void StartDrag()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Slot hovered = GetHoveredSlot();
 
-            if(hovered != null && hovered.HasItem())
+            if (hovered != null && hovered.HasItem())
             {
                 draggedSlot = hovered;
                 isDragging = true;
@@ -122,7 +141,7 @@ public class Inventory : MonoBehaviour
 
     private void EndDrag()
     {
-        if(Input.GetMouseButtonUp(0) && isDragging)
+        if (Input.GetMouseButtonUp(0) && isDragging)
         {
             Slot hovered = GetHoveredSlot();
 
@@ -153,7 +172,7 @@ public class Inventory : MonoBehaviour
         if (from == to) return;
 
         // Stacking
-        if(to.HasItem() && to.GetItem() == from.GetItem())
+        if (to.HasItem() && to.GetItem() == from.GetItem())
         {
             int max = to.GetItem().maxStackSize;
             int space = max - to.GetAmount();
@@ -190,9 +209,114 @@ public class Inventory : MonoBehaviour
 
     private void UpdateDragItemPosition()
     {
-        if(isDragging)
+        if (isDragging)
         {
             dragIcon.transform.position = Input.mousePosition;
         }
+    }
+
+    private void Pickup()
+    {
+        if(lookedAtRenderer != null && Input.GetKeyDown(KeyCode.E))
+        {
+            Item item = lookedAtRenderer.GetComponent<Item>();
+            if (item != null)
+            {
+                AddItem(item.item, item.amount);
+                Destroy(item.gameObject);
+                EquipHandItem();
+            }
+        }
+    }
+
+    private void DetectLookedAtItem()
+    {
+        if (lookedAtRenderer != null)
+        {
+            lookedAtRenderer.material = originalMaterial;
+            lookedAtRenderer = null;
+            originalMaterial = null;
+        }
+
+        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, pickupRange))
+        {
+            Item item = hit.collider.GetComponent<Item>();
+            if (item != null)
+            {
+                Renderer rend = item.GetComponent<Renderer>();
+                if (rend != null)
+                {
+                    originalMaterial = rend.material;
+                    rend.material = highlightMaterial;
+                    lookedAtRenderer = rend;
+                }
+            }
+        }
+    }
+
+    private void UpdateHotbarOpacity()
+    {
+        for (int i = 0; i < hotbarSlots.Count; i++)
+        {
+            Image icon = hotbarSlots[i].GetComponent<Image>();
+            if (icon != null)
+            {
+                icon.color = (i == equippedHotbarIndex) ? new Color(1, 1, 1, equippedOpacity) : new Color(0.5f, 0.5f, 0.5f, normalOpacity);
+            }
+        }
+    }
+
+    private void HandleHotBarSelection()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if (Input.GetKeyDown((i + 1).ToString()))
+            {
+                equippedHotbarIndex = i;
+                UpdateHotbarOpacity();
+                EquipHandItem();
+            }
+        }
+    }
+
+    private void HandleDropEquippedItem()
+    {
+        if (!Input.GetKeyDown(KeyCode.Q)) return;
+
+        Slot equippedSlot = hotbarSlots[equippedHotbarIndex];
+
+        if (!equippedSlot.HasItem()) return;
+
+        ItemSO itemSO = equippedSlot.GetItem();
+        GameObject prefab = itemSO.itemPrefab;
+
+        if (prefab == null) return;
+
+        GameObject dropped = Instantiate(prefab, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+
+        Item item = dropped.GetComponent<Item>();
+        item.item = itemSO;
+        item.amount = equippedSlot.GetAmount();
+
+        equippedSlot.ClearSlot();
+
+        EquipHandItem();
+    
+    }
+
+    private void EquipHandItem()
+    {
+        if (currentHandItem != null) Destroy(currentHandItem);
+
+        Slot equippedSlot = hotbarSlots[equippedHotbarIndex];
+        if (!equippedSlot.HasItem()) return;
+
+        ItemSO item = equippedSlot.GetItem();
+        if (item.handItemPrefab == null) return;
+
+        currentHandItem = Instantiate(item.handItemPrefab, hand);
+        currentHandItem.transform.localPosition = Vector3.zero;
+        currentHandItem.transform.localRotation = Quaternion.identity;
     }
 }

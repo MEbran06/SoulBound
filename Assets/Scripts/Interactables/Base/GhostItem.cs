@@ -31,5 +31,4 @@ public class GhostItem : Item
     {
         return Time.time >= lastActivationTime + cooldownDuration;
     }
-
 }
