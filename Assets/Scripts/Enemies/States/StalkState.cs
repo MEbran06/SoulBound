@@ -4,7 +4,6 @@ using UnityEngine;
 public class StalkState : GhostState
 {
     Transform[] manifestationPoints;
-    Renderer[] renderers;
     Transform currentPoint;
 
     float nextRepositionTime;
@@ -25,8 +24,7 @@ public class StalkState : GhostState
     {
         // make it stop if it was moving
         controller.StopMoving();
-        renderers = controller.GetComponentsInChildren<Renderer>(true);
-        SetVisible(false);
+        controller.SetVisible(false);
 
         if (manifestationPoints == null)
             manifestationPoints = getPoints(controller);
@@ -49,7 +47,7 @@ public class StalkState : GhostState
             return;
 
         // If not visible yet, do initial reveal on timer
-        if (!IsVisible())
+        if (!controller.IsVisible())
         {
             if (Time.time < nextRepositionTime) return;
 
@@ -64,7 +62,7 @@ public class StalkState : GhostState
                 if (look.sqrMagnitude > 0.01f)
                     controller.transform.rotation = Quaternion.LookRotation(look);
 
-                SetVisible(true);
+                controller.SetVisible(true);
 
                 // Give a small grace period so ghost doesn’t instantly “move away” on first frame
                 nextMoveAllowedTime = Time.time + Random.Range(0.3f, 0.6f);
@@ -90,8 +88,6 @@ public class StalkState : GhostState
         if (isLooking)
         {
             lookAwayQueued = false;
-            float drain = controller.context.insanitySystem.disturbanceDrainRate;
-            controller.context.insanitySystem.ModifyDisturbance(-drain*Time.deltaTime);
         }
 
         // If player just stopped looking, relocate (instead of vanishing)
@@ -112,7 +108,7 @@ public class StalkState : GhostState
             }
             else
             {
-                SetVisible(false);
+                controller.SetVisible(false);
             }
 
             lookAwayQueued = false; // consume the event
@@ -124,20 +120,7 @@ public class StalkState : GhostState
 
     public override void Exit() 
     {
-        SetVisible(false );
-    }
-
-    private void SetVisible(bool visible)
-    {
-        if (renderers == null) return;
-        foreach (var r in renderers) r.enabled = visible;
-    }
-
-    private bool IsVisible()
-    {
-        if (renderers == null) return false;
-        foreach (var r in renderers) if (r.enabled) return true;
-        return false;
+        controller.SetVisible(false );
     }
 
     // Point visibility: camera -> point not occluded by environment

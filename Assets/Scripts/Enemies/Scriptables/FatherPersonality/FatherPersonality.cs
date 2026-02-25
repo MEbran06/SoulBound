@@ -33,7 +33,6 @@ public class FatherPersonality : GhostPersonality
 
     public override void ApplyGhostItemEffect(GhostController controller, GhostItemData data)
     {
-        Debug.Log("Applying the effect on the ghost");
         foreach (var mod in data.modifiers)
         {
             float sensitivity = GetSensitivity(mod.emotion);
@@ -46,7 +45,7 @@ public class FatherPersonality : GhostPersonality
         if (other.CompareTag("Player") 
             && controller.context.GetEmotion(EmotionType.Aggression) > GetThreshold(EmotionType.Aggression))
         {
-            FindAnyObjectByType<GameManager>().PlayerCaught(controller);
+            GameManager.Instance.PlayerCaught(controller);
         }
     }
 

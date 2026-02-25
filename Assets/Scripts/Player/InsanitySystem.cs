@@ -1,3 +1,4 @@
+using AI.Ghosts.States;
 using UnityEngine;
 
 public class InsanitySystem : MonoBehaviour
@@ -14,7 +15,7 @@ public class InsanitySystem : MonoBehaviour
     public float CurrentDisturbance { get; private set; }
 
     // reference your lamp item (use a boolean for now)
-    [SerializeField] bool HasLight = false;
+    public bool HasLight = false;
     [SerializeField] PlayerController player;
 
     public bool IsDisturbed => CurrentDisturbance < disturbanceThreshold;
@@ -43,11 +44,16 @@ public class InsanitySystem : MonoBehaviour
         {
             ModifyInsanity(recoveryRate * Time.deltaTime);
         }
-
-        //if (HasLight && IsDisturbed)
-        //{
-        //    ModifyDisturbance(disturbanceRecoveryRate * Time.deltaTime);
-        //}
+        Debug.Log($"Current Disturbance: {CurrentDisturbance}");
+        // reduce player disturbance
+        if (player.IsSafeToCalm())
+        {
+            ModifyDisturbance(disturbanceRecoveryRate * Time.deltaTime);
+        }
+        else
+        {
+            ModifyDisturbance(-disturbanceDrainRate * Time.deltaTime);
+        }
     }
 
     public void ModifyInsanity(float amount)

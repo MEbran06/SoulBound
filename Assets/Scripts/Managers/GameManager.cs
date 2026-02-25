@@ -2,9 +2,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
     public int Seed = 123;
     public bool isGameOver = false;
+    public bool isPlayerBeingChased = false;
     [SerializeField] PlayerController player;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

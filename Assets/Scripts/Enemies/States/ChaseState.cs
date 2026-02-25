@@ -43,9 +43,13 @@ public class ChaseState : GhostState
         }
     }
 
-    public override void Exit() {}
+    public override void Exit() 
+    {
+        GameManager.Instance.isPlayerBeingChased = false;
+    }
     public override void Enter() 
     {
+        GameManager.Instance.isPlayerBeingChased = true;
         // we're chasing because we can see them
         controller.context.lastTimePlayerSeen = Time.time;
     }

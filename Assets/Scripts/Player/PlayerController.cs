@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using AI.Ghosts.States;
+using System.Net;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class PlayerController : MonoBehaviour
     float verticalVelocity;
     private Vector3 move;
     public bool isHidden = false;
+    public float sightDistance = 50f;
     public bool InputDisabled { private get; set; }
 
     private float standingHeight;
@@ -23,6 +26,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float staminaDrainRate = 1f;      // per second while sprinting
     [SerializeField] float staminaRegenRate = 0.75f;   // per second while resting
     [SerializeField] float sprintThreshold = 2f;
+    
     private bool canSprint = true;
 
     private float currentStamina;
@@ -34,6 +38,9 @@ public class PlayerController : MonoBehaviour
 
     // give player insanity
     public InsanitySystem insanitySystem;
+
+    // enemy sight layer
+    [SerializeField] LayerMask enemyMask;
 
 
     void Start()
@@ -170,5 +177,36 @@ public class PlayerController : MonoBehaviour
         currentHeldItem.OnDropped();
         currentHeldItem.transform.SetParent(null);
         currentHeldItem = null;
+    }
+
+    public bool IsSafeToCalm()
+    {
+        bool isSafe = false;
+        bool isPlayerLookingAtGhost = false;
+        bool hasLight = insanitySystem.HasLight;
+        bool gettingChased = false;
+
+        Camera cam = Camera.main;
+        if (cam == null) return false;
+
+        Transform camTransform = cam.transform;
+
+        float aimRadius = 0.40f;
+        isPlayerLookingAtGhost = Physics.SphereCast(camTransform.position, aimRadius,
+                                                camTransform.forward, out RaycastHit hit, sightDistance, 
+                                                enemyMask, QueryTriggerInteraction.Collide);
+
+        // check if we're getting chased by a ghost
+        gettingChased = GameManager.Instance.isPlayerBeingChased;
+
+        isSafe = !isPlayerLookingAtGhost && (hasLight || isHidden) && !gettingChased; 
+
+        return isSafe;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * sightDistance);
     }
 }

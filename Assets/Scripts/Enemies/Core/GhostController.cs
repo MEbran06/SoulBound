@@ -51,10 +51,15 @@ public class GhostController : MonoBehaviour
     public float clearanceHeight = 1.0f;
     public float wallBackoff = 0.75f;
 
+    private Renderer[] renderers;
+    private Collider[] colliders;
+
     private void Awake()
     {
         context = new GhostContext(player.GetComponent<InsanitySystem>());
         stateMachine = new GhostStateMachine(this);
+        renderers = GetComponentsInChildren<Renderer>(true);
+        colliders = GetComponentsInChildren<Collider>(true);
 
         // get components
         agent = GetComponent<NavMeshAgent>();
@@ -132,8 +137,31 @@ public class GhostController : MonoBehaviour
         UpdateVision();
     }
 
+    public bool IsVisible()
+    {
+        if (renderers == null) return false;
+        foreach (var r in renderers) if (r.enabled) return true;
+        return false;
+    }
+
+    public void SetVisible(bool visible)
+    {
+        if (renderers == null) return;
+        foreach (var r in renderers) r.enabled = visible;
+        // also disable/enable the collider
+        foreach (var c in colliders) c.enabled = visible;
+
+    }
+
     void UpdateVision()
     {
+        // assume omnipresence if the ghost cannot be seen
+        if (!IsVisible())
+        {
+            context.canSeePlayer = true;
+            return;
+        }
+
         // Ghost can't see the player if it's hidden
         if (context.playerIsHidden)
         {
@@ -256,6 +284,11 @@ public class GhostController : MonoBehaviour
         }
 
         return desired;
+    }
+
+    public GhostStateID GetCurrentState()
+    {
+        return stateMachine.CurrentStateID;
     }
 
     private void OnDrawGizmos()

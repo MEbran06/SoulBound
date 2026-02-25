@@ -16,6 +16,7 @@ public class MotherPersonality : GhostPersonality
 
         if (aggressiveness >= GetThreshold(EmotionType.Aggression))
         {
+            Debug.Log($"Should Chase? {shouldChase}");
             return shouldChase ? GhostStateID.Chase : GhostStateID.Stalk;
         }
         else
@@ -29,13 +30,18 @@ public class MotherPersonality : GhostPersonality
 
     public override void ApplyGhostItemEffect(GhostController controller, GhostItemData data)
     {
-        
+        foreach (var mod in data.modifiers)
+        {
+            float sensitivity = GetSensitivity(mod.emotion);
+            controller.context.ModifyEmotion(mod.emotion, mod.value * sensitivity);
+        }
+
     }
 
     public override void HandleTriggerEnter(Collider other, GhostController controller)
     {
         // player loses
         controller.HardStop();
-        FindAnyObjectByType<GameManager>().PlayerCaught(controller);
+        GameManager.Instance.PlayerCaught(controller);
     }
 }

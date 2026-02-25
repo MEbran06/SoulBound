@@ -1,8 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using Unity.VisualScripting;
-using UnityEngine.AI;
-
 using Items.Ghosts;
 
 public class HallucinationState : GhostState
@@ -13,8 +9,7 @@ public class HallucinationState : GhostState
 
     public override void Enter()
     {
-        // we assume that ghost can see the player
-        controller.context.canSeePlayer = true;
+        controller.SetVisible(false);
         director = controller.director;
         director?.Begin(controller);
     }
@@ -38,6 +33,6 @@ public class HallucinationState : GhostState
         director = null;
         // appear close to the player
         controller.GetVisibleSpawnPoint(Camera.main.transform);
-        controller.GetComponent<Renderer>().enabled = true;
+        controller.SetVisible(true);
     }
 }
