@@ -130,6 +130,8 @@ MonoBehaviour:
   promptText: {fileID: 6953179027732385675}
   dotFader: {fileID: 5566067983171983870}
   dotDistance: 2
+  item: {fileID: 11400000, guid: 909c744aadced64419a67836ee04f4e4, type: 2}
+  amount: 1
   ghostItemData: {fileID: 11400000, guid: aa6dfcf800808f842a5c041d5d93bc1b, type: 2}
   cooldownDuration: 5
 --- !u!54 &7631760726787071784

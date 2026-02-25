@@ -4,6 +4,8 @@ public class Item : Interactable
 {
     protected bool isHeld = false;
     protected PlayerController owner;
+    public ItemSO item;
+    public int amount = 1;
 
     public override void Interact(PlayerController player)
     {
