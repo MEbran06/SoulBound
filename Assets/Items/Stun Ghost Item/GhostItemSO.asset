@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7608977b7a9073746aadcee7e94279ca, type: 3}
-  m_Name: GhostItem
+  m_Name: GhostItemSO
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
   itemName: GhostItem
   icon: {fileID: 21300000, guid: 4110b69ef1c27594c96f43ebbefa99ef, type: 3}

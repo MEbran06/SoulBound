@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7608977b7a9073746aadcee7e94279ca, type: 3}
-  m_Name: Lamp
+  m_Name: LampSO
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
   itemName: Lamp
   icon: {fileID: 21300000, guid: 6d3fd1271909b2e46b7f7e28cb5b0ade, type: 3}
