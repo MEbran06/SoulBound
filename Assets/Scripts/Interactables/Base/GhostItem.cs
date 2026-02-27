@@ -5,30 +5,10 @@ using UnityEngine;
 
 public class GhostItem : Item
 {
-    public static event Action<GhostItemData, Vector3> OnMemoryActivated;
-    private float lastActivationTime = -Mathf.Infinity;
-    [SerializeField] private GhostItemData ghostItemData;
-    [SerializeField] private float cooldownDuration = 5f;
+    public static event System.Action<GhostItemData, Vector3> OnMemoryActivated;
 
-    public void Start()
+    public static void Activate(GhostItemData data, Vector3 position)
     {
-        // prompt message for UI
-        promptMessage = "Press E to Pick Up";
-    }
-
-    public override void Use()
-    {
-        if (!CanActivate())
-        {
-            return;
-        }
-
-        OnMemoryActivated?.Invoke(ghostItemData, owner.transform.position);
-        lastActivationTime = Time.time;
-    }
-
-    private bool CanActivate()
-    {
-        return Time.time >= lastActivationTime + cooldownDuration;
+        OnMemoryActivated?.Invoke(data, position);
     }
 }

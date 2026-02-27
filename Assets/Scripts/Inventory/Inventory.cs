@@ -5,20 +5,13 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
     public PlayerController player;
-    public CameraController camera;
-    public ItemSO oilItem;
+    public CameraController cameraController;
 
     public GameObject hotbarObj;
     public GameObject inventorySlotParent;
     public GameObject container;
 
     public Image dragIcon;
-
-    public float pickupRange = 3f;
-    private Item lookedAtItem = null;
-    public Material highlightMaterial;
-    private Material originalMaterial;
-    private Renderer lookedAtRenderer = null; 
 
     private int equippedHotbarIndex = 0; // goes from 0-5
     public float equippedOpacity = 0.9f;
@@ -29,12 +22,20 @@ public class Inventory : MonoBehaviour
     private List<Slot> inventorySlots = new List<Slot>();
     private List<Slot> hotbarSlots = new List<Slot>();
     private List<Slot> allSlots = new List<Slot>();
+
+    private float ghostLastUseTime = -Mathf.Infinity;
     
     private Slot draggedSlot = null;
     private bool isDragging = false; 
 
+    public static Inventory Instance { get; private set; }
+
     private void Awake()
     {
+        if (dragIcon != null) dragIcon.raycastTarget = false;
+
+        Instance = this;
+
         inventorySlots.AddRange(inventorySlotParent.GetComponentsInChildren<Slot>());
         hotbarSlots.AddRange(hotbarObj.GetComponentsInChildren<Slot>());
 
@@ -45,11 +46,6 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            AddItem(oilItem, 2);
-        }
-
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             bool opening = !container.activeSelf;
@@ -60,16 +56,23 @@ public class Inventory : MonoBehaviour
 
             if (player != null)
                 player.InputDisabled = opening;
-            if (camera != null)                
-                camera.enabled = !opening;
+            if (cameraController != null)                
+                cameraController.enabled = !opening;
         }
 
-        DetectLookedAtItem();
-        Pickup();
-
-        StartDrag();
-        UpdateDragItemPosition();
-        EndDrag();
+        bool uiOpen = container != null && container.activeSelf;
+        if (uiOpen)
+        {
+            StartDrag();
+            UpdateDragItemPosition();
+            EndDrag();
+        }
+        else
+        {
+             if (dragIcon != null) dragIcon.enabled = false;
+             isDragging = false;
+             draggedSlot = null;
+        }
 
         HandleHotBarSelection();
         HandleDropEquippedItem();
@@ -78,46 +81,56 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(ItemSO itemToAdd, int amount)
     {
+        if (itemToAdd == null || amount <= 0) return;
+
         int remaining = amount;
 
-        foreach(Slot slot in allSlots)
-        {
-            if (slot.HasItem() && slot.GetItem() == itemToAdd)
-            {
-                int currentAmount = slot.GetAmount();
-                int maxStack = itemToAdd.maxStackSize;
-
-                if(currentAmount < maxStack)
-                {
-                    int spaceLeft = maxStack - currentAmount;
-                    int amountToAdd = Mathf.Min(spaceLeft, remaining);
-
-                    slot.SetItem(itemToAdd, currentAmount + amountToAdd);
-                    remaining -= amountToAdd;
-
-                    if(remaining <= 0)
-                        return;
-                }
-            }
-        }
-
-        foreach(Slot slot in allSlots)
-        {
-            if (!slot.HasItem())
-            {
-                int amountToPlace = Mathf.Min(itemToAdd.maxStackSize, remaining);
-                slot.SetItem(itemToAdd, amountToPlace);
-                remaining -= amountToPlace;
-
-                if (remaining <= 0)
-                    return;
-            }
-        }
+        // Hotbar first (stack then empty)
+        remaining = AddIntoSlotList(hotbarSlots, itemToAdd, remaining);
+        // Inventory grid next
+         remaining = AddIntoSlotList(inventorySlots, itemToAdd, remaining);
 
         if (remaining > 0)
-        {
             Debug.Log("Not enough space in inventory for " + remaining + " of " + itemToAdd.itemName);
+
+        RefreshAfterInventoryChange();
+    }
+
+    private int AddIntoSlotList(List<Slot> slots, ItemSO itemToAdd, int remaining)
+    {
+        // stack into existing
+        foreach (Slot slot in slots)
+        {
+            if (remaining <= 0) break;
+            if (!slot.HasItem() || slot.GetItem() != itemToAdd) continue;
+
+            int max = itemToAdd.maxStackSize;
+            int space = max - slot.GetAmount();
+            if (space <= 0) continue;
+
+            int add = Mathf.Min(space, remaining);
+            slot.SetItem(itemToAdd, slot.GetAmount() + add);
+            remaining -= add;
         }
+
+        // fill empty
+        foreach (Slot slot in slots)
+        {
+            if (remaining <= 0) break;
+            if (slot.HasItem()) continue;
+
+            int place = Mathf.Min(itemToAdd.maxStackSize, remaining);
+            slot.SetItem(itemToAdd, place);
+            remaining -= place;
+        }
+
+        return remaining;
+}
+
+    private void RefreshAfterInventoryChange()
+    {
+        UpdateHotbarOpacity();
+        EquipHandItem();
     }
 
     private void StartDrag()
@@ -184,6 +197,9 @@ public class Inventory : MonoBehaviour
                 to.SetItem(to.GetItem(), to.GetAmount() + move);
                 from.SetItem(from.GetItem(), from.GetAmount() - move);
 
+                EquipHandItem();
+                UpdateHotbarOpacity();
+
                 if(from.GetAmount() <= 0)
                     from.ClearSlot();
 
@@ -215,45 +231,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void Pickup()
-    {
-        if(lookedAtRenderer != null && Input.GetKeyDown(KeyCode.E))
-        {
-            Item item = lookedAtRenderer.GetComponent<Item>();
-            if (item != null)
-            {
-                AddItem(item.item, item.amount);
-                Destroy(item.gameObject);
-                EquipHandItem();
-            }
-        }
-    }
-
-    private void DetectLookedAtItem()
-    {
-        if (lookedAtRenderer != null)
-        {
-            lookedAtRenderer.material = originalMaterial;
-            lookedAtRenderer = null;
-            originalMaterial = null;
-        }
-
-        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, pickupRange))
-        {
-            Item item = hit.collider.GetComponent<Item>();
-            if (item != null)
-            {
-                Renderer rend = item.GetComponent<Renderer>();
-                if (rend != null)
-                {
-                    originalMaterial = rend.material;
-                    rend.material = highlightMaterial;
-                    lookedAtRenderer = rend;
-                }
-            }
-        }
-    }
 
     private void UpdateHotbarOpacity()
     {
@@ -271,7 +248,7 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
-            if (Input.GetKeyDown((i + 1).ToString()))
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
                 equippedHotbarIndex = i;
                 UpdateHotbarOpacity();
@@ -280,29 +257,84 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    private bool TryAddToHotbarFirst(ItemSO itemToAdd, int amount)
+    {
+    // stack into existing hotbar stacks first
+        for (int i = 0; i < hotbarSlots.Count; i++)
+        {
+            Slot s = hotbarSlots[i];
+            if (!s.HasItem()) continue;
+            if (s.GetItem() != itemToAdd) continue;
+
+            int max = itemToAdd.maxStackSize;
+            int space = max - s.GetAmount();
+            if (space <= 0) continue;
+
+            int add = Mathf.Min(space, amount);
+            s.SetItem(itemToAdd, s.GetAmount() + add);
+            amount -= add;
+
+            if (amount <= 0)
+            {
+                RefreshAfterInventoryChange();
+                return true;
+            }
+        }
+
+        // put into empty hotbar slots
+        for (int i = 0; i < hotbarSlots.Count; i++)
+        {
+            Slot s = hotbarSlots[i];
+            if (s.HasItem()) continue;
+
+            int place = Mathf.Min(itemToAdd.maxStackSize, amount);
+            s.SetItem(itemToAdd, place);
+            amount -= place;
+
+            if (amount <= 0)
+            {
+                RefreshAfterInventoryChange();
+                return true;
+            }
+        }
+
+        
+        RefreshAfterInventoryChange();
+        return false;
+    }
+
     private void HandleDropEquippedItem()
     {
         if (!Input.GetKeyDown(KeyCode.Q)) return;
+        if (container != null && container.activeSelf) return; 
 
         Slot equippedSlot = hotbarSlots[equippedHotbarIndex];
-
         if (!equippedSlot.HasItem()) return;
 
         ItemSO itemSO = equippedSlot.GetItem();
-        GameObject prefab = itemSO.itemPrefab;
+        if (itemSO == null || itemSO.itemPrefab == null) return;
 
-        if (prefab == null) return;
+        Vector3 spawnPos = cameraController.transform.position + cameraController.transform.forward * 1.2f;
+        GameObject dropped = Instantiate(itemSO.itemPrefab, spawnPos, Quaternion.identity);
 
-        GameObject dropped = Instantiate(prefab, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+        DistanceScalerUI scaler = dropped.GetComponentInChildren<DistanceScalerUI>();
+        if (scaler != null)
+        {
+            scaler.player = player.transform;
+        }
 
-        Item item = dropped.GetComponent<Item>();
-        item.item = itemSO;
-        item.amount = equippedSlot.GetAmount();
+        // Ensure Item component exists and is filled
+        Item worldItem = dropped.GetComponent<Item>();
+        if (worldItem == null) worldItem = dropped.AddComponent<Item>();
+        worldItem.item = itemSO;
+        worldItem.amount = equippedSlot.GetAmount();
+
+        // set layer so PlayerInteraction can detect it (match interactLayer)
+        // Put interactable layer name here:
+        dropped.layer = LayerMask.NameToLayer("Interactable");
 
         equippedSlot.ClearSlot();
-
-        EquipHandItem();
-    
+        RefreshAfterInventoryChange();
     }
 
     private void EquipHandItem()
@@ -316,7 +348,47 @@ public class Inventory : MonoBehaviour
         if (item.handItemPrefab == null) return;
 
         currentHandItem = Instantiate(item.handItemPrefab, hand);
-        currentHandItem.transform.localPosition = Vector3.zero;
-        currentHandItem.transform.localRotation = Quaternion.identity;
+        currentHandItem.transform.localPosition = item.handPositionOffset;
+        currentHandItem.transform.localRotation = Quaternion.Euler(item.handRotationOffset);
+        currentHandItem.transform.localScale = item.handScale;
+
+        DisablePhysicsOnEquipped(currentHandItem);
+    }
+
+    public void UseEquippedItem()
+    {
+        Slot equippedSlot = hotbarSlots[equippedHotbarIndex];
+        if (!equippedSlot.HasItem()) return;
+
+        ItemSO so = equippedSlot.GetItem();
+        if (so == null) return;
+
+        Debug.Log($"Using hotbar item: {so.itemName}, isGhostItem={so.isGhostItem}, hasData={so.ghostItemData != null}");
+
+        // Ghost use
+        if (so.isGhostItem && so.ghostItemData != null)
+        {
+            float cd = Mathf.Max(0f, so.cooldownDuration);
+            if (Time.time < ghostLastUseTime + cd) return;
+
+            GhostItem.Activate(so.ghostItemData, player.transform.position);
+            ghostLastUseTime = Time.time;
+        }
+    }
+
+    private void DisablePhysicsOnEquipped(GameObject go)
+    {
+        if (go == null) return;
+
+        foreach (var rb in go.GetComponentsInChildren<Rigidbody>(true))
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+
+        foreach (var col in go.GetComponentsInChildren<Collider>(true))
+        {
+            col.enabled = false;
+        }
     }
 }

@@ -100,4 +100,4 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         hovering = false;
     }
-    }
+}

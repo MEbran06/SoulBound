@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Lamp
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
   itemName: Lamp
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 6d3fd1271909b2e46b7f7e28cb5b0ade, type: 3}
   maxStackSize: 1
   itemPrefab: {fileID: 9180333920830386146, guid: 63284d90d87d19943a2f570313e3eee2, type: 3}
-  handItemPrefab: {fileID: 0}
+  handItemPrefab: {fileID: 9106501796512631913, guid: a15bb8f4293fa664897e3cd43919fd05, type: 3}

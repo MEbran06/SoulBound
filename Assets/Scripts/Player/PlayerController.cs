@@ -27,10 +27,9 @@ public class PlayerController : MonoBehaviour
 
     private float currentStamina;
 
-    // Basic Inventory -> to be replaced by actual inventory system
+    // Inventory
+    public Inventory inventoryUI;
     public Transform handTransform;
-    private List<Item> inventory = new List<Item>();
-    private Item currentHeldItem;
 
     // give player insanity
     public InsanitySystem insanitySystem;
@@ -65,15 +64,11 @@ public class PlayerController : MonoBehaviour
             isCrouching = !isCrouching;
             Crouch();
         }
-        if (Input.GetKeyDown(KeyCode.Q))
+        
+        if (Input.GetMouseButtonDown(0) && inventoryUI != null)
         {
-            DropCurrentItem();
-        }
-
-        // left click on mouse to use item
-        if (Input.GetMouseButtonDown(0))
-        {
-            currentHeldItem?.Use();
+            if (inventoryUI.container == null || !inventoryUI.container.activeSelf)
+                inventoryUI.UseEquippedItem();
         }
 
         if (currentStamina <= 0f)
@@ -108,8 +103,8 @@ public class PlayerController : MonoBehaviour
 
         verticalVelocity += gravity * Time.deltaTime;
         // get x and y position of the player
-       x = Input.GetAxis("Horizontal");
-       z = Input.GetAxis("Vertical");
+        x = Input.GetAxis("Horizontal");
+        z = Input.GetAxis("Vertical");
 
         // move forward/back and left/right
         move = (transform.right * x + transform.forward * z) * currentSpeed;
@@ -143,32 +138,32 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void AddToInventory(Item item)
-    {
-        inventory.Add(item);
-    }
+    // public void AddToInventory(Item item)
+    // {
+    //     inventory.Add(item);
+    // }
 
-    public void HoldItem(Item item)
-    {
-        if (currentHeldItem != null)
-            DropCurrentItem();
+    // public void HoldItem(Item item)
+    // {
+    //     if (currentHeldItem != null)
+    //         DropCurrentItem();
 
-        currentHeldItem = item;
+    //     currentHeldItem = item;
 
-        item.transform.SetParent(handTransform);
-        item.transform.localPosition = Vector3.zero;
-        item.transform.localRotation = Quaternion.identity;
+    //     item.transform.SetParent(handTransform);
+    //     item.transform.localPosition = Vector3.zero;
+    //     item.transform.localRotation = Quaternion.identity;
 
-        item.OnHeld();
-    }
+    //     item.OnHeld();
+    // }
 
-    public void DropCurrentItem()
-    {
-        if (currentHeldItem == null)
-            return;
+    // public void DropCurrentItem()
+    // {
+    //     if (currentHeldItem == null)
+    //         return;
 
-        currentHeldItem.OnDropped();
-        currentHeldItem.transform.SetParent(null);
-        currentHeldItem = null;
-    }
+    //     currentHeldItem.OnDropped();
+    //     currentHeldItem.transform.SetParent(null);
+    //     currentHeldItem = null;
+    // }
 }
