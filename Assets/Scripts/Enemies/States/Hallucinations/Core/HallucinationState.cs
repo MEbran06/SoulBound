@@ -1,6 +1,5 @@
 using UnityEngine;
-using Items.Ghosts;
-
+using Ghosts.Emotions;
 public class HallucinationState : GhostState
 {
     private HallucinationDirector director;
@@ -21,7 +20,8 @@ public class HallucinationState : GhostState
         float insanity = controller.context.insanitySystem.CurrentInsanity;
         float buildUpRate = controller.personality.aggressionBuildUpRate;
         // drive the mom's aggressing up as sanity of the player goes down
-        controller.context.ModifyEmotion(EmotionType.Aggression, buildUpRate*Time.deltaTime);
+        float mult = controller.context.difficulty.Get(DifficultyChannel.AggressionRate);
+        controller.context.emotion.AddFromAI(EmotionType.Aggression, buildUpRate*Time.deltaTime, mult);
 
         // tick expects insanity normalized
         director.Tick(insanity/ controller.context.insanitySystem.maxInsanity);

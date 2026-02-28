@@ -1,3 +1,4 @@
+using Items.Ghosts;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,9 +9,23 @@ public class GameManager : MonoBehaviour
     public bool isPlayerBeingChased = false;
     [SerializeField] PlayerController player;
 
+
+    public float childSummonRequestTime = -Mathf.Infinity;
+    public int ChildSummonToken = 0;
+    public float ChildAppearedTime = -Mathf.Infinity;
+    public GameObject[] childGhostItems = null;
+
+    public GhostController childGhost;
+    public float ChildAttachment01 =>
+        childGhost != null
+            ? childGhost.context.emotion.Get01(Ghosts.Emotions.EmotionType.Attachment)
+            : 0.5f;
+
     private void Awake()
     {
         Instance = this;
+        // get all the ghost items that the child can summon
+        childGhostItems = GameObject.FindGameObjectsWithTag("ChildGhostItem");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

@@ -27,5 +27,17 @@ MonoBehaviour:
     value: 70
   - emotion: 1
     value: 0
+  attachmentDifficulty:
+  - channel: 0
+    multAt0: 1.4
+    multAt100: 0.8
+  - channel: 2
+    multAt0: 1.5
+    multAt100: 0.7
+  - channel: 3
+    multAt0: 0
+    multAt100: 0
+  aggressionBuildUpRate: 5
+  aggressionDecayRate: 1
   baseDuration: 3
   catchRadius: 1

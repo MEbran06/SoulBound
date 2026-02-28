@@ -1,5 +1,6 @@
 using Items.Ghosts;
 using UnityEngine;
+using Ghosts.Emotions;
 
 public class StalkState : GhostState
 {
@@ -39,9 +40,10 @@ public class StalkState : GhostState
 
     public override void Execute()
     {
-        // Calm aggression slowly while player is recovering sanity
+        // Calm aggression while in stalk mode
         float calmRate = controller.personality.aggressionDecayRate;
-        controller.context.ModifyEmotion(EmotionType.Aggression, -calmRate * Time.deltaTime);
+        float mult = controller.context.difficulty.Get(DifficultyChannel.AggressionRate);
+        controller.context.emotion.AddFromAI(EmotionType.Aggression, -calmRate * Time.deltaTime, mult);
 
         if (manifestationPoints == null || manifestationPoints.Length == 0)
             return;

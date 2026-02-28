@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class GhostItem : Item
 {
-    public static event System.Action<GhostItemData, Vector3> OnMemoryActivated;
-
-    public static void Activate(GhostItemData data, Vector3 position)
+    public static event Action<GhostItemData, Vector3> OnMemoryActivated;
+    private float lastActivationTime = -Mathf.Infinity;
+    [SerializeField] private GhostItemData ghostItemData;
+    [SerializeField] private float cooldownDuration = 5f;
+    public GhostItemData Data => ghostItemData;
+    public void Start()
     {
         OnMemoryActivated?.Invoke(data, position);
     }

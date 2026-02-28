@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
     public Inventory inventoryUI;
     public Transform handTransform;
 
+    public Item CurrentHeldItem => currentHeldItem;
+
     // give player insanity
     public InsanitySystem insanitySystem;
 
@@ -197,6 +199,14 @@ public class PlayerController : MonoBehaviour
         isSafe = !isPlayerLookingAtGhost && (hasLight || isHidden) && !gettingChased; 
 
         return isSafe;
+    }
+
+    public void RemoveItem()
+    {
+        if (!currentHeldItem) return;
+
+        Destroy(CurrentHeldItem.gameObject);
+        currentHeldItem = null;
     }
 
     private void OnDrawGizmos()
