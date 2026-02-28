@@ -59,7 +59,7 @@ public class PlayerInteraction : MonoBehaviour
         // shoot a ray, if we received somthing, it must be interactable 
         if (Physics.SphereCast(ray, interactRadius, out hit, interactRange, interactLayer))
         {
-            currentInteractable = hit.collider.GetComponent<Interactable>();
+            currentInteractable = hit.collider.GetComponentInParent<Interactable>();
 
             if (currentInteractable != null && currentInteractable.dotFader.isActiveAndEnabled)
             {

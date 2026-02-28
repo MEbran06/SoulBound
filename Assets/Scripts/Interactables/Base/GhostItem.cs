@@ -12,24 +12,6 @@ public class GhostItem : Item
     public GhostItemData Data => ghostItemData;
     public void Start()
     {
-        // prompt message for UI
-        promptMessage = "Press E to Pick Up";
+        OnMemoryActivated?.Invoke(data, position);
     }
-
-    public override void Use()
-    {
-        if (!CanActivate())
-        {
-            return;
-        }
-
-        OnMemoryActivated?.Invoke(ghostItemData, owner.transform.position);
-        lastActivationTime = Time.time;
-    }
-
-    private bool CanActivate()
-    {
-        return Time.time >= lastActivationTime + cooldownDuration;
-    }
-
 }
