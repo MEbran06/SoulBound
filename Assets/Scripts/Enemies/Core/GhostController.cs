@@ -1,10 +1,7 @@
 using AI.Ghosts.States;
 using Items.Ghosts;
-using Unity.Collections.LowLevel.Unsafe;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.XR;
 
 public class GhostController : MonoBehaviour
 {
@@ -40,6 +37,9 @@ public class GhostController : MonoBehaviour
 
     // player
     public Transform player;
+
+    // child ghost UI interactable
+    public Canvas childUI;
 
     // hallucination effects (if needed)
     public HallucinationDirector director;
@@ -218,6 +218,14 @@ public class GhostController : MonoBehaviour
         if (Vector3.Distance(agent.destination, target) > minDistance)
             agent.SetDestination(target);
     }
+
+    public float GetSpeed()
+    { return agent.speed; }
+
+    public void SetSpeed(float speed) 
+    { agent.speed = speed; }
+
+
 
     public void RotateTo(Quaternion target)
     {

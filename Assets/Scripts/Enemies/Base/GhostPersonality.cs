@@ -1,14 +1,23 @@
 using AI.Ghosts.States;
 using Items.Ghosts;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
-using UnityEngine.Rendering;
+using Ghosts.Emotions;
 
 [System.Serializable]
 public struct EmotionSensitivity
 {
     public EmotionType emotion;
     public float multiplier;
+}
+
+[System.Serializable]
+public struct AttachmentDifficultySensitivity
+{
+    public DifficultyChannel channel;
+    // multiplier at 0 attachment
+    public float multAt0;
+    // multiplier at 100 attachment
+    public float multAt100;
 }
 
 
@@ -22,6 +31,8 @@ public abstract class GhostPersonality : ScriptableObject
     public EmotionValues[] thresholds;
     [Header("Initial Emotions")]
     public EmotionValues[] startingEmotions;
+    [Header("Multiplier effect of Child attachment on the Ghost")]
+    public AttachmentDifficultySensitivity[] attachmentDifficulty;
 
     public float aggressionBuildUpRate = 5f;
     public float aggressionDecayRate = 1.0f;
@@ -29,11 +40,11 @@ public abstract class GhostPersonality : ScriptableObject
     // Base duration for reactions
     public float baseDuration = 3f;
 
-    public virtual void InitializeGhost(GhostController controller)
+    public void InitializeGhost(GhostController controller)
     {
         foreach (var emotion in startingEmotions)
         {
-            controller.context.SetEmotion(
+            controller.context.emotion.SetEmotionRaw(
                 emotion.emotion,
                 emotion.value
             );
@@ -66,6 +77,16 @@ public abstract class GhostPersonality : ScriptableObject
         return scaledDuration;
     }
 
+    public virtual void ApplyAttachmentDifficulty(GhostContext ctx, float attachment01)
+    {
+        foreach (var s in attachmentDifficulty)
+        {
+            // attachment drives the change between multiplier
+            float m = Mathf.Lerp(s.multAt0, s.multAt100, attachment01);
+            ctx.difficulty.Set(s.channel, m);
+        }
+    }
+
     public float GetThreshold(EmotionType emotion)
     {
         foreach (EmotionValues threshold in thresholds)
@@ -78,6 +99,11 @@ public abstract class GhostPersonality : ScriptableObject
     }
 
     public virtual void HandleTriggerEnter(Collider other, GhostController controller)
+    {
+        // let children decide what to do
+    }
+
+    public virtual void HandleTriggerExit(Collider other, GhostController controller)
     {
         // let children decide what to do
     }

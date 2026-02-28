@@ -9,7 +9,7 @@ public class GhostItem : Item
     private float lastActivationTime = -Mathf.Infinity;
     [SerializeField] private GhostItemData ghostItemData;
     [SerializeField] private float cooldownDuration = 5f;
-
+    public GhostItemData Data => ghostItemData;
     public void Start()
     {
         // prompt message for UI

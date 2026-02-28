@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour
     private List<Item> inventory = new List<Item>();
     private Item currentHeldItem;
 
+    public Item CurrentHeldItem => currentHeldItem;
+
     // give player insanity
     public InsanitySystem insanitySystem;
 
@@ -202,6 +204,14 @@ public class PlayerController : MonoBehaviour
         isSafe = !isPlayerLookingAtGhost && (hasLight || isHidden) && !gettingChased; 
 
         return isSafe;
+    }
+
+    public void RemoveItem()
+    {
+        if (!currentHeldItem) return;
+
+        Destroy(CurrentHeldItem.gameObject);
+        currentHeldItem = null;
     }
 
     private void OnDrawGizmos()
