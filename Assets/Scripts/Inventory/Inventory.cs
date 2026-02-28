@@ -26,9 +26,13 @@ public class Inventory : MonoBehaviour
     private float ghostLastUseTime = -Mathf.Infinity;
     
     private Slot draggedSlot = null;
-    private bool isDragging = false; 
+    private bool isDragging = false;
+
+    private ItemSO itemOnHand = null;
 
     public static Inventory Instance { get; private set; }
+    public GameObject CurrentHandItem => currentHandItem;
+    public ItemSO ItemOnHand => itemOnHand;
 
     private void Awake()
     {
@@ -352,6 +356,9 @@ public class Inventory : MonoBehaviour
         currentHandItem.transform.localRotation = Quaternion.Euler(item.handRotationOffset);
         currentHandItem.transform.localScale = item.handScale;
 
+        // store the item currently equiped
+        itemOnHand = item;
+
         DisablePhysicsOnEquipped(currentHandItem);
     }
 
@@ -390,5 +397,14 @@ public class Inventory : MonoBehaviour
         {
             col.enabled = false;
         }
+    }
+
+    // consume the currently held item
+    public void ConsumeCurrentItem()
+    {
+        if (!currentHandItem) return;
+
+        Destroy(currentHandItem);
+        currentHandItem = null;
     }
 }

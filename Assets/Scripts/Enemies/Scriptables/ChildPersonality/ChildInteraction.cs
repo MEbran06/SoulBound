@@ -27,20 +27,20 @@ public class ChildInteraction : Interactable
         if (!child.context.childInteractionAllowed)
             return;
 
-        Item heldItem = player.CurrentHeldItem;
+        ItemSO heldItem = player.inventoryUI.ItemOnHand;
         if (heldItem == null)
             return;
 
-        GhostItem ghostItem = heldItem as GhostItem;
-        if (ghostItem == null)
+        // Punish player if the item is not a ghost item
+        if (!heldItem.isGhostItem)
         {
             child.context.emotion.AddFromItem(EmotionType.Attachment, -noItemGivenPunishment);
-            return;
         }
-
-        EvaluateGift(ghostItem.Data);
-
-        player.RemoveItem();  // consume item
+        else
+        {
+            EvaluateGift(heldItem.ghostItemData);
+            player.inventoryUI.ConsumeCurrentItem();  // consume item
+        }
     }
 
     public void EvaluateGift(GhostItemData data)
