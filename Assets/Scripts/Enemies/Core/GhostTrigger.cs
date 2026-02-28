@@ -13,9 +13,4 @@ public class GhostTrigger : MonoBehaviour
             ghostPersona.HandleTriggerEnter(other, controller);
         }
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        ghostPersona.HandleTriggerExit(other, controller);
-    }
 }

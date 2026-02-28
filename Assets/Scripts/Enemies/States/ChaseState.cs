@@ -4,7 +4,6 @@ using UnityEngine;
 public class ChaseState : GhostState
 {
     const float MAX_DISTANCE_FROM_HIDING = 3f;
-    float ghostSpeed = 1.0f;
     public ChaseState(GhostController controller) : base(controller) {}
 
     public override void Execute()
@@ -27,13 +26,6 @@ public class ChaseState : GhostState
         Quaternion baseRotation = Quaternion.LookRotation(finalDirection);
         controller.RotateTo(baseRotation);
         controller.MoveTo(controller.player.position);
-        // since aggression is 0-1 shift it up by 1 to make it have a gain on the overall speed
-        float agression01 = 1 + controller.context.emotion.Get01(Ghosts.Emotions.EmotionType.Aggression);
-        // control speed from attachment: high attachment -> lower value, low attachment -> higher value
-        float mult = controller.context.difficulty.Get(DifficultyChannel.ChaseCooldown);
-        // modify the speed based on the aggression level of the ghost and a multipler
-        Debug.Log($"Father Ghost Speed: {ghostSpeed * agression01 * mult}");
-        controller.SetSpeed(ghostSpeed * agression01 * mult);
 
         // if the player is hidden, but ghost still remembers where the player went, force player out of hidding
         if (controller.context.playerIsHidden && 
@@ -54,14 +46,11 @@ public class ChaseState : GhostState
     public override void Exit() 
     {
         GameManager.Instance.isPlayerBeingChased = false;
-        // reset the  speed
-        controller.SetSpeed(ghostSpeed);
     }
     public override void Enter() 
     {
         GameManager.Instance.isPlayerBeingChased = true;
         // we're chasing because we can see them
         controller.context.lastTimePlayerSeen = Time.time;
-        ghostSpeed = controller.GetSpeed();
     }
 }

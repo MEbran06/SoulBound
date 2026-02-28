@@ -44,6 +44,7 @@ public class InsanitySystem : MonoBehaviour
         {
             ModifyInsanity(recoveryRate * Time.deltaTime);
         }
+        Debug.Log($"Current Disturbance: {CurrentDisturbance}");
         // reduce player disturbance
         if (player.IsSafeToCalm())
         {
