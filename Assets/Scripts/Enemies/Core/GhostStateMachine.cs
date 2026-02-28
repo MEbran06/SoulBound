@@ -60,12 +60,6 @@ public class GhostStateMachine
                 return new HallucinationState(controller);
             case GhostStateID.Stalk:
                 return new StalkState(controller);
-            case GhostStateID.Hidden:
-                return new HiddenState(controller);
-            case GhostStateID.Appear:
-                return new AppearState(controller);
-            case GhostStateID.Request:
-                return new RequestState(controller);
         }
 
         return null;

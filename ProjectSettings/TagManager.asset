@@ -6,9 +6,6 @@ TagManager:
   tags:
   - Managers
   - ManifestationPoints
-  - Milestone
-  - ChildGhost
-  - ChildGhostItem
   layers:
   - Default
   - TransparentFX
@@ -19,7 +16,7 @@ TagManager:
   - Interactable
   - Environment
   - Enemies
-  - Milestones
+  - 
   - 
   - 
   - 
