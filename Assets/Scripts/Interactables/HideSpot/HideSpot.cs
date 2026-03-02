@@ -1,12 +1,34 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HideSpot : Interactable
 {
-    [SerializeField] private Transform hidePosition;
-    [SerializeField] private Transform exitPosition;
+    public static readonly List<HideSpot> All = new List<HideSpot>();
+
+    public Transform hidePosition;
+    public Transform exitPosition;
 
     private PlayerController player;
     private GhostController[] ghosts;
+
+    [SerializeField][Min(0f)] private float suspicion = 0f;
+    [SerializeField][Min(0f)] private float baseSuspicion = 0f;
+    [SerializeField][Min(0f)] private float suspicionDecayRate = 0.05f;
+
+    private bool isPlayerHidden = false;
+
+
+    public float Suspicion => suspicion;
+
+    private void OnEnable()
+    {
+        All.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        All.Remove(this);
+    }
 
     private void Start()
     {
@@ -39,6 +61,10 @@ public class HideSpot : Interactable
             ghost.context.playerHideSpot = this;
         }
         player.isHidden = true;
+        player.hideSpot = this;
+        isPlayerHidden = true;
+        // add suspicion to it simply because the player entered
+        IncreaseSuspicion(0.5f);
     }
 
     public void ExitHide()
@@ -48,5 +74,41 @@ public class HideSpot : Interactable
         player.characterController.enabled = true;
 
         player.isHidden = false;
+        player.hideSpot = null;
+        isPlayerHidden = false;
+        DecreaseSuspicion(0.5f);
+    }
+
+    private void Update()
+    {
+        if (suspicion > baseSuspicion)
+            DecreaseSuspicion(suspicion - suspicionDecayRate * Time.deltaTime);
+    }
+
+    public bool IsPlayerInside()
+    {
+        return isPlayerHidden;
+    }
+
+    public void ForceExit()
+    {
+        Debug.Log("Exit hide");
+        player.characterController.enabled = false;
+        Vector3 position = new Vector3(exitPosition.position.x, player.characterController.height/2f, exitPosition.position.z);
+        player.transform.position = position;
+        player.characterController.enabled = true;
+
+        player.isHidden = false;
+        isPlayerHidden = false;
+    }
+
+    public void IncreaseSuspicion(float amount)
+    {
+        suspicion += amount;
+    }
+
+    public void DecreaseSuspicion(float amount)
+    {
+        suspicion = Mathf.Max(baseSuspicion, suspicion - amount);
     }
 }

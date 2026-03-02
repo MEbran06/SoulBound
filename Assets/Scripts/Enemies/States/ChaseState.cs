@@ -34,21 +34,6 @@ public class ChaseState : GhostState
         // modify the speed based on the aggression level of the ghost and a multipler
         Debug.Log($"Father Ghost Speed: {ghostSpeed * agression01 * mult}");
         controller.SetSpeed(ghostSpeed * agression01 * mult);
-
-        // if the player is hidden, but ghost still remembers where the player went, force player out of hidding
-        if (controller.context.playerIsHidden && 
-            Time.time < controller.rememberPlayerTime + controller.context.lastTimePlayerSeen)
-        {
-            // detect the HideSpot
-            var hideSpot = controller.context.playerHideSpot; // set by HideSpot when player enters
-            if (hideSpot != null)
-            {
-                if (Vector3.Distance(controller.transform.position, hideSpot.transform.position) < MAX_DISTANCE_FROM_HIDING)
-                {
-                    hideSpot.ExitHide();
-                }
-            }
-        }
     }
 
     public override void Exit() 

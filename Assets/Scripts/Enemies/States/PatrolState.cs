@@ -27,7 +27,10 @@ public class PatrolState : GhostState
         }
 
     }
-    public override void Enter() {}
+    public override void Enter() 
+    {
+        Debug.Log("Patrolling");
+    }
     public override void Exit() {}
 
     public Vector3 GetCurrentPatrolPoint()

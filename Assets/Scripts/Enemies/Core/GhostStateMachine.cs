@@ -66,6 +66,8 @@ public class GhostStateMachine
                 return new AppearState(controller);
             case GhostStateID.Request:
                 return new RequestState(controller);
+            case GhostStateID.Search:
+                return new SearchState(controller);
         }
 
         return null;

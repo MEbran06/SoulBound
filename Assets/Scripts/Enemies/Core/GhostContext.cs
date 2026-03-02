@@ -53,11 +53,16 @@ public class GhostContext
 
     public HideSpot playerHideSpot = null;
 
+    // Search state runtime
+    public bool searchComplete = false;
+    public float searchEndTime = -Mathf.Infinity;
 
-    /*
-    public bool playerMadeNoise;
-    public bool ghostIsSearchingClosets;
-    */
+
+    public Vector3 lastHeardPosition;
+    public float lastHeardTime;
+    public float lastHeardLoudness;     // 0-1
+    public bool heardNoiseThisFrame;
+    public bool noiseTriggeredSearch;
 
     // Child ghost
     public bool childHasActiveRequest;      // specific request currently active

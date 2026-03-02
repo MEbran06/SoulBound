@@ -18,6 +18,7 @@ public class GhostController : MonoBehaviour
     public float viewAngle = 90f;
     [Range(1f, 2f)]
     public float lineOfSight = 1.5f;
+    public float lastTimeHadLOS = -Mathf.Infinity;
 
     // memory
     public float rememberPlayerTime = 5f;
@@ -43,6 +44,9 @@ public class GhostController : MonoBehaviour
 
     // hallucination effects (if needed)
     public HallucinationDirector director;
+
+    // hearing
+    public GhostHearing hearing;
 
     [Header("Spawn Placement Fields")]
     public float forwardDistance = 6f;
@@ -130,9 +134,10 @@ public class GhostController : MonoBehaviour
         context.distanceToPlayer =
             Vector3.Distance(transform.position, player.position);
 
-        // gradually decrease confusion
-        //context.ModifyEmotion(EmotionType.Confusion, context.confusionDecayRate * Time.deltaTime);
-
+        if (context.playerIsHidden)
+        {
+            context.playerHideSpot = player.GetComponent<PlayerController>().hideSpot;
+        }
 
         UpdateVision();
     }
@@ -210,6 +215,11 @@ public class GhostController : MonoBehaviour
     public bool StillRemembersPlayer()
     {
         return Time.time < (context.lastTimePlayerSeen + rememberPlayerTime);
+    }
+
+    public bool StillRemembersNoise()
+    {
+        return Time.time - context.lastHeardTime <= hearing.noiseMemorySeconds;
     }
 
     // movement methods

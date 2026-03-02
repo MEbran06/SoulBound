@@ -39,7 +39,7 @@ public class PlayerInteraction : MonoBehaviour
 
         // interact if key is pressed
         if (currentInteractable != null &&
-            Input.GetKeyDown(currentInteractable.GetKeyToPress()))
+            Input.GetKeyDown(currentInteractable.GetKeyToPress()) && !GameManager.Instance.isGameOver)
         {
             // only allow the player to interact if we're close enough
             float dist = Vector3.Distance(transform.position, currentInteractable.transform.position);

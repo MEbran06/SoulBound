@@ -10,6 +10,7 @@ namespace AI.Ghosts.States
         Stalk,
         Hidden,
         Appear,
-        Request
+        Request,
+        Search
     }
 }

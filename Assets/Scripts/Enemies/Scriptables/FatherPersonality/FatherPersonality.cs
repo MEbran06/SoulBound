@@ -7,7 +7,8 @@ using Ghosts.Emotions;
 [CreateAssetMenu(fileName = "FatherPersonality", menuName = "Scriptable Objects/FatherPersonality")]
 public class FatherPersonality : GhostPersonality
 {
-    public float catchRadius = 1.0f; 
+    public float pursuitGraceTime = 2f;
+
     public override GhostStateID DecideNextState(GhostController controller)
     {
         EmotionTrace lastTrace = controller.context.emotion.GetLastTrace(EmotionType.Aggression);
@@ -19,19 +20,33 @@ public class FatherPersonality : GhostPersonality
             return GhostStateID.Stunned;
         }
 
-        // follow the player if you see it
         if (controller.context.canSeePlayer)
         {
+            controller.lastTimeHadLOS = Time.time;
             return GhostStateID.Chase;
         }
-
-        // follow the player if you still remember it
-        if (controller.StillRemembersPlayer())
+        else if (Time.time - controller.lastTimeHadLOS < pursuitGraceTime)
         {
             return GhostStateID.Chase;
         }
 
-        // keep patrolling otherwise
+        if (controller.StillRemembersPlayer())
+        {
+            // If we are searching and search finished, give up
+            if (controller.GetCurrentState() == GhostStateID.Search &&
+                controller.context.searchComplete)
+                return GhostStateID.Patrol;
+
+            controller.context.noiseTriggeredSearch = false;
+            return GhostStateID.Search;
+        }
+
+        if (controller.StillRemembersNoise())
+        {
+            controller.context.noiseTriggeredSearch = true;
+            return GhostStateID.Search;
+        }
+
         return GhostStateID.Patrol;
     }
 
@@ -46,7 +61,7 @@ public class FatherPersonality : GhostPersonality
 
     public override void HandleTriggerEnter(Collider other, GhostController controller)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !controller.context.playerIsHidden)
         {
             GameManager.Instance.PlayerCaught(controller);
         }

@@ -14,10 +14,12 @@ public class PlayerController : MonoBehaviour
     private Vector3 move;
     public bool isHidden = false;
     public float sightDistance = 50f;
+    public HideSpot hideSpot;
     public bool InputDisabled { private get; set; }
 
     private float standingHeight;
-    private bool isCrouching = false;
+    public bool isCrouching = false;
+    public bool isSprinting = false;
     private Camera playerCamera; // Reference to the player camera
     private Vector3 cameraPosition;
 
@@ -64,6 +66,7 @@ public class PlayerController : MonoBehaviour
         // disable movement while hidden
         if (isHidden || InputDisabled) return;
 
+        isSprinting = false;
         bool isGrounded = characterController.isGrounded;
         float currentSpeed = speed;
         bool sprintKey = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -94,8 +97,9 @@ public class PlayerController : MonoBehaviour
 
         if (sprintKey && currentStamina > 0f && canSprint && !isCrouching)
         {
-            currentSpeed *= 2f;
+            currentSpeed *= 1.5f;
             currentStamina -= staminaDrainRate * Time.deltaTime;
+            isSprinting = true;
         }
         else
         {

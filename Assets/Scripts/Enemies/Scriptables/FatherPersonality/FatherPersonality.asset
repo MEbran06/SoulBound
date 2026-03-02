@@ -24,19 +24,19 @@ MonoBehaviour:
     value: 50
   startingEmotions:
   - emotion: 0
-    value: 70
+    value: 50
   - emotion: 1
     value: 0
   attachmentDifficulty:
   - channel: 0
-    multAt0: 1.4
-    multAt100: 0.8
+    multAt0: 1.2
+    multAt100: 0.7
   - channel: 2
     multAt0: 1.5
     multAt100: 0.7
   - channel: 3
     multAt0: 1.2
-    multAt100: 0.9
+    multAt100: 0.7
   aggressionBuildUpRate: 5
   aggressionDecayRate: 1
   baseDuration: 3

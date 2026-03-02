@@ -16,13 +16,13 @@ MonoBehaviour:
   thresholds: []
   startingEmotions:
   - emotion: 3
-    value: 20
+    value: 25
   attachmentDifficulty: []
   aggressionBuildUpRate: 0
   aggressionDecayRate: 0
   baseDuration: 0
-  lastProcessedEnterToken: 1
-  lastProcessedSummonToken: 3
+  lastProcessedEnterToken: 2
+  lastProcessedSummonToken: 2
   summonRequestWindow: 5
   requestCooldown: 3
   appearDuration: 2
