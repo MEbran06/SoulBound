@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public struct MilestoneRuntimeState
     public int id;
     public bool ChildAppearPlayed;
     public MilestoneStatus status;
+    public Transform spawnPosition;
 }
 
 public class MilestoneManager : MonoBehaviour
@@ -24,6 +26,9 @@ public class MilestoneManager : MonoBehaviour
     public int enterToken = 0;
 
     public Dictionary<int, MilestoneRuntimeState> runtimeById;
+
+    // we'll use events to handle saving checkpoint data or any other system that triggers on milestone
+    public event Action<int, Transform> MilestoneEntered;
 
     // define milestone order in inspector
     [SerializeField] private List<int> milestoneOrder = new List<int>();
@@ -60,16 +65,20 @@ public class MilestoneManager : MonoBehaviour
             {
                 id = id,
                 ChildAppearPlayed = false,
-                status = MilestoneStatus.NotStarted
+                status = MilestoneStatus.NotStarted,
+                spawnPosition = milestone.spawnPosition
             };
 
             runtimeById.TryAdd(id, runtimeState);
         }
     }
 
-    public void OnEnterMilestone(int milestoneId)
+    public void OnEnterMilestone(int milestoneId, Transform spawnPos)
     {
+
         currentMilestoneId = milestoneId;
+
+        MilestoneEntered?.Invoke(milestoneId, spawnPos);
 
         // Only the active milestone produces the appear token
         if (milestoneId != activeMilestoneId) return;
@@ -86,14 +95,16 @@ public class MilestoneManager : MonoBehaviour
         Debug.Log("Triggered the milestone");
     }
 
-    public void OnExitMilestone(int milestoneId)
+    public void OnExitMilestone(int milestoneId, Transform spawnPos)
     {
+
         if (currentMilestoneId == milestoneId)
             currentMilestoneId = -1;
     }
 
     public void ResolveMilestone(int milestoneId)
     {
+
         if (milestoneId == -1) return;
         if (!runtimeById.TryGetValue(milestoneId, out var s)) return;
 

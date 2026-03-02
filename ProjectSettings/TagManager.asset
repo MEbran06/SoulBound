@@ -9,6 +9,8 @@ TagManager:
   - Milestone
   - ChildGhost
   - ChildGhostItem
+  - FatherGhost
+  - MotherGhost
   layers:
   - Default
   - TransparentFX

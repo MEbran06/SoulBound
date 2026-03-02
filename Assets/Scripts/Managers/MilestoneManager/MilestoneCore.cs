@@ -3,6 +3,7 @@ using UnityEngine;
 public class MilestoneCore : MonoBehaviour
 {
     public MilestoneDefinition milestoneDefinition;
+    public Transform spawnPosition;
 
     // Prevent multiple enters from multiple player colliders / jitter
     private bool playerInside;
@@ -17,7 +18,7 @@ public class MilestoneCore : MonoBehaviour
         // Optional: guard against missing manager during scene loads
         if (MilestoneManager.Instance == null) return;
 
-        MilestoneManager.Instance.OnEnterMilestone(milestoneDefinition.milestoneID);
+        MilestoneManager.Instance.OnEnterMilestone(milestoneDefinition.milestoneID, spawnPosition);
     }
 
     private void OnTriggerExit(Collider other)
@@ -26,6 +27,6 @@ public class MilestoneCore : MonoBehaviour
         playerInside = false;
 
         if (MilestoneManager.Instance == null) return;
-        MilestoneManager.Instance.OnExitMilestone(milestoneDefinition.milestoneID);
+        MilestoneManager.Instance.OnExitMilestone(milestoneDefinition.milestoneID, spawnPosition);
     }
 }
