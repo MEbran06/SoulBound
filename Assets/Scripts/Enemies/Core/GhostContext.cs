@@ -45,7 +45,6 @@ public class GhostContext
     public float distanceToPlayer;
     public float awarenessLevel;
 
-
     public Vector3 currentTargetPosition;
     public bool playerIsHidden;
     // max distance between the ghost and the target point
@@ -88,7 +87,7 @@ public class GhostContext
         childNextAllowedRequestTime = 0f;
         childRequestedItemId = -1;
 
-}
+    }
 
     public bool CanEnterRequestWindow()
     {

@@ -9,13 +9,13 @@ public class StalkState : GhostState
 
     float nextRepositionTime;
 
-    // New: “move only when player looks away”
+    // New: move only when player looks away
     bool wasLooking = false;
     float nextMoveAllowedTime = 0f;
     bool lookAwayQueued = false;
 
     // Tuning knobs
-    const float DOT_FOV = 0.65f;                // wide cone for “looking”
+    const float DOT_FOV = 0.65f;                // wide cone for looking
     const float MOVE_COOLDOWN_MIN = 0.8f;
     const float MOVE_COOLDOWN_MAX = 1.8f;
 
@@ -66,7 +66,7 @@ public class StalkState : GhostState
 
                 controller.SetVisible(true);
 
-                // Give a small grace period so ghost doesn’t instantly “move away” on first frame
+                // Give a small grace period so ghost doesn't instantly move away on first frame
                 nextMoveAllowedTime = Time.time + Random.Range(0.3f, 0.6f);
             }
             else

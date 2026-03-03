@@ -4,7 +4,6 @@ using UnityEngine;
 public class ChaseState : GhostState
 {
     const float MAX_DISTANCE_FROM_HIDING = 3f;
-    float ghostSpeed = 1.0f;
     public ChaseState(GhostController controller) : base(controller) {}
 
     public override void Execute()
@@ -39,14 +38,11 @@ public class ChaseState : GhostState
     public override void Exit() 
     {
         GameManager.Instance.isPlayerBeingChased = false;
-        // reset the  speed
-        controller.SetSpeed(ghostSpeed);
     }
     public override void Enter() 
     {
         GameManager.Instance.isPlayerBeingChased = true;
         // we're chasing because we can see them
         controller.context.lastTimePlayerSeen = Time.time;
-        ghostSpeed = controller.GetSpeed();
     }
 }
