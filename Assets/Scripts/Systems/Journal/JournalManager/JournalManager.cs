@@ -25,6 +25,7 @@ public class JournalManager : MonoBehaviour
         if (Keyboard.current != null && Keyboard.current.jKey.wasPressedThisFrame)
         {
             isOpen = !isOpen;
+            Cursor.lockState = CursorLockMode.Confined;
             journalPanel.SetActive(isOpen);
             Time.timeScale = isOpen ? 0f : 1f;
             if (isOpen) ShowPage(storyPage);
@@ -45,5 +46,6 @@ public class JournalManager : MonoBehaviour
         isOpen = false;
         journalPanel.SetActive(false);
         Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.LowLevel;
+using TMPro;
 
 public class GhostManager : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class GhostManager : MonoBehaviour
     public List<GhostController> ghosts = new List<GhostController>();
 
     [Header("Update Settings")]
-    [Tooltip("How often to re-apply difficulty (Hz). 5�10 is plenty.")]
+    [Tooltip("How often to re-apply difficulty (Hz). 5-10 is plenty.")]
     [SerializeField] private float updateRateHz = 5f;
 
     [Tooltip("Smooth attachment input so difficulty doesn't snap. 0 = no smoothing.")]
@@ -24,15 +24,6 @@ public class GhostManager : MonoBehaviour
     private float nextUpdateTime;
     private float smoothedAttachment01 = 0.5f;
 
-    public TMP_Text descriptionText;
-
-    private string[] ghostNames = { "Dad", "Mom", "Child" };
-    private string[] ghostDescriptions = {
-        "Father of the Johnson family. Stern and protective in life, now twisted by the curse. He roams the east wing, guarding his old study.",
-        "Mother of the Johnson family. She loved her garden and her children. The curse has made her hollow and wandering. Found near the kitchen.",
-        "The youngest Johnson. Innocent and confused, not yet fully turned. Sometimes found near the nursery, clutching an old toy."
-    };
-
     private void Awake()
     {
         Instance = this;
@@ -40,16 +31,8 @@ public class GhostManager : MonoBehaviour
 
     private void Start()
     {
-        ShowGhost(0);
         nextUpdateTime = Time.time;
         smoothedAttachment01 = GetAttachment01Safe();
-    }
-
-    public void ShowGhost(int index)
-    {
-        descriptionText.text = 
-            "<b>" + ghostNames[index] + "</b>\n\n" + 
-            ghostDescriptions[index];
     }
 
     private void Update()

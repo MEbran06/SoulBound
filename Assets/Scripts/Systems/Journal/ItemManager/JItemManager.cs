@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class ItemManager : MonoBehaviour
+public class JItemManager : MonoBehaviour
 {
     public TMP_Text itemNameText;
     public TMP_Text itemDescriptionText;
