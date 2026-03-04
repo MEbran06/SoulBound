@@ -130,8 +130,9 @@ MonoBehaviour:
   promptText: {fileID: 694023720591216424}
   dotFader: {fileID: 915306045007746501}
   dotDistance: 2
-  item: {fileID: 0}
+  item: {fileID: 11400000, guid: c6390e04c604c974484e3e027d3bacb2, type: 2}
   amount: 1
+  worldIdString: 88d90cc8-d9fe-4c3a-9a9d-3dc0b4405b63
 --- !u!54 &1050119735945423068
 Rigidbody:
   m_ObjectHideFlags: 0

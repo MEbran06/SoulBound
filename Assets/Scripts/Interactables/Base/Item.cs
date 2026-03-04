@@ -1,9 +1,22 @@
 using UnityEngine;
+using System;
 
 public class Item : Interactable
 {
     public ItemSO item;
     public int amount = 1;
+
+    [SerializeField, HideInInspector] private string worldIdString;
+    public string WorldId => worldIdString;
+    public string SetWorldId { set { worldIdString = value; } }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (string.IsNullOrEmpty(worldIdString))
+            worldIdString = Guid.NewGuid().ToString();
+    }
+#endif
 
     private void Start()
     {
@@ -23,6 +36,7 @@ public class Item : Interactable
             return;
         }
         Inventory.Instance.AddItem(item, amount);
+        WorldItemManager.Instance?.NotifyCollected(this);
         Destroy(gameObject);
     }
 

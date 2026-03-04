@@ -15,13 +15,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Interactables
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Enemies
+  - Ground
+  - Environment
+  - Milestones
   - 
   - 
   - 
@@ -48,3 +48,5 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  m_RenderingLayers:
+  - Default

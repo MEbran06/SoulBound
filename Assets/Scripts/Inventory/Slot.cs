@@ -2,9 +2,14 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System;
 
 public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    // maintain unique Ids for each slot
+    [SerializeField, HideInInspector] private string slotIdString;
+    public Guid UniqueId => Guid.Parse(slotIdString);
+
     public bool hovering;
 
     private ItemSO heldItem;
@@ -13,10 +18,31 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Image iconImage;
     private TextMeshProUGUI amountTxt;
 
-    private void Awake()
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        // Generate once, then never touch again unless you explicitly reset
+        if (string.IsNullOrEmpty(slotIdString))
+            slotIdString = Guid.NewGuid().ToString();
+    }
+
+    [ContextMenu("Reset Slot GUID (DANGEROUS)")]
+    private void ResetGuid()
+    {
+        slotIdString = Guid.NewGuid().ToString();
+        UnityEditor.EditorUtility.SetDirty(this);
+    }
+#endif
+
+
+private void Awake()
     {
         iconImage = transform.GetChild(0).GetComponent<Image>();
         amountTxt = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+
+        // register all slots so we can restore Inventory
+        SlotRegistry.Register(this);
     }
 
     public ItemSO GetItem()

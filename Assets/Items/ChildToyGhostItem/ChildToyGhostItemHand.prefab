@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8486039961024350236}
   - component: {fileID: 260418208495615638}
   - component: {fileID: 5529807716805870578}
-  - component: {fileID: 1629580052083178023}
   - component: {fileID: 5436837076048932364}
   m_Layer: 6
   m_Name: ChildToyGhostItemHand
@@ -114,23 +113,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1629580052083178023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6642141400572482891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50f7c07c8c66dba4e970c6b2ed06a30d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GhostItem
-  promptText: {fileID: 0}
-  dotFader: {fileID: 0}
-  dotDistance: 2
-  item: {fileID: 11400000, guid: c16ca096c1a4ae446809be54aac951ac, type: 2}
-  amount: 1
 --- !u!54 &5436837076048932364
 Rigidbody:
   m_ObjectHideFlags: 0

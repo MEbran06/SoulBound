@@ -34,7 +34,6 @@ public class GhostController : MonoBehaviour
 
     public LayerMask environmentMask;
     public LayerMask groundMask;
-    public LayerMask interactMask;
 
     // player
     public Transform player;

@@ -82,7 +82,6 @@ public class GhostManager : MonoBehaviour
     private static void TeleportGhost(GhostController ghost, Vector3 pos, Quaternion rot)
     {
         if (!ghost) return;
-
         var agent = ghost.agent; // your NavMeshAgent
         if (agent != null && agent.enabled)
         {
@@ -93,7 +92,7 @@ public class GhostManager : MonoBehaviour
             agent.enabled = false;
         }
 
-        ghost.transform.SetPositionAndRotation(pos, rot);
+        ghost.transform.SetLocalPositionAndRotation(pos, rot);
 
         if (agent != null)
         {
@@ -120,7 +119,10 @@ public class GhostManager : MonoBehaviour
 
     public void RespawnGhostFarFromPlayer(GhostController ghost, Transform[] spawnPoints)
     {
-        if (!ghost || spawnPoints == null || spawnPoints.Length == 0) return;
+        if (!ghost || spawnPoints == null || spawnPoints.Length == 0)
+        { 
+            return;
+        }
 
         Vector3 p = CheckpointManager.Instance.player.position;
 
@@ -139,6 +141,7 @@ public class GhostManager : MonoBehaviour
             {
                 bestD2 = d2;
                 best = sp;
+                break; // we get the farthest closest point from the player
             }
         }
 

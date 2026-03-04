@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Unity.VisualScripting;
+using System;
 
 public class Inventory : MonoBehaviour
 {
@@ -22,6 +24,7 @@ public class Inventory : MonoBehaviour
     private List<Slot> inventorySlots = new List<Slot>();
     private List<Slot> hotbarSlots = new List<Slot>();
     private List<Slot> allSlots = new List<Slot>();
+    public Dictionary<Guid, SavedPickedupItemsState> pickedItems = new Dictionary<Guid, SavedPickedupItemsState>();
 
     private float ghostLastUseTime = -Mathf.Infinity;
     
@@ -125,6 +128,16 @@ public class Inventory : MonoBehaviour
 
             int place = Mathf.Min(itemToAdd.maxStackSize, remaining);
             slot.SetItem(itemToAdd, place);
+            Debug.Log("picking up item");
+            // add it to the picked items dictionary
+            SavedPickedupItemsState savedItem = new SavedPickedupItemsState()
+            {
+                itemName = itemToAdd.itemName,
+                SlotID = slot.UniqueId.ToString(),
+                isCollected = true,
+                amount = slot.GetAmount(),
+            };
+            pickedItems.TryAdd(slot.UniqueId, savedItem);
             remaining -= place;
         }
 
@@ -205,7 +218,10 @@ public class Inventory : MonoBehaviour
                 UpdateHotbarOpacity();
 
                 if(from.GetAmount() <= 0)
+                {
                     from.ClearSlot();
+                    pickedItems.Remove(from.UniqueId);
+                }
 
                 return;
             }
@@ -321,6 +337,10 @@ public class Inventory : MonoBehaviour
         Vector3 spawnPos = cameraController.transform.position + cameraController.transform.forward * 1.2f;
         GameObject dropped = Instantiate(itemSO.itemPrefab, spawnPos, Quaternion.identity);
 
+        // mark as runtime drop so it doesn't persist across checkpoint restores
+        if (dropped.GetComponent<RuntimeDrop>() == null)
+            dropped.AddComponent<RuntimeDrop>();
+
         DistanceScalerUI scaler = dropped.GetComponentInChildren<DistanceScalerUI>();
         if (scaler != null)
         {
@@ -335,7 +355,7 @@ public class Inventory : MonoBehaviour
 
         // set layer so PlayerInteraction can detect it (match interactLayer)
         // Put interactable layer name here:
-        dropped.layer = LayerMask.NameToLayer("Interactable");
+        dropped.layer = LayerMask.NameToLayer("Interactables");
 
         equippedSlot.ClearSlot();
         RefreshAfterInventoryChange();

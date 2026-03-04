@@ -16,10 +16,10 @@ MonoBehaviour:
   icon: {fileID: 0}
   maxStackSize: 1
   itemPrefab: {fileID: 3029335501475546329, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
-  handItemPrefab: {fileID: 0}
+  handItemPrefab: {fileID: 9175054475887375940, guid: eedfa1c9691aeaf42bedd585ee740acb, type: 3}
   handPositionOffset: {x: 0, y: 0, z: 0}
   handRotationOffset: {x: 0, y: 0, z: 0}
   handScale: {x: 1, y: 1, z: 1}
-  isGhostItem: 0
+  isGhostItem: 1
   ghostItemData: {fileID: 11400000, guid: 6b21f88c4f20ca94ba497f4a88bfb06e, type: 2}
   cooldownDuration: 5
