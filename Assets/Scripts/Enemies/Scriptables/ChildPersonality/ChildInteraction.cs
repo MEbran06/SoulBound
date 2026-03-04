@@ -31,16 +31,26 @@ public class ChildInteraction : Interactable
         if (heldItem == null)
             return;
 
-        // Punish player if the item is not a ghost item
-        if (!heldItem.isGhostItem)
+        GhostUsableData ghostUse = heldItem.usableData as GhostUsableData;
+        if (ghostUse == null || ghostUse.ghostItemData == null)
         {
             child.context.emotion.AddFromItem(EmotionType.Attachment, -noItemGivenPunishment);
+            return;
         }
-        else
-        {
-            EvaluateGift(heldItem.ghostItemData);
-            player.inventoryUI.ConsumeCurrentItem();  // consume item
-        }
+
+        EvaluateGift(ghostUse.ghostItemData);
+
+        player.inventoryUI.TryConsumeEquipped(1);
+        // // Punish player if the item is not a ghost item
+        // if (!heldItem.isGhostItem)
+        // {
+        //     child.context.emotion.AddFromItem(EmotionType.Attachment, -noItemGivenPunishment);
+        // }
+        // else
+        // {
+        //     EvaluateGift(heldItem.ghostItemData);
+        //     player.inventoryUI.ConsumeCurrentItem();  // consume item
+        // }
     }
 
     public void EvaluateGift(GhostItemData data)
