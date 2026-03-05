@@ -9,42 +9,69 @@ public class ChaseState : GhostState
 
     public override void Execute()
     {
-        Vector3 moveDirection = controller.agent.desiredVelocity;
-        // if the player is in front of the enemy simply use our foward directions
-        if (moveDirection.sqrMagnitude < 0.01f)
-            moveDirection = controller.transform.forward;
-        // player direction
-        Vector3 directionToPlayer = controller.player.position - controller.transform.position;
-        directionToPlayer.y = 0f;
+        // 1) Predict target a bit (reduces jukes)
+        Vector3 targetPos = controller.player.position;
+        var cc = controller.player.GetComponent<CharacterController>();
+        Vector3 v = (cc != null) ? cc.velocity : Vector3.zero;
 
-        // transition from the position the agent is moving to right now to face in the direction of the player
-        Vector3 finalDirection = Vector3.Lerp(
-            moveDirection.normalized,
-            directionToPlayer.normalized,
-            0.5f * Time.deltaTime // step
-        );
+        float leadTime = Mathf.Clamp(controller.context.distanceToPlayer / 8f, 0.05f, 0.25f);
+        targetPos += v * leadTime;
 
-        Quaternion baseRotation = Quaternion.LookRotation(finalDirection);
-        controller.RotateTo(baseRotation);
-        controller.MoveTo(controller.player.position);
-        // since aggression is 0-1 shift it up by 1 to make it have a gain on the overall speed
+        // 2) Move agent toward predicted target (updates every frame)
+        controller.MoveTo(targetPos);
+
+        // 3) Face a blend of where we’re moving and where the player is
+        Vector3 moveDir = controller.agent.desiredVelocity;
+        moveDir.y = 0f;
+        if (moveDir.sqrMagnitude < 0.001f)
+            moveDir = (targetPos - controller.transform.position);
+
+        moveDir.y = 0f;
+
+        Vector3 toPlayer = (controller.player.position - controller.transform.position);
+        toPlayer.y = 0f;
+
+        if (moveDir.sqrMagnitude > 0.001f && toPlayer.sqrMagnitude > 0.001f)
+        {
+            moveDir.Normalize();
+            toPlayer.Normalize();
+
+            // IMPORTANT: use a constant blend, not dt-scaled
+            float facePlayerWeight = 0.75f; // tune 0.6–0.9
+            Vector3 blended = Vector3.Slerp(moveDir, toPlayer, facePlayerWeight);
+
+            Quaternion rot = Quaternion.LookRotation(blended, Vector3.up);
+
+            // IMPORTANT: rotate faster during chase
+            float chaseTurnSpeed = controller.rotSpeed * 4f; // tune 3–8
+            controller.transform.rotation = Quaternion.Slerp(
+                controller.transform.rotation, rot, Time.deltaTime * chaseTurnSpeed);
+        }
+
+        // 4) Speed logic (keep yours)
         float agression01 = 1 + controller.context.emotion.Get01(Ghosts.Emotions.EmotionType.Aggression);
-        // control speed from attachment: high attachment -> lower value, low attachment -> higher value
         float mult = controller.context.difficulty.Get(DifficultyChannel.ChaseCooldown);
-        // modify the speed based on the aggression level of the ghost and a multipler
-        Debug.Log($"Father Ghost Speed: {ghostSpeed * agression01 * mult}");
         controller.SetSpeed(ghostSpeed * agression01 * mult);
     }
 
     public override void Exit()
     {
         GameManager.Instance.isPlayerBeingChased = false;
+
+        controller.agent.autoBraking = false;    // back to your default behavior
+        controller.agent.acceleration = 30f;     // match what you set in Start()
+
         // reset the  speed
         controller.SetSpeed(ghostSpeed);
     }
     public override void Enter()
     {
         GameManager.Instance.isPlayerBeingChased = true;
+
+        controller.agent.isStopped = false;      // IMPORTANT (in case HardStop was used)
+        controller.agent.autoBraking = true;     // prevents overshoot close to target
+        controller.agent.acceleration = 40f;     // tighter response (try 30–60)
+
         // we're chasing because we can see them
         controller.context.lastTimePlayerSeen = Time.time;
         ghostSpeed = controller.GetSpeed();

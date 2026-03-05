@@ -59,22 +59,25 @@ public class GhostController : MonoBehaviour
 
     private void Awake()
     {
+        player = FindAnyObjectByType<PlayerController>().transform;
+
         context = new GhostContext(player.GetComponent<InsanitySystem>());
         stateMachine = new GhostStateMachine(this);
+
         renderers = GetComponentsInChildren<Renderer>(true);
         colliders = GetComponentsInChildren<Collider>(true);
 
-        // get components
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
-        player = FindAnyObjectByType<PlayerController>().transform;
+        agent.updateRotation = false; // keep manual
+        agent.updateUpAxis = true;
     }
-
     private void Start()
     {
         // initialize this ghost with the personality values initially set
         personality.InitializeGhost(this);
-
+        agent.autoBraking = false;    // for chase; prevents weird slowdowns at destination
+        agent.stoppingDistance = minDistance; // or your “attack range”
         stateMachine.ChangeState(GhostStateID.Patrol);
     }
 
@@ -224,8 +227,30 @@ public class GhostController : MonoBehaviour
     // movement methods
     public void MoveTo(Vector3 target)
     {
-        if (Vector3.Distance(agent.destination, target) > minDistance)
-            agent.SetDestination(target);
+        agent.SetDestination(target);
+    }
+
+    public void RotateChase(Transform target, float facePlayerWeight = 0.7f)
+    {
+        // Direction agent wants to move (path direction)
+        Vector3 moveDir = agent.desiredVelocity;
+        moveDir.y = 0f;
+        if (moveDir.sqrMagnitude > 0.001f) moveDir.Normalize();
+
+        // Direction to player (for “phasing” / facing player)
+        Vector3 toPlayer = (target.position - transform.position);
+        toPlayer.y = 0f;
+        if (toPlayer.sqrMagnitude > 0.001f) toPlayer.Normalize();
+
+        // Blend: mostly face player, but include movement direction so it turns tightly
+        Vector3 blended = Vector3.Slerp(moveDir, toPlayer, Mathf.Clamp01(facePlayerWeight));
+        if (blended.sqrMagnitude < 0.001f) return;
+
+        Quaternion look = Quaternion.LookRotation(blended, Vector3.up);
+
+        // IMPORTANT: use a higher turn speed than rotSpeed for chase
+        float chaseTurnSpeed = rotSpeed * 4f; // tune 3–8
+        transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * chaseTurnSpeed);
     }
 
     public float GetSpeed()

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8369992151648545876}
   - component: {fileID: 3454948103523895971}
   - component: {fileID: 1050119735945423068}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: ChildToyGhostItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 1401554323767619846}
   - component: {fileID: 915306045007746501}
   - component: {fileID: 1161698196841689502}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: InteractiveDot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 2777201293453476270}
   - component: {fileID: 4601593216056935679}
   - component: {fileID: 2404345126820009747}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: CanvasWorld
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -394,7 +394,7 @@ GameObject:
   - component: {fileID: 2791893078310303678}
   - component: {fileID: 4952531948775947098}
   - component: {fileID: 694023720591216424}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: TextPrompt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
