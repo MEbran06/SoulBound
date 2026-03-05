@@ -534,18 +534,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 360143113}
     m_Modifications:
-    - target: {fileID: 881800164774914945, guid: 051f825adbacba04cab6a91edc4a5a7a, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975984526796373846, guid: 051f825adbacba04cab6a91edc4a5a7a, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2577894603953777216, guid: 051f825adbacba04cab6a91edc4a5a7a, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 2862470224442664921, guid: 051f825adbacba04cab6a91edc4a5a7a, type: 3}
       propertyPath: player
       value: 
@@ -593,10 +581,6 @@ PrefabInstance:
     - target: {fileID: 9087604375693860886, guid: 051f825adbacba04cab6a91edc4a5a7a, type: 3}
       propertyPath: m_Name
       value: StunGhostItem
-      objectReference: {fileID: 0}
-    - target: {fileID: 9087604375693860886, guid: 051f825adbacba04cab6a91edc4a5a7a, type: 3}
-      propertyPath: m_Layer
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1422,22 +1406,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChildToyGhostItem
       objectReference: {fileID: 0}
-    - target: {fileID: 3029335501475546329, guid: 4d0f0e15f6d53654bad866ef6b8319ca, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3399008874935239094, guid: 4d0f0e15f6d53654bad866ef6b8319ca, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3454948103523895971, guid: 4d0f0e15f6d53654bad866ef6b8319ca, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: c6390e04c604c974484e3e027d3bacb2, type: 2}
-    - target: {fileID: 3814158240253455898, guid: 4d0f0e15f6d53654bad866ef6b8319ca, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4603656382558036531, guid: 4d0f0e15f6d53654bad866ef6b8319ca, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.346977
@@ -1477,10 +1445,6 @@ PrefabInstance:
     - target: {fileID: 4603656382558036531, guid: 4d0f0e15f6d53654bad866ef6b8319ca, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8420597254904758709, guid: 4d0f0e15f6d53654bad866ef6b8319ca, type: 3}
-      propertyPath: m_Layer
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3172,8 +3136,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemDatabase
   items:
-  - {fileID: 11400000, guid: c6390e04c604c974484e3e027d3bacb2, type: 2}
   - {fileID: 11400000, guid: c16ca096c1a4ae446809be54aac951ac, type: 2}
+  - {fileID: 11400000, guid: c6390e04c604c974484e3e027d3bacb2, type: 2}
   - {fileID: 11400000, guid: 909c744aadced64419a67836ee04f4e4, type: 2}
 --- !u!4 &845073530
 Transform:
@@ -9253,22 +9217,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CalmGhostItem
       objectReference: {fileID: 0}
-    - target: {fileID: 3029335501475546329, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3399008874935239094, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3454948103523895971, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: c16ca096c1a4ae446809be54aac951ac, type: 2}
-    - target: {fileID: 3814158240253455898, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4603656382558036531, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.16543
@@ -9308,10 +9256,6 @@ PrefabInstance:
     - target: {fileID: 4603656382558036531, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8420597254904758709, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
-      propertyPath: m_Layer
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
