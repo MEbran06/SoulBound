@@ -50,9 +50,8 @@ public class GhostController : MonoBehaviour
     [Header("Spawn Placement Fields")]
     public float forwardDistance = 6f;
     public float sideOffset = 2f;
-    public float clearanceRadius = 0.4f;
-    public float clearanceHeight = 1.0f;
     public float wallBackoff = 0.75f;
+    public float sameFloorHeightTolerance = 1.5f;
 
     private Renderer[] renderers;
     private Collider[] colliders;
@@ -303,26 +302,21 @@ public class GhostController : MonoBehaviour
             cam.forward * forwardDistance +
             cam.right * (sideOffset * side);
 
-        // wall avoid camera -> desired
-        Vector3 camPos = cam.position;
-        Vector3 toDesired = desired - camPos;
-        float dist = toDesired.magnitude;
-        Vector3 dir = toDesired / Mathf.Max(dist, 0.001f);
+        float playerFloorY = cam.position.y;
+        Vector3 playerRayStart = cam.position + Vector3.up * 2f;
+        if (Physics.Raycast(playerRayStart, Vector3.down, out var playerGroundHit, 10f, groundMask, QueryTriggerInteraction.Ignore))
+            playerFloorY = playerGroundHit.point.y;
 
-        if (Physics.Raycast(camPos, dir, out var wallHit, dist, environmentMask, QueryTriggerInteraction.Ignore))
-            desired = wallHit.point - dir * wallBackoff;
-
-        // snap to ground at final XZ
-        Vector3 rayStart = new Vector3(desired.x, cam.position.y + 10f, desired.z);
-        if (Physics.Raycast(rayStart, Vector3.down, out var groundHit, 50f, groundMask, QueryTriggerInteraction.Ignore))
-            desired.y = groundHit.point.y;
-
-        //  clearance check (don't spawn inside props)
-        Vector3 clearanceCenter = desired + Vector3.up * clearanceHeight;
-        if (Physics.CheckSphere(clearanceCenter, clearanceRadius, environmentMask, QueryTriggerInteraction.Ignore))
+        if (NavMesh.SamplePosition(desired, out NavMeshHit navHit, 2f, NavMesh.AllAreas))
         {
-            // simple fallback: move closer to camera a bit
-            desired -= cam.forward * 1.5f;
+            if (Mathf.Abs(navHit.position.y - playerFloorY) <= sameFloorHeightTolerance)
+                desired = navHit.position;
+            else
+                desired.y = playerFloorY;
+        }
+        else
+        {
+            desired.y = playerFloorY;
         }
 
         return desired;

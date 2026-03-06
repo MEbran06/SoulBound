@@ -17,10 +17,11 @@ MonoBehaviour:
   - emotion: 2
     value: 95.6
   - emotion: 0
-    value: 60.4
+    value: 75.8
   startingEmotions:
   - emotion: 0
-    value: 20.2
-  aggressionBuildUpRate: 2.5
+    value: 15.5
+  attachmentDifficulty: []
+  aggressionBuildUpRate: 1.5
   aggressionDecayRate: 5
   baseDuration: 2

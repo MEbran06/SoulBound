@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7608977b7a9073746aadcee7e94279ca, type: 3}
   m_Name: ChildToyGhostItemSO
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  itemName: CalmGhostItem
+  itemName: ChildToyGhostItem
   icon: {fileID: 0}
   maxStackSize: 1
   itemPrefab: {fileID: 3029335501475546329, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
