@@ -15,5 +15,9 @@ MonoBehaviour:
   itemName: Oil
   icon: {fileID: 21300000, guid: 198932e325efa8a43a6d50f910580c2f, type: 3}
   maxStackSize: 2
-  itemPrefab: {fileID: 0}
-  handItemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 1380113362301696154, guid: 66939c698fbec6748a92e0e2bec3ed7b, type: 3}
+  handItemPrefab: {fileID: 7552631458608421900, guid: 25e75690eb5aecd45b34ab5413d3969d, type: 3}
+  handPositionOffset: {x: 0, y: 0, z: 0}
+  handRotationOffset: {x: 0, y: 0, z: 0}
+  handScale: {x: 1, y: 1, z: 1}
+  usableData: {fileID: 11400000, guid: 1c8dd46bccdd3854b9fd31ed83e95fac, type: 2}

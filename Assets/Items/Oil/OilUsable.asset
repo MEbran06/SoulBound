@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e649060759fd5d1439b9520d9993d9a4, type: 3}
-  m_Name: New Ghost Usable Data
-  m_EditorClassIdentifier: Assembly-CSharp::GhostUsableData
-  ghostItemData: {fileID: 0}
-  cooldownDuration: 5
+  m_Script: {fileID: 11500000, guid: 9d0d8b58b9866ca4dbc289aa7dc5ccfc, type: 3}
+  m_Name: OilUsable
+  m_EditorClassIdentifier: Assembly-CSharp::OilUsableData
+  fuelAdded: 25

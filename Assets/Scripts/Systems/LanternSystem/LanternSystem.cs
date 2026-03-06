@@ -3,8 +3,8 @@ using UnityEngine;
 public class LanternSystem : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Light lanternLight; // drag a Light here (or child light)
-    [SerializeField] private GameObject lanternVisual; // optional: model/mesh to show/hide
+    [SerializeField] private Light lanternLight;
+    [SerializeField] private GameObject lanternVisual; 
 
     [Header("Fuel")]
     [SerializeField] private float maxFuel = 100f;
@@ -65,8 +65,7 @@ public class LanternSystem : MonoBehaviour
 
         Fuel = Mathf.Clamp(Fuel + amount, 0f, maxFuel);
 
-        // If it was off because it was empty, you can decide whether to auto-turn-on.
-        // I’d keep it OFF until the player toggles.
+        
         ApplyState();
     }
 
@@ -76,6 +75,6 @@ public class LanternSystem : MonoBehaviour
             lanternLight.enabled = IsOn;
 
         if (lanternVisual != null)
-            lanternVisual.SetActive(true); // keep model visible; change to IsOn if you want it hidden when off
+            lanternVisual.SetActive(true); // keep model visible
     }
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7846017804202046950}
   - component: {fileID: 633736703732174230}
   m_Layer: 6
-  m_Name: BaseGhostItemHand
+  m_Name: CalmGhostItem_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

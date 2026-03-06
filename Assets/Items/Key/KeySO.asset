@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7608977b7a9073746aadcee7e94279ca, type: 3}
-  m_Name: ChildToyGhostItemSO
+  m_Name: KeySO
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  itemName: CalmGhostItem
+  itemName: 
   icon: {fileID: 0}
-  maxStackSize: 1
-  itemPrefab: {fileID: 3029335501475546329, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
-  handItemPrefab: {fileID: 6642141400572482891, guid: 62629d96fa7785048bfda70fd4ff0a07, type: 3}
+  maxStackSize: 0
+  itemPrefab: {fileID: 0}
+  handItemPrefab: {fileID: 0}
   handPositionOffset: {x: 0, y: 0, z: 0}
   handRotationOffset: {x: 0, y: 0, z: 0}
   handScale: {x: 1, y: 1, z: 1}
-  usableData: {fileID: 11400000, guid: a8fbc289751696040bc95a646285e0af, type: 2}
+  usableData: {fileID: 0}
