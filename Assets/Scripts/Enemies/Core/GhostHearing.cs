@@ -40,6 +40,7 @@ public class GhostHearing : MonoBehaviour
 
         float effective = loudness;
 
+        // reduce effective noise if there are walls or objects in between
         Vector3 from = controller.transform.position + Vector3.up * 1.6f;
         Vector3 to = pos + Vector3.up * 1.0f;
         if (Physics.Linecast(from, to, occlusionMask))

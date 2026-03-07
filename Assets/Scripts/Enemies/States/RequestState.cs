@@ -12,6 +12,12 @@ public class RequestState : GhostState
     {
         if (child == null) return;
 
+        ChildInteraction ci = controller.GetComponent<ChildInteraction>();
+        if (ci != null)
+        {
+            ci.BeginRequestWindow();
+        }
+
         // open interaction window
         controller.context.childInteractionAllowed = true;
 
@@ -33,7 +39,9 @@ public class RequestState : GhostState
         // spawn + visible
         Transform cam = controller.player.GetComponentInChildren<Camera>().transform;
         Vector3 pos = controller.GetVisibleSpawnPoint(cam);
+        controller.agent.enabled = false;
         controller.transform.position = pos;
+        controller.agent.enabled = true;
         // always look at the player
         controller.transform.LookAt(controller.player.transform.position);
         controller.SetVisible(true);

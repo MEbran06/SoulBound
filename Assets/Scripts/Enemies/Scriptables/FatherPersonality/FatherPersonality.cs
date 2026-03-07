@@ -20,6 +20,13 @@ public class FatherPersonality : GhostPersonality
             return GhostStateID.Stunned;
         }
 
+        if (controller.GetCurrentState() == GhostStateID.Chase)
+        {
+            bool isSafe = controller.player.GetComponent<PlayerController>().IsInSafeRoom;
+            if (isSafe || !controller.IsPointInAllowedArea(controller.player.position))
+                return GhostStateID.Search;
+        }
+
         if (controller.context.canSeePlayer)
         {
             controller.lastTimeHadLOS = Time.time;

@@ -75,9 +75,9 @@ public class PlayerNoiseEmitter : MonoBehaviour
 
         distAccum += moved;
 
-        float loudness;
-        float stepDist;
-        float volume;
+        float loudness; // the emitted loudness of taking a step (logical)
+        float stepDist; // how far to travel to emit a sound
+        float volume; // actual sound volume
 
         if (crouching)
         {
@@ -109,8 +109,9 @@ public class PlayerNoiseEmitter : MonoBehaviour
         // Fire steps only when we "walked" a stride length
         if (distAccum >= stepDist)
         {
-            distAccum -= stepDist; // keeps cadence stable even if framerate varies
+            distAccum = 0;
 
+            // trigger the event (ghost picks this up)
             NoiseSystem.Emit(transform.position, loudness);
 
             if (!GameManager.Instance.isGameOver)

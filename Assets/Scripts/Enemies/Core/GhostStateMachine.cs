@@ -50,6 +50,8 @@ public class GhostStateMachine
     {
         switch (state)
         {
+            case GhostStateID.Idle:
+                return new IdleState(controller);
             case GhostStateID.Patrol:
                 return new PatrolState(controller);
             case GhostStateID.Chase:

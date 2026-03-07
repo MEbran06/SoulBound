@@ -5,6 +5,7 @@ public class AppearState : GhostState
     public AppearState(GhostController controller) : base(controller) { }
     public override void Enter()
     {
+        Debug.Log("CHILD APPEARED!!!");
         // Start the appear timer used by DecideNextState()
         if (GameManager.Instance != null)
             GameManager.Instance.ChildAppearedTime = Time.time;
@@ -16,7 +17,9 @@ public class AppearState : GhostState
         // spawn child, make sure it's visible
         Transform cam = controller.player.GetComponentInChildren<Camera>().transform;
         Vector3 position = controller.GetVisibleSpawnPoint(cam);
+        controller.agent.enabled = false;
         controller.gameObject.transform.position = position;
+        controller.agent.enabled = true;
         controller.SetVisible(true);
     }
 

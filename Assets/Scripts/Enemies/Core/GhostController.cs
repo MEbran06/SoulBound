@@ -1,5 +1,6 @@
 using AI.Ghosts.States;
 using Items.Ghosts;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -52,6 +53,10 @@ public class GhostController : MonoBehaviour
     public float sideOffset = 2f;
     public float wallBackoff = 0.75f;
     public float sameFloorHeightTolerance = 1.5f;
+
+    [Header("Respawn")]
+    [SerializeField] private Transform respawnPoint;
+
 
     private Renderer[] renderers;
     private Collider[] colliders;
@@ -148,6 +153,18 @@ public class GhostController : MonoBehaviour
         if (renderers == null) return false;
         foreach (var r in renderers) if (r.enabled) return true;
         return false;
+    }
+
+    public bool IsPointInAllowedArea(Vector3 point, float sampleRadius = 1.0f)
+    {
+        if (agent == null || !agent.enabled) return false;
+
+        if (!NavMesh.SamplePosition(point, out NavMeshHit hit, sampleRadius, agent.areaMask))
+            return false;
+
+        // Optional: make sure it's roughly the same spot, not some nearby valid area through a wall
+        float maxOffset = 1.5f;
+        return Vector3.Distance(hit.position, point) <= maxOffset;
     }
 
     public void SetVisible(bool visible)
@@ -288,6 +305,70 @@ public class GhostController : MonoBehaviour
         agent.nextPosition = agent.transform.position;
     }
 
+    public void ResetGhost(bool resetToSpawn = true)
+    {
+        // Enter safe do-nothing state first
+        stateMachine.ChangeState(GhostStateID.Idle);
+
+        if (agent != null && agent.enabled)
+        {
+            agent.isStopped = true;
+            agent.ResetPath();
+            agent.velocity = Vector3.zero;
+        }
+
+        // Clear runtime memory
+        context = new GhostContext(player.GetComponent<PlayerController>().insanitySystem);
+        lastTimeHadLOS = -Mathf.Infinity;
+
+        // Reset emotions
+        personality.InitializeGhost(this);
+
+        if (resetToSpawn && respawnPoint != null)
+        {
+            WarpTo(respawnPoint.position, respawnPoint.rotation);
+        }
+
+        StartCoroutine(FinishResetAfterDelay(0.15f));
+    }
+
+    private IEnumerator FinishResetAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (agent != null && agent.enabled)
+        {
+            agent.isStopped = false;
+            agent.ResetPath();
+        }
+
+        GhostStateID ghostState = personality.DecideNextState(this);
+
+        stateMachine.ChangeState(ghostState);
+    }
+
+    public void WarpTo(Vector3 pos, Quaternion rot)
+    {
+        if (agent != null && agent.enabled)
+        {
+            agent.isStopped = true;
+            agent.ResetPath();
+            agent.enabled = false;
+        }
+
+        transform.SetPositionAndRotation(pos, rot);
+
+        if (agent != null)
+        {
+            agent.enabled = true;
+            agent.Warp(pos);
+            agent.nextPosition = pos;
+            agent.isStopped = false;
+            agent.ResetPath();
+        }
+    }
+
+
     public void ApplyGhostItem(GhostItemData data)
     {
         personality.ApplyGhostItemEffect(this, data);
@@ -295,31 +376,74 @@ public class GhostController : MonoBehaviour
 
     public Vector3 GetVisibleSpawnPoint(Transform cam)
     {
-        float side = Random.value < 0.5f ? -1f : 1f;
-
-        Vector3 desired =
-            cam.position +
-            cam.forward * forwardDistance +
-            cam.right * (sideOffset * side);
-
         float playerFloorY = cam.position.y;
         Vector3 playerRayStart = cam.position + Vector3.up * 2f;
+
         if (Physics.Raycast(playerRayStart, Vector3.down, out var playerGroundHit, 10f, groundMask, QueryTriggerInteraction.Ignore))
             playerFloorY = playerGroundHit.point.y;
 
-        if (NavMesh.SamplePosition(desired, out NavMeshHit navHit, 2f, NavMesh.AllAreas))
+        // Try both sides so we can reject blocked ones
+        float[] sides = Random.value < 0.5f ? new float[] { -1f, 1f } : new float[] { 1f, -1f };
+
+        foreach (float side in sides)
         {
-            if (Mathf.Abs(navHit.position.y - playerFloorY) <= sameFloorHeightTolerance)
-                desired = navHit.position;
-            else
-                desired.y = playerFloorY;
-        }
-        else
-        {
-            desired.y = playerFloorY;
+            Vector3 candidate =
+                cam.position +
+                cam.forward * forwardDistance +
+                cam.right * (sideOffset * side);
+
+            if (TryGetValidVisiblePoint(cam, candidate, playerFloorY, out Vector3 result))
+                return result;
         }
 
-        return desired;
+        // Fallback: try directly in front but closer
+        Vector3 fallback =
+            cam.position +
+            cam.forward * (forwardDistance * 0.5f);
+
+        if (TryGetValidVisiblePoint(cam, fallback, playerFloorY, out Vector3 fallbackResult))
+            return fallbackResult;
+
+        // Last resort: return something on the player's floor in front of camera
+        Vector3 emergency = cam.position + cam.forward * 2f;
+        emergency.y = playerFloorY;
+        return emergency;
+    }
+
+    private bool TryGetValidVisiblePoint(Transform cam, Vector3 desired, float playerFloorY, out Vector3 result)
+    {
+        result = desired;
+
+        // Snap to navmesh near desired point
+        if (!NavMesh.SamplePosition(desired, out NavMeshHit navHit, 2f, NavMesh.AllAreas))
+            return false;
+
+        // Must be on roughly same floor
+        if (Mathf.Abs(navHit.position.y - playerFloorY) > sameFloorHeightTolerance)
+            return false;
+
+        Vector3 candidate = navHit.position;
+
+        // Raise the ray a bit so we don't shoot straight into the floor
+        Vector3 camOrigin = cam.position;
+        Vector3 target = candidate + Vector3.up * 1.0f;
+
+        Vector3 dir = target - camOrigin;
+        float dist = dir.magnitude;
+
+        if (dist <= 0.01f)
+            return false;
+
+        dir /= dist;
+
+        // Reject if a wall/environment blocks line of sight
+        if (Physics.SphereCast(camOrigin, 0.2f, dir, out RaycastHit hit, dist, environmentMask, QueryTriggerInteraction.Ignore))
+        {
+            return false;
+        }
+
+        result = candidate;
+        return true;
     }
 
     public GhostStateID GetCurrentState()

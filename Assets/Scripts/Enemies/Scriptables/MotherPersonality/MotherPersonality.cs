@@ -11,9 +11,13 @@ public class MotherPersonality : GhostPersonality
     {
         float sanity = controller.context.insanitySystem.CurrentInsanity;
         float aggressiveness = controller.context.emotion.GetEmotion(EmotionType.Aggression);
-        Debug.Log($"Aggressiveness: {controller.context.emotion.GetEmotion(EmotionType.Aggression)}");
+        //Debug.Log($"Aggressiveness: {controller.context.emotion.GetEmotion(EmotionType.Aggression)}");
         bool remembersPlayer = Time.time < controller.context.lastTimePlayerSeen + controller.rememberPlayerTime;
         bool shouldChase = controller.context.canSeePlayer || remembersPlayer;
+
+        bool isPlayerSafe = controller.player.GetComponent<PlayerController>().IsInSafeRoom;
+        if (isPlayerSafe)
+            return GhostStateID.Stalk;
 
         if (aggressiveness >= GetThreshold(EmotionType.Aggression))
         {

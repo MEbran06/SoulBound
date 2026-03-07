@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float staminaDrainRate = 1f;      // per second while sprinting
     [SerializeField] float staminaRegenRate = 0.75f;   // per second while resting
     [SerializeField] float sprintThreshold = 2f;
-    
+
     private bool canSprint = true;
 
     private float currentStamina;
@@ -44,6 +44,19 @@ public class PlayerController : MonoBehaviour
 
     // enemy sight layer
     [SerializeField] LayerMask enemyMask;
+
+    private bool isInSafeRoom = false;
+    public bool IsInSafeRoom
+    {
+        get
+        {
+            return isInSafeRoom;
+        }
+        set
+        {
+            isInSafeRoom = value;
+        }
+    }
 
 
     void Start()
@@ -150,35 +163,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-    // public void AddToInventory(Item item)
-    // {
-    //     inventory.Add(item);
-    // }
-
-    // public void HoldItem(Item item)
-    // {
-    //     if (currentHeldItem != null)
-    //         DropCurrentItem();
-
-    //     currentHeldItem = item;
-
-    //     item.transform.SetParent(handTransform);
-    //     item.transform.localPosition = Vector3.zero;
-    //     item.transform.localRotation = Quaternion.identity;
-
-    //     item.OnHeld();
-    // }
-
-    // public void DropCurrentItem()
-    // {
-    //     if (currentHeldItem == null)
-    //         return;
-
-    //     currentHeldItem.OnDropped();
-    //     currentHeldItem.transform.SetParent(null);
-    //     currentHeldItem = null;
-    // }
 
     public bool IsSafeToCalm()
     {

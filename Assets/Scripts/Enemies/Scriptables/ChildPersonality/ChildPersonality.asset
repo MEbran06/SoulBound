@@ -21,8 +21,8 @@ MonoBehaviour:
   aggressionBuildUpRate: 0
   aggressionDecayRate: 0
   baseDuration: 0
-  lastProcessedEnterToken: 2
-  lastProcessedSummonToken: 2
+  lastProcessedEnterToken: 0
+  lastProcessedSummonToken: 6
   summonRequestWindow: 5
   requestCooldown: 3
   appearDuration: 2

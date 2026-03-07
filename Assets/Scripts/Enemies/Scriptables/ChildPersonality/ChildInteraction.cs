@@ -6,8 +6,12 @@ using Ghosts.Emotions;
 public class ChildInteraction : Interactable
 {
     [SerializeField] GhostController child;
-    [SerializeField] const float SPECIFIC_REQUEST_BONUS = 15f;
+
+    const float SPECIFIC_REQUEST_BONUS = 15f;
+    const float MAX_INTERACTION_DURATION = 5f;
     [SerializeField] float noItemGivenPunishment = 15f;
+
+    private Coroutine requestTimeoutRoutine;
 
     private void Start()
     {
@@ -16,36 +20,69 @@ public class ChildInteraction : Interactable
 
     public override void Interact(PlayerController player)
     {
-        // player gives currently held/selected item
         TryReceiveGift(player);
+    }
+
+    public void BeginRequestWindow()
+    {
+        if (child == null || child.context == null) return;
+
+        child.context.childHasActiveRequest = true;
+
+        if (requestTimeoutRoutine != null)
+            StopCoroutine(requestTimeoutRoutine);
+
+        requestTimeoutRoutine = StartCoroutine(RequestTimeoutCoroutine());
+    }
+
+    private IEnumerator RequestTimeoutCoroutine()
+    {
+        yield return new WaitForSeconds(MAX_INTERACTION_DURATION);
+
+        if (child != null &&
+            child.context != null &&
+            child.context.childHasActiveRequest)
+        {
+            ApplyNoItemPunishment();
+            child.context.childHasActiveRequest = false;
+        }
+
+        requestTimeoutRoutine = null;
     }
 
     public void TryReceiveGift(PlayerController player)
     {
-        if (child.context == null) return;
-
-        if (!child.context.childInteractionAllowed)
-            return;
+        if (child == null || child.context == null) return;
+        if (!child.context.childInteractionAllowed) return;
 
         ItemSO heldItem = player.inventoryUI.ItemOnHand;
+
+        // Punish only if there is an active request and player tries with nothing
         if (heldItem == null)
+        {
+            if (child.context.childHasActiveRequest)
+            {
+                ApplyNoItemPunishment();
+                CancelRequestWindow();
+            }
+            return;
+        }
+
+        if (!heldItem.isGhostItem || heldItem.ghostItemData == null)
             return;
 
-        // Punish player if the item is not a ghost item
-        if (!heldItem.isGhostItem)
-        {
-            child.context.emotion.AddFromItem(EmotionType.Attachment, -noItemGivenPunishment);
-        }
-        else
-        {
-            EvaluateGift(heldItem.ghostItemData);
-            player.inventoryUI.ConsumeCurrentItem();  // consume item
-        }
+        // Only allow items intended for child interaction
+        if (!heldItem.ghostItemData.canBeGivenToChild)
+            return;
+
+        EvaluateGift(heldItem.ghostItemData);
+        player.inventoryUI.ConsumeCurrentItem();
     }
 
     public void EvaluateGift(GhostItemData data)
     {
         float delta = 0f;
+
         foreach (var effect in data.childCategoryModifiers)
         {
             if (effect.category == data.childCategory)
@@ -55,14 +92,36 @@ public class ChildInteraction : Interactable
             }
         }
 
-        // Specific request bonus
+        // Extra bonus only if exact requested item was given
         if (child.context.childHasActiveRequest &&
             data.childItemId == child.context.childRequestedItemId)
         {
             delta += SPECIFIC_REQUEST_BONUS;
-            child.context.childHasActiveRequest = false;
         }
 
         child.context.emotion.AddFromItem(EmotionType.Attachment, delta);
+
+        // End request after any valid child item is given
+        if (child.context.childHasActiveRequest)
+        {
+            CancelRequestWindow();
+        }
+    }
+
+    private void ApplyNoItemPunishment()
+    {
+        child.context.emotion.AddFromItem(EmotionType.Attachment, -noItemGivenPunishment);
+        Debug.Log("Child request ignored. Applying attachment punishment.");
+    }
+
+    private void CancelRequestWindow()
+    {
+        child.context.childHasActiveRequest = false;
+
+        if (requestTimeoutRoutine != null)
+        {
+            StopCoroutine(requestTimeoutRoutine);
+            requestTimeoutRoutine = null;
+        }
     }
 }

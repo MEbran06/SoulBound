@@ -34,6 +34,8 @@ public class MilestoneManager : MonoBehaviour
     [SerializeField] private List<int> milestoneOrder = new List<int>();
     public int activeIndex = 0;
 
+    [SerializeField] PlayerController playerController;
+
     private void Awake()
     {
         Instance = this;
@@ -75,7 +77,7 @@ public class MilestoneManager : MonoBehaviour
 
     public void OnEnterMilestone(int milestoneId, Transform spawnPos)
     {
-
+        playerController.IsInSafeRoom = true;
         currentMilestoneId = milestoneId;
 
         MilestoneEntered?.Invoke(milestoneId, spawnPos);
@@ -100,6 +102,7 @@ public class MilestoneManager : MonoBehaviour
 
         if (currentMilestoneId == milestoneId)
             currentMilestoneId = -1;
+        playerController.IsInSafeRoom = false;
     }
 
     public void ResolveMilestone(int milestoneId)

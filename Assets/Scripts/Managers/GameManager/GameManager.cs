@@ -9,11 +9,6 @@ public class GameManager : MonoBehaviour
     public bool isGameOver = false;
     public bool isPlayerBeingChased = false;
     [SerializeField] PlayerController player;
-    [SerializeField] private Transform[] fatherGhostSpawnPoints;
-    [SerializeField] private Transform[] MotherGhostSpawnPoints;
-    private GhostController fatherGhost;
-    private GhostController motherGhost;
-
 
     public float childSummonRequestTime = -Mathf.Infinity;
     public int ChildSummonToken = 0;
@@ -38,20 +33,6 @@ public class GameManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Random.InitState(Seed);
-
-        // find the mom and dad ghosts
-        var ghosts = GhostManager.Instance.ghosts;
-        foreach (var ghost in ghosts)
-        {
-            if (ghost.CompareTag("FatherGhost"))
-            {
-                fatherGhost = ghost;
-            }
-            else if (ghost.CompareTag("MotherGhost"))
-            {
-                motherGhost = ghost;
-            }
-        }
     }
 
     // Update is called once per frame
@@ -79,9 +60,9 @@ public class GameManager : MonoBehaviour
         if (!isGameOver) return;
 
         CheckpointManager.Instance.RespawnFromLastCheckpoint();
-        GhostManager.Instance.RespawnGhostFarFromPlayer(fatherGhost, fatherGhostSpawnPoints);
-        // TODO: Respawn Mom Ghost as well
+        GhostManager.Instance.ResetAllGhostsAfterCaught();
         isGameOver = false;
         player.InputDisabled = false;
+        player.insanitySystem.ResetSanity();
     }
 }

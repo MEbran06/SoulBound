@@ -67,4 +67,12 @@ public class InsanitySystem : MonoBehaviour
         CurrentDisturbance += amount;
         CurrentDisturbance = Mathf.Clamp(CurrentDisturbance, 0f, maxInsanity);
     }
+
+    public void ResetSanity()
+    {
+        // sanity starts off at 100 and decreases from there (Sorry for the poor naming)
+        CurrentInsanity = 100f;
+        // Same thing for disturbance, 100 means not disturbed
+        CurrentDisturbance = 100f;
+    }
 }
