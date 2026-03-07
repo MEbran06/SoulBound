@@ -7,15 +7,17 @@ public class GhostUsableData : UsableItemData
     public GhostItemData ghostItemData;
     public float cooldownDuration = 5f;
 
-    private float lastUseTime = -Mathf.Infinity;
-
     public override void Use(PlayerController player, Inventory inventory)
     {
         if (ghostItemData == null || player == null) return;
 
-        if (Time.time < lastUseTime + cooldownDuration) return;
+        ItemSO item = inventory.ItemOnHand;
+        if (item == null) return;
+
+        if (!inventory.CanUseItem(item, cooldownDuration))
+            return;
 
         GhostItem.Activate(ghostItemData, player.transform.position);
-        lastUseTime = Time.time;
+        inventory.MarkItemUsed(item);
     }
 }

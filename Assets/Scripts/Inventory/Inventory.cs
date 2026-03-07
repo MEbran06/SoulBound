@@ -34,6 +34,9 @@ public class Inventory : MonoBehaviour
     public static Inventory Instance { get; private set; }
     public GameObject CurrentHandItem => currentHandItem;
     // public ItemSO ItemOnHand => itemOnHand;
+
+    private Dictionary<ItemSO, float> lastUseTimes = new Dictionary<ItemSO, float>();
+
     public ItemSO ItemOnHand
     {
         get
@@ -446,6 +449,25 @@ public class Inventory : MonoBehaviour
 
         RefreshAfterInventoryChange();
         return true;
+    }
+
+    public bool CanUseItem(ItemSO item, float cooldown)
+    {
+        if (item == null) return false;
+
+        if (lastUseTimes.TryGetValue(item, out float lastUseTime))
+        {
+            if (Time.time < lastUseTime + cooldown)
+                return false;
+        }
+
+        return true;
+    }
+
+    public void MarkItemUsed(ItemSO item)
+    {
+        if (item == null) return;
+        lastUseTimes[item] = Time.time;
     }
 
     public bool HasKey(string keyId)
