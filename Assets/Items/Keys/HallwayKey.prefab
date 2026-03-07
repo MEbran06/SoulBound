@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3383172458395217431}
   - component: {fileID: 558391963420455522}
   m_Layer: 0
-  m_Name: Key
+  m_Name: HallwayKey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

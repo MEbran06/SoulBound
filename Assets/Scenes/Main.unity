@@ -2040,6 +2040,18 @@ PrefabInstance:
       propertyPath: openAngle
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 3795324893576560393, guid: e007434f578789e4d854d06a0529005b, type: 3}
+      propertyPath: isUnlocked
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3795324893576560393, guid: e007434f578789e4d854d06a0529005b, type: 3}
+      propertyPath: requiredKeyId
+      value: HallwayDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3795324893576560393, guid: e007434f578789e4d854d06a0529005b, type: 3}
+      propertyPath: consumeKeyOnUnlock
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3954641781316150469, guid: e007434f578789e4d854d06a0529005b, type: 3}
       propertyPath: m_Name
       value: DoorOnFrame_3
@@ -8136,7 +8148,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2361628384582833713
 Transform:
   m_ObjectHideFlags: 0
@@ -8179,7 +8191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2647753261489569697
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8859,7 +8871,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1230694969891840054, guid: 6306d7a6018529a4db0d7d94a3bfb16d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.10388
+      value: -0.489
       objectReference: {fileID: 0}
     - target: {fileID: 1230694969891840054, guid: 6306d7a6018529a4db0d7d94a3bfb16d, type: 3}
       propertyPath: m_LocalPosition.y

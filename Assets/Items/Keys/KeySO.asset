@@ -21,3 +21,5 @@ MonoBehaviour:
   handRotationOffset: {x: 0, y: 0, z: 0}
   handScale: {x: 1, y: 1, z: 1}
   usableData: {fileID: 0}
+  isKey: 1
+  keyId: HallwayDoor

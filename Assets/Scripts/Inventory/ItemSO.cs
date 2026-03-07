@@ -16,9 +16,9 @@ public class ItemSO : ScriptableObject
    public Vector3 handRotationOffset;
    public Vector3 handScale = Vector3.one;
 
-   // public bool isGhostItem;
-   // public GhostItemData ghostItemData;
-   // public float cooldownDuration = 5f;
-
    public UsableItemData usableData;
+
+   [Header("Key Settings")]
+   public bool isKey;
+   public string keyId;
 }

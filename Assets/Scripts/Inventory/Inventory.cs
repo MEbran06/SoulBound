@@ -447,4 +447,43 @@ public class Inventory : MonoBehaviour
         RefreshAfterInventoryChange();
         return true;
     }
+
+    public bool HasKey(string keyId)
+    {
+        if (string.IsNullOrEmpty(keyId)) return false;
+
+        foreach (Slot slot in allSlots)
+        {
+            if (!slot.HasItem()) continue;
+
+            ItemSO item = slot.GetItem();
+            if (item != null && item.isKey && item.keyId == keyId)
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool TryConsumeKey(string keyId)
+    {
+        if (string.IsNullOrEmpty(keyId)) return false;
+
+        foreach (Slot slot in allSlots)
+        {
+            if (!slot.HasItem()) continue;
+
+            ItemSO item = slot.GetItem();
+            if (item != null && item.isKey && item.keyId == keyId)
+            {
+                int left = slot.GetAmount() - 1;
+                if (left <= 0) slot.ClearSlot();
+                else slot.SetItem(item, left);
+
+                RefreshAfterInventoryChange();
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }
