@@ -68,8 +68,8 @@ public class ChildInteraction : Interactable
             return;
         }
 
-        if (!heldItem.isGhostItem || heldItem.ghostItemData == null)
-            return;
+        // if (!heldItem.isGhostItem || heldItem.ghostItemData == null)
+        //     return;
 
         // Only allow items intended for child interaction
         // if (!heldItem.ghostItemData.canBeGivenToChild)

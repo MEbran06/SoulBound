@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8408793482117773430}
   - component: {fileID: 7569172374745740343}
   - component: {fileID: 5421987685114136814}
+  - component: {fileID: 1552223135385827546}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -231,6 +232,22 @@ MonoBehaviour:
   disturbanceDrainRate: 5
   HasLight: 0
   player: {fileID: 0}
+--- !u!114 &1552223135385827546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581312256484634068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1cb67da4a0a75c4582927f8b1026968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LanternSystem
+  lanternLight: {fileID: 5820437631739010055}
+  lanternVisual: {fileID: 9106501796512631913, guid: a15bb8f4293fa664897e3cd43919fd05, type: 3}
+  maxFuel: 100
+  drainPerSecond: 2
 --- !u!1 &5161818738246378197
 GameObject:
   m_ObjectHideFlags: 0

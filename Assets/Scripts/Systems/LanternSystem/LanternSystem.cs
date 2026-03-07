@@ -8,7 +8,7 @@ public class LanternSystem : MonoBehaviour
 
     [Header("Fuel")]
     [SerializeField] private float maxFuel = 100f;
-    [SerializeField] private float drainPerSecond = 2f;
+    [SerializeField] private float drainPerSecond = 0.2f;
 
     public float Fuel { get; private set; }
     public bool IsOn { get; private set; }
