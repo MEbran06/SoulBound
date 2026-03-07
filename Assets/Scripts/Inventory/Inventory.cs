@@ -25,8 +25,6 @@ public class Inventory : MonoBehaviour
     private List<Slot> hotbarSlots = new List<Slot>();
     private List<Slot> allSlots = new List<Slot>();
     public Dictionary<Guid, SavedPickedupItemsState> pickedItems = new Dictionary<Guid, SavedPickedupItemsState>();
-
-    // private float ghostLastUseTime = -Mathf.Infinity;
     
     private Slot draggedSlot = null;
     private bool isDragging = false;
@@ -393,9 +391,6 @@ public class Inventory : MonoBehaviour
         currentHandItem.transform.localRotation = Quaternion.Euler(item.handRotationOffset);
         currentHandItem.transform.localScale = item.handScale;
 
-        // store the item currently equiped
-        // itemOnHand = item;
-
         DisablePhysicsOnEquipped(currentHandItem);
     }
 
@@ -408,18 +403,6 @@ public class Inventory : MonoBehaviour
         if (so == null || so.usableData == null) return;
 
         so.usableData.Use(player, this);
-
-        // Debug.Log($"Using hotbar item: {so.itemName}, isGhostItem={so.isGhostItem}, hasData={so.ghostItemData != null}");
-
-        // // Ghost use
-        // if (so.isGhostItem && so.ghostItemData != null)
-        // {
-        //     float cd = Mathf.Max(0f, so.cooldownDuration);
-        //     if (Time.time < ghostLastUseTime + cd) return;
-
-        //     GhostItem.Activate(so.ghostItemData, player.transform.position);
-        //     ghostLastUseTime = Time.time;
-        // }
     }
 
     private void DisablePhysicsOnEquipped(GameObject go)

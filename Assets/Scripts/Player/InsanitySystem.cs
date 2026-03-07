@@ -14,9 +14,12 @@ public class InsanitySystem : MonoBehaviour
     public float CurrentInsanity { get; private set; }
     public float CurrentDisturbance { get; private set; }
 
-    // reference your lamp item (use a boolean for now)
-    public bool HasLight = false;
     [SerializeField] PlayerController player;
+    [SerializeField] private LanternSystem lantern;
+
+    // reference your lamp item (use a boolean for now)
+    // True when the lantern is on
+    public bool HasLight => lantern != null && lantern.IsOn;
 
     public bool IsDisturbed => CurrentDisturbance < disturbanceThreshold;
 
@@ -54,6 +57,8 @@ public class InsanitySystem : MonoBehaviour
         {
             ModifyDisturbance(-disturbanceDrainRate * Time.deltaTime);
         }
+
+        Debug.Log($"Insanity: {CurrentInsanity:F1}, Disturbance: {CurrentDisturbance:F1}, HasLight: {HasLight}, Hidden: {player.isHidden}, Disturbed: {IsDisturbed}");
     }
 
     public void ModifyInsanity(float amount)

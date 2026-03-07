@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CalmGhostItemSO
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
   itemName: CalmGhostItem
-  icon: {fileID: 0}
+  icon: {fileID: -2248339177319842527, guid: 157abcafd501ebf4eb190e46a8050f2a, type: 3}
   maxStackSize: 1
   itemPrefab: {fileID: 3029335501475546329, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
   handItemPrefab: {fileID: 9175054475887375940, guid: eedfa1c9691aeaf42bedd585ee740acb, type: 3}

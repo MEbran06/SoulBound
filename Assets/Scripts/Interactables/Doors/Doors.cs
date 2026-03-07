@@ -8,6 +8,8 @@ public class Doors : Interactable
     [SerializeField] private float openAngle = 90f;
     [SerializeField] private float openSpeed = 120f;
     [SerializeField] private bool startsOpen = false;
+    [SerializeField] private bool isUnlockable = true;
+    [SerializeField] private bool isUnlocked = true;
 
     private bool isOpen;
     private bool isMoving;

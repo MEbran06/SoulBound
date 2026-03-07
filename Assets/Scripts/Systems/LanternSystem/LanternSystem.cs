@@ -51,6 +51,7 @@ public class LanternSystem : MonoBehaviour
         IsOn = true;
         ApplyState();
         return true;
+
     }
 
     public void SetOn(bool on)

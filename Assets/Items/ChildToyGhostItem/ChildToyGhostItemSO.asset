@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: ChildToyGhostItemSO
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
   itemName: ChildToyGhostItem
-  icon: {fileID: 0}
+  icon: {fileID: -7453791745037252803, guid: cc6ff1104bfb96a47a3ba0913a6ad12c, type: 3}
   maxStackSize: 1
-  itemPrefab: {fileID: 3029335501475546329, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
+  itemPrefab: {fileID: 3029335501475546329, guid: 4d0f0e15f6d53654bad866ef6b8319ca, type: 3}
   handItemPrefab: {fileID: 6642141400572482891, guid: 62629d96fa7785048bfda70fd4ff0a07, type: 3}
   handPositionOffset: {x: 0, y: 0, z: 0}
   handRotationOffset: {x: 0, y: 0, z: 0}

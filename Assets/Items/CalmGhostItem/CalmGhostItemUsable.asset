@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e649060759fd5d1439b9520d9993d9a4, type: 3}
   m_Name: CalmGhostItemUsable
   m_EditorClassIdentifier: Assembly-CSharp::GhostUsableData
-  ghostItemData: {fileID: 0}
+  ghostItemData: {fileID: 11400000, guid: 6b21f88c4f20ca94ba497f4a88bfb06e, type: 2}
   cooldownDuration: 5
