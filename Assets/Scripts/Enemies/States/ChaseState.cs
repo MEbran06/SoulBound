@@ -1,4 +1,4 @@
-using UnityEditor.Profiling;
+// using UnityEditor.Profiling;
 using UnityEngine;
 
 public class ChaseState : GhostState

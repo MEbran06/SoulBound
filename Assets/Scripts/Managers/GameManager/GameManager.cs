@@ -64,5 +64,11 @@ public class GameManager : MonoBehaviour
         isGameOver = false;
         player.InputDisabled = false;
         player.insanitySystem.ResetSanity();
+
+        LanternSystem lantern = player != null ? player.GetComponent<LanternSystem>() : null;
+        if (lantern != null)
+        {
+            lantern.SetOn(false);
+        }
     }
 }
