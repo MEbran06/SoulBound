@@ -26,16 +26,31 @@ public class Inventory : MonoBehaviour
     private List<Slot> allSlots = new List<Slot>();
     public Dictionary<Guid, SavedPickedupItemsState> pickedItems = new Dictionary<Guid, SavedPickedupItemsState>();
 
-    private float ghostLastUseTime = -Mathf.Infinity;
+    // private float ghostLastUseTime = -Mathf.Infinity;
     
     private Slot draggedSlot = null;
     private bool isDragging = false;
 
-    private ItemSO itemOnHand = null;
+    // private ItemSO itemOnHand = null;
 
     public static Inventory Instance { get; private set; }
     public GameObject CurrentHandItem => currentHandItem;
-    public ItemSO ItemOnHand => itemOnHand;
+    // public ItemSO ItemOnHand => itemOnHand;
+    public ItemSO ItemOnHand
+    {
+        get
+        {
+            if (hotbarSlots == null || hotbarSlots.Count == 0)
+                return null;
+
+            Slot slot = hotbarSlots[equippedHotbarIndex];
+
+            if (slot == null || !slot.HasItem())
+                 return null;
+
+            return slot.GetItem();
+        }
+    }
 
     private void Awake()
     {
@@ -241,6 +256,8 @@ public class Inventory : MonoBehaviour
         // Empty Slot
         to.SetItem(from.GetItem(), from.GetAmount());
         from.ClearSlot();
+
+        RefreshAfterInventoryChange();
     }
 
     private void UpdateDragItemPosition()
@@ -377,7 +394,7 @@ public class Inventory : MonoBehaviour
         currentHandItem.transform.localScale = item.handScale;
 
         // store the item currently equiped
-        itemOnHand = item;
+        // itemOnHand = item;
 
         DisablePhysicsOnEquipped(currentHandItem);
     }
@@ -388,19 +405,21 @@ public class Inventory : MonoBehaviour
         if (!equippedSlot.HasItem()) return;
 
         ItemSO so = equippedSlot.GetItem();
-        if (so == null) return;
+        if (so == null || so.usableData == null) return;
 
-        Debug.Log($"Using hotbar item: {so.itemName}, isGhostItem={so.isGhostItem}, hasData={so.ghostItemData != null}");
+        so.usableData.Use(player, this);
 
-        // Ghost use
-        if (so.isGhostItem && so.ghostItemData != null)
-        {
-            float cd = Mathf.Max(0f, so.cooldownDuration);
-            if (Time.time < ghostLastUseTime + cd) return;
+        // Debug.Log($"Using hotbar item: {so.itemName}, isGhostItem={so.isGhostItem}, hasData={so.ghostItemData != null}");
 
-            GhostItem.Activate(so.ghostItemData, player.transform.position);
-            ghostLastUseTime = Time.time;
-        }
+        // // Ghost use
+        // if (so.isGhostItem && so.ghostItemData != null)
+        // {
+        //     float cd = Mathf.Max(0f, so.cooldownDuration);
+        //     if (Time.time < ghostLastUseTime + cd) return;
+
+        //     GhostItem.Activate(so.ghostItemData, player.transform.position);
+        //     ghostLastUseTime = Time.time;
+        // }
     }
 
     private void DisablePhysicsOnEquipped(GameObject go)
@@ -426,5 +445,23 @@ public class Inventory : MonoBehaviour
 
         Destroy(currentHandItem);
         currentHandItem = null;
+    }
+
+    public bool TryConsumeEquipped(int amount)
+    {
+        if (amount <= 0) return false;
+
+        Slot slot = hotbarSlots[equippedHotbarIndex];
+        if (slot == null || !slot.HasItem()) return false;
+
+        int have = slot.GetAmount();
+        if (have < amount) return false;
+
+        int left = have - amount;
+        if (left <= 0) slot.ClearSlot();
+        else slot.SetItem(slot.GetItem(), left);
+
+        RefreshAfterInventoryChange();
+        return true;
     }
 }

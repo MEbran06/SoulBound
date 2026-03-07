@@ -20,6 +20,4 @@ MonoBehaviour:
   handPositionOffset: {x: 0, y: 0, z: 0}
   handRotationOffset: {x: 0, y: 0, z: 0}
   handScale: {x: 1, y: 1, z: 1}
-  isGhostItem: 1
-  ghostItemData: {fileID: 11400000, guid: 9c644b03c5af4e249b9daf29e7561237, type: 2}
-  cooldownDuration: 5
+  usableData: {fileID: 11400000, guid: a8fbc289751696040bc95a646285e0af, type: 2}
