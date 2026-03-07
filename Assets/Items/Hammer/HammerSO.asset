@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7608977b7a9073746aadcee7e94279ca, type: 3}
-  m_Name: CalmGhostItemSO
+  m_Name: HammerSO
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  itemName: CalmGhostItem
-  icon: {fileID: -2248339177319842527, guid: 157abcafd501ebf4eb190e46a8050f2a, type: 3}
-  maxStackSize: 1
-  itemPrefab: {fileID: 3029335501475546329, guid: 242d731e2c364ad4e8172120e79e32ed, type: 3}
-  handItemPrefab: {fileID: 9175054475887375940, guid: eedfa1c9691aeaf42bedd585ee740acb, type: 3}
+  itemName: 
+  icon: {fileID: 0}
+  maxStackSize: 0
+  itemPrefab: {fileID: 0}
+  handItemPrefab: {fileID: 0}
   handPositionOffset: {x: 0, y: 0, z: 0}
   handRotationOffset: {x: 0, y: 0, z: 0}
   handScale: {x: 1, y: 1, z: 1}
-  usableData: {fileID: 11400000, guid: 684c49fc5ea4b82459a2563dc9dd2e93, type: 2}
+  usableData: {fileID: 0}

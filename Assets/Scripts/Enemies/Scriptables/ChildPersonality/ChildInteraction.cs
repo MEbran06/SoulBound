@@ -68,15 +68,35 @@ public class ChildInteraction : Interactable
             return;
         }
 
-        if (!heldItem.isGhostItem || heldItem.ghostItemData == null)
-            return;
+        // if (!heldItem.isGhostItem || heldItem.ghostItemData == null)
+        //     return;
 
         // Only allow items intended for child interaction
-        if (!heldItem.ghostItemData.canBeGivenToChild)
-            return;
+        // if (!heldItem.ghostItemData.canBeGivenToChild)
+        //     return;
 
-        EvaluateGift(heldItem.ghostItemData);
-        player.inventoryUI.ConsumeCurrentItem();
+        // EvaluateGift(heldItem.ghostItemData);
+        // player.inventoryUI.ConsumeCurrentItem();
+        GhostUsableData ghostUse = heldItem.usableData as GhostUsableData;
+        if (ghostUse == null || ghostUse.ghostItemData == null)
+        {
+            child.context.emotion.AddFromItem(EmotionType.Attachment, -noItemGivenPunishment);
+            return;
+        }
+
+        EvaluateGift(ghostUse.ghostItemData);
+
+        player.inventoryUI.TryConsumeEquipped(1);
+        // // Punish player if the item is not a ghost item
+        // if (!heldItem.isGhostItem)
+        // {
+        //     child.context.emotion.AddFromItem(EmotionType.Attachment, -noItemGivenPunishment);
+        // }
+        // else
+        // {
+        //     EvaluateGift(heldItem.ghostItemData);
+        //     player.inventoryUI.ConsumeCurrentItem();  // consume item
+        // }
     }
 
     public void EvaluateGift(GhostItemData data)

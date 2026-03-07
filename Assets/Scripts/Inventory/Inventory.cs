@@ -25,17 +25,33 @@ public class Inventory : MonoBehaviour
     private List<Slot> hotbarSlots = new List<Slot>();
     private List<Slot> allSlots = new List<Slot>();
     public Dictionary<Guid, SavedPickedupItemsState> pickedItems = new Dictionary<Guid, SavedPickedupItemsState>();
-
-    private float ghostLastUseTime = -Mathf.Infinity;
     
     private Slot draggedSlot = null;
     private bool isDragging = false;
 
-    private ItemSO itemOnHand = null;
+    // private ItemSO itemOnHand = null;
 
     public static Inventory Instance { get; private set; }
     public GameObject CurrentHandItem => currentHandItem;
-    public ItemSO ItemOnHand => itemOnHand;
+    // public ItemSO ItemOnHand => itemOnHand;
+
+    private Dictionary<ItemSO, float> lastUseTimes = new Dictionary<ItemSO, float>();
+
+    public ItemSO ItemOnHand
+    {
+        get
+        {
+            if (hotbarSlots == null || hotbarSlots.Count == 0)
+                return null;
+
+            Slot slot = hotbarSlots[equippedHotbarIndex];
+
+            if (slot == null || !slot.HasItem())
+                 return null;
+
+            return slot.GetItem();
+        }
+    }
 
     private void Awake()
     {
@@ -241,6 +257,8 @@ public class Inventory : MonoBehaviour
         // Empty Slot
         to.SetItem(from.GetItem(), from.GetAmount());
         from.ClearSlot();
+
+        RefreshAfterInventoryChange();
     }
 
     private void UpdateDragItemPosition()
@@ -376,9 +394,6 @@ public class Inventory : MonoBehaviour
         currentHandItem.transform.localRotation = Quaternion.Euler(item.handRotationOffset);
         currentHandItem.transform.localScale = item.handScale;
 
-        // store the item currently equiped
-        itemOnHand = item;
-
         DisablePhysicsOnEquipped(currentHandItem);
     }
 
@@ -388,19 +403,9 @@ public class Inventory : MonoBehaviour
         if (!equippedSlot.HasItem()) return;
 
         ItemSO so = equippedSlot.GetItem();
-        if (so == null) return;
+        if (so == null || so.usableData == null) return;
 
-        Debug.Log($"Using hotbar item: {so.itemName}, isGhostItem={so.isGhostItem}, hasData={so.ghostItemData != null}");
-
-        // Ghost use
-        if (so.isGhostItem && so.ghostItemData != null)
-        {
-            float cd = Mathf.Max(0f, so.cooldownDuration);
-            if (Time.time < ghostLastUseTime + cd) return;
-
-            GhostItem.Activate(so.ghostItemData, player.transform.position);
-            ghostLastUseTime = Time.time;
-        }
+        so.usableData.Use(player, this);
     }
 
     private void DisablePhysicsOnEquipped(GameObject go)
@@ -427,4 +432,80 @@ public class Inventory : MonoBehaviour
         Destroy(currentHandItem);
         currentHandItem = null;
     }
+
+    public bool TryConsumeEquipped(int amount)
+    {
+        if (amount <= 0) return false;
+
+        Slot slot = hotbarSlots[equippedHotbarIndex];
+        if (slot == null || !slot.HasItem()) return false;
+
+        int have = slot.GetAmount();
+        if (have < amount) return false;
+
+        int left = have - amount;
+        if (left <= 0) slot.ClearSlot();
+        else slot.SetItem(slot.GetItem(), left);
+
+        RefreshAfterInventoryChange();
+        return true;
+    }
+
+    public bool CanUseItem(ItemSO item, float cooldown)
+    {
+        if (item == null) return false;
+
+        if (lastUseTimes.TryGetValue(item, out float lastUseTime))
+        {
+            if (Time.time < lastUseTime + cooldown)
+                return false;
+        }
+
+        return true;
+    }
+
+    public void MarkItemUsed(ItemSO item)
+    {
+        if (item == null) return;
+        lastUseTimes[item] = Time.time;
+    }
+
+    public bool HasKey(string keyId)
+    {
+        if (string.IsNullOrEmpty(keyId)) return false;
+
+        foreach (Slot slot in allSlots)
+        {
+            if (!slot.HasItem()) continue;
+
+            ItemSO item = slot.GetItem();
+            if (item != null && item.isKey && item.keyId == keyId)
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool TryConsumeKey(string keyId)
+    {
+        if (string.IsNullOrEmpty(keyId)) return false;
+
+        foreach (Slot slot in allSlots)
+        {
+            if (!slot.HasItem()) continue;
+
+            ItemSO item = slot.GetItem();
+            if (item != null && item.isKey && item.keyId == keyId)
+            {
+                int left = slot.GetAmount() - 1;
+                if (left <= 0) slot.ClearSlot();
+                else slot.SetItem(item, left);
+
+                RefreshAfterInventoryChange();
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }
