@@ -3,7 +3,7 @@
     on the distance the player is on. It's simply a visualization effect.
 */
 using UnityEngine;
-using UnityEngine.InputSystem.iOS;
+// using UnityEngine.InputSystem.iOS;
 
 public class DistanceScalerUI : MonoBehaviour
 {

@@ -376,6 +376,13 @@ public class Inventory : MonoBehaviour
         dropped.layer = LayerMask.NameToLayer("Interactables");
 
         equippedSlot.ClearSlot();
+
+        LanternSystem lantern = player != null ? player.GetComponent<LanternSystem>() : null;
+        if (lantern != null && itemSO.usableData is LanternUsableData)
+        {
+            lantern.SetOn(false);
+        }
+
         RefreshAfterInventoryChange();
     }
 
