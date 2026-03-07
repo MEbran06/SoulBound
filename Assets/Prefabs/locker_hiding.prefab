@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5672ebe61410f7e990ddfb01feaa3a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DistanceScalerUI
-  player: {fileID: 0}
+  player: {fileID: 2710269964976398502, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
   minScale: 0.5
   maxScale: 1.5
 --- !u!1 &6252381083780559880
@@ -663,6 +663,9 @@ MonoBehaviour:
   dotDistance: 3
   hidePosition: {fileID: 6845611731946649548}
   exitPosition: {fileID: 1995435885952971184}
+  suspicion: 0
+  baseSuspicion: 0
+  suspicionDecayRate: 0.05
 --- !u!65 &6266407019725162254
 BoxCollider:
   m_ObjectHideFlags: 0

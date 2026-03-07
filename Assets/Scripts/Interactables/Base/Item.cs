@@ -6,7 +6,7 @@ public class Item : Interactable
     public ItemSO item;
     public int amount = 1;
 
-    [SerializeField, HideInInspector] private string worldIdString;
+    [SerializeField] private string worldIdString;
     public string WorldId => worldIdString;
     public string SetWorldId { set { worldIdString = value; } }
 
@@ -15,6 +15,13 @@ public class Item : Interactable
     {
         if (string.IsNullOrEmpty(worldIdString))
             worldIdString = Guid.NewGuid().ToString();
+    }
+
+    [ContextMenu("Reset Slot GUID (DANGEROUS)")]
+    private void ResetGuid()
+    {
+        worldIdString = Guid.NewGuid().ToString();
+        UnityEditor.EditorUtility.SetDirty(this);
     }
 #endif
 

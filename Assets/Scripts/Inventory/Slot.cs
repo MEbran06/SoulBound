@@ -7,7 +7,7 @@ using System;
 public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     // maintain unique Ids for each slot
-    [SerializeField, HideInInspector] private string slotIdString;
+    [SerializeField] private string slotIdString;
     public Guid UniqueId => Guid.Parse(slotIdString);
 
     public bool hovering;

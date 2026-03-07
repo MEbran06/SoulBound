@@ -7,7 +7,7 @@ public class InsanitySystem : MonoBehaviour
     public float maxInsanity = 100f;
     public float drainRate = 1f;
     public float recoveryRate = 3f;
-    public float disturbanceThreshold = 50f;
+    public float disturbanceThreshold = 80f;
     public float disturbanceRecoveryRate = 0.5f;
     public float disturbanceDrainRate = 5f;
 
@@ -16,6 +16,7 @@ public class InsanitySystem : MonoBehaviour
 
     [SerializeField] PlayerController player;
     [SerializeField] private LanternSystem lantern;
+    const float MINIMUM_DISTURBANCE = 50f;
 
     // reference your lamp item (use a boolean for now)
     // True when the lantern is on
@@ -70,7 +71,7 @@ public class InsanitySystem : MonoBehaviour
     public void ModifyDisturbance(float amount)
     {
         CurrentDisturbance += amount;
-        CurrentDisturbance = Mathf.Clamp(CurrentDisturbance, 0f, maxInsanity);
+        CurrentDisturbance = Mathf.Clamp(CurrentDisturbance, MINIMUM_DISTURBANCE, maxInsanity);
     }
 
     public void ResetSanity()

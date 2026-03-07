@@ -17,6 +17,7 @@ public class LanternSystem : MonoBehaviour
     {
         Fuel = maxFuel;
         ApplyState();
+        SetOn(true);
     }
 
     private void Update()

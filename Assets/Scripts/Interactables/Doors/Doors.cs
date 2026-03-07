@@ -54,6 +54,7 @@ public class Doors : Interactable
             if (!hasKey)
             {
                 Debug.Log("Door is locked.");
+                PopupMessage.Instance.ShowMessage("The door is locked. I need a key.");
                 return;
             }
 
@@ -92,7 +93,7 @@ public class Doors : Interactable
 
     private void UpdatePrompt()
     {
-        if (!isUnlockable && !isUnlocked)
+        if (isUnlockable && !isUnlocked)
             promptMessage = "Press E to Unlock";
         else
             promptMessage = isOpen ? "Press E to Close" : "Press E to Open";

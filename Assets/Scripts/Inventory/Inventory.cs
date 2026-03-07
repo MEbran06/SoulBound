@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using System;
+using static UnityEditor.Progress;
 
 public class Inventory : MonoBehaviour
 {
@@ -65,6 +66,15 @@ public class Inventory : MonoBehaviour
 
         allSlots.AddRange(inventorySlots);
         allSlots.AddRange(hotbarSlots);    
+    }
+
+    private void Start()
+    {
+        ItemSO lamp = ItemDatabase.Instance.GetByName("Lamp");
+        if (lamp != null)
+        {
+            AddItem(lamp, 1);
+        }
     }
 
     void Update()
@@ -133,6 +143,17 @@ public class Inventory : MonoBehaviour
 
             int add = Mathf.Min(space, remaining);
             slot.SetItem(itemToAdd, slot.GetAmount() + add);
+
+            pickedItems.TryGetValue(slot.UniqueId, out var value);
+            SavedPickedupItemsState savedItem = new SavedPickedupItemsState()
+            {
+                itemName = value.itemName,
+                SlotID = value.SlotID,
+                isCollected = value.isCollected,
+                amount = value.amount + add,
+            };
+            // replace with new data
+            pickedItems[slot.UniqueId] = savedItem;
             remaining -= add;
         }
 
@@ -153,7 +174,17 @@ public class Inventory : MonoBehaviour
                 isCollected = true,
                 amount = slot.GetAmount(),
             };
-            pickedItems.TryAdd(slot.UniqueId, savedItem);
+            if (pickedItems.TryAdd(slot.UniqueId, savedItem))
+                Debug.Log("Item Picked Succesfull");
+            else
+            {
+                Debug.Log("Item Pick Failed");
+                Debug.Log($"item: {slot.UniqueId}, value: {slot.GetItem().itemName}");
+                foreach (var item in pickedItems)
+                {
+                    Debug.Log($"item: {item.Key}, value: {item.Value.itemName}");
+                }
+            }
             remaining -= place;
         }
 

@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         LanternSystem lantern = player != null ? player.GetComponent<LanternSystem>() : null;
         if (lantern != null)
         {
-            lantern.SetOn(false);
+            lantern.SetOn(true);
         }
     }
 }
