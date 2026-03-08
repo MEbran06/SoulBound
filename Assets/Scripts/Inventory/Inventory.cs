@@ -1,9 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 using System;
-using static UnityEditor.Progress;
 
 public class Inventory : MonoBehaviour
 {
