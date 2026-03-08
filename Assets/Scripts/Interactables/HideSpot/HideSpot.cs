@@ -16,6 +16,7 @@ public class HideSpot : Interactable
     [SerializeField][Min(0f)] private float suspicionDecayRate = 0.05f;
 
     private bool isPlayerHidden = false;
+    public int currentAreaId;
 
 
     public float Suspicion => suspicion;
@@ -35,6 +36,15 @@ public class HideSpot : Interactable
         promptMessage = "Press E to Hide";
         // find all active ghosts
         ghosts = FindObjectsByType<GhostController>(FindObjectsSortMode.None);
+    }
+
+    void Awake()
+    {
+        Area houseArea = GetComponentInParent<Area>();
+        if (houseArea != null)
+        {
+            currentAreaId = houseArea.area.houseAreaId;
+        }
     }
 
     public override void Interact(PlayerController gPlayer)
@@ -70,7 +80,8 @@ public class HideSpot : Interactable
     public void ExitHide()
     {
         player.characterController.enabled = false;
-        player.transform.position = exitPosition.position;
+        Vector3 position = new Vector3(exitPosition.position.x, player.characterController.height / 2f, exitPosition.position.z);
+        player.transform.position = position;
         player.characterController.enabled = true;
 
         player.isHidden = false;

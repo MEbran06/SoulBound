@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using static UnityEngine.UI.Image;
 
 public class SearchState : GhostState
 {
@@ -8,15 +9,15 @@ public class SearchState : GhostState
     private Phase phase;
 
     private List<HideSpot> plan;
+    private static List<HideSpot> checkedSpots = new List<HideSpot>();
     private int idx;
 
     // Tuning knobs 
     private const float SEARCH_DURATION = 10f;
-    private const float SEARCH_RADIUS = 12f;
     private const float ARRIVAL_THRESHOLD = 1.2f;
 
     // Scan tuning
-    private const float SCAN_STEP_DEGREES = 35f;
+    private const float SCAN_STEP_DEGREES = 60f;
     private const float SCAN_TURN_SPEED_MULT = 1.25f; // uses controller.rotSpeed through RotateTo
     private const float SCAN_HOLD_TIME = 0.25f;       // pause at each scan angle
     private const float SCAN_ANGLE_EPS = 3f;
@@ -24,16 +25,19 @@ public class SearchState : GhostState
     private float scanHoldUntil;
     private int scanStepIndex;
     private Quaternion scanTargetRot;
+    private float scanBaseYaw;
 
     // Optional probability check tuning
     private const float SUSPICION_MAX = 5f;
-    private const float MIN_CHECK_P = 0.50f;
+    private const float MIN_CHECK_P = 0.30f;
     private const float MAX_CHECK_P = 0.95f;
 
     public SearchState(GhostController controller) : base(controller) { }
 
     public override void Enter()
     {
+        // let navmesh handle rotations
+        controller.agent.updateRotation = true;
         controller.agent.isStopped = false;
 
         controller.context.searchComplete = false;
@@ -54,12 +58,23 @@ public class SearchState : GhostState
             controller.context.lastKnownPlayerPosition = controller.context.lastHeardPosition;
         }
 
+        bool hasRecentOrigin = Time.time - controller.context.lastTimePlayerSeen < 5f;
+        float dist = Vector3.Distance(controller.transform.position, controller.context.lastKnownPlayerPosition);
+        if (!hasRecentOrigin || dist > controller.searchRadius)
+        {
+            phase = Phase.Scan;
+            BeginScan();
+            return;
+        }
+
+
         // Start moving toward last known immediately
         controller.agent.SetDestination(controller.context.lastKnownPlayerPosition);
     }
 
     public override void Execute()
     {
+        Debug.Log("Searching");
         // If we see player, search is done; decision tree will switch to Chase
         if (controller.context.canSeePlayer)
         {
@@ -69,6 +84,12 @@ public class SearchState : GhostState
 
         // Time up -> done
         if (Time.time > controller.context.searchEndTime)
+        {
+            controller.context.searchComplete = true;
+            return;
+        }
+
+        if (controller.context.lastSearchCycle == controller.context.currentSearchCycle)
         {
             controller.context.searchComplete = true;
             return;
@@ -105,6 +126,7 @@ public class SearchState : GhostState
     public override void Exit()
     {
         plan?.Clear();
+        controller.agent.updateRotation = false;
         plan = null;
     }
 
@@ -127,7 +149,8 @@ public class SearchState : GhostState
         scanStepIndex = 0;
         scanHoldUntil = 0f;
 
-        // We scan: left, right, center (3 steps)
+        scanBaseYaw = controller.transform.eulerAngles.y;
+
         SetScanTargetForStep(scanStepIndex);
     }
 
@@ -169,7 +192,7 @@ public class SearchState : GhostState
         else if (step == 1) yaw = +SCAN_STEP_DEGREES;
         else yaw = 0f;
 
-        scanTargetRot = Quaternion.Euler(0f, controller.transform.eulerAngles.y + yaw, 0f);
+        scanTargetRot = Quaternion.Euler(0f, scanBaseYaw + yaw, 0f);
     }
 
     // ---- Hide spot checks ----
@@ -180,10 +203,12 @@ public class SearchState : GhostState
             controller.context.searchComplete = true;
             return;
         }
-
+        // we exhausted all of our hide spots
         if (idx >= plan.Count)
         {
             controller.context.searchComplete = true;
+            controller.context.lastSearchCycle = controller.context.currentSearchCycle;
+            checkedSpots.Clear();
             return;
         }
 
@@ -225,12 +250,14 @@ public class SearchState : GhostState
     {
         plan = new List<HideSpot>();
 
-        Vector3 origin = controller.context.lastKnownPlayerPosition;
-        float r2 = SEARCH_RADIUS * SEARCH_RADIUS;
+        Vector3 origin = controller.transform.position;
+        int currentArea = controller.currentArea;
+        float r2 = controller.searchRadius * controller.searchRadius;
 
         foreach (var spot in HideSpot.All)
         {
             if (spot == null) continue;
+            if (spot.currentAreaId != currentArea) continue;
 
             float d2 = (spot.transform.position - origin).sqrMagnitude;
             if (d2 <= r2)
@@ -239,7 +266,6 @@ public class SearchState : GhostState
 
         plan.Sort((a, b) =>
         {
-            // If suspicion is on HideSpot:
             int s = b.Suspicion.CompareTo(a.Suspicion);
             if (s != 0) return s;
 
@@ -251,6 +277,9 @@ public class SearchState : GhostState
 
     private void TryCheckHideSpot(HideSpot spot)
     {
+        if (!checkedSpots.Contains(spot))
+            checkedSpots.Add(spot);
+
         // Decide whether to check (probability based on suspicion)
         float t = Mathf.Clamp01(spot.Suspicion / SUSPICION_MAX);
         float p = Mathf.Lerp(MIN_CHECK_P, MAX_CHECK_P, t * t);
@@ -280,6 +309,7 @@ public class SearchState : GhostState
         {
             spot.DecreaseSuspicion(1f);
         }
+
     }
 
     private bool HasArrived(float threshold)

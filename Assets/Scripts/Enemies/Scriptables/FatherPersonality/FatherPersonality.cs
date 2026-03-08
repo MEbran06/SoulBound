@@ -35,20 +35,39 @@ public class FatherPersonality : GhostPersonality
             return GhostStateID.Chase;
         }
 
-        if (controller.StillRemembersPlayer())
+        if (controller.StillRemembersNoise())
         {
-            // If we are searching and search finished, give up
+            if (controller.context.lastHeardWasUrgent)
+            {
+                return GhostStateID.Chase;
+            }
+
+            controller.context.noiseTriggeredSearch = true;
+            return GhostStateID.Search;
+        }
+
+
+        float distanceFromGhost = Vector3.Distance(controller.transform.position, controller.player.position);
+        bool hiddenNearbyWithEvidence =
+            controller.context.playerIsHidden &&
+            distanceFromGhost < controller.searchRadius &&
+            controller.currentArea == controller.context.playerHideSpot.currentAreaId &&
+            controller.context.lastSearchCycle != controller.context.currentSearchCycle;
+
+        // unblock search once the ghost moves away from the area the player is hidden
+        if (controller.context.lastSearchCycle == controller.context.currentSearchCycle &&
+            controller.currentArea != controller.context.playerHideSpot?.currentAreaId)
+        {
+            controller.context.currentSearchCycle++;
+        }
+
+        if (controller.StillRemembersPlayer() || hiddenNearbyWithEvidence)
+        {
+            Debug.Log("[FatherPersonality] Search conditions met");
             if (controller.GetCurrentState() == GhostStateID.Search &&
                 controller.context.searchComplete)
                 return GhostStateID.Patrol;
 
-            controller.context.noiseTriggeredSearch = false;
-            return GhostStateID.Search;
-        }
-
-        if (controller.StillRemembersNoise())
-        {
-            controller.context.noiseTriggeredSearch = true;
             return GhostStateID.Search;
         }
 

@@ -9,6 +9,9 @@ public class GhostHearing : MonoBehaviour
     public float noiseMemorySeconds = 4f;          // how long Patrol can react to a sound
     public float minLoudnessToCare = 0.10f;
     public float loudnessMargin = 0.05f;
+    [Header("Escalation")]
+    public float urgentHearingThreshold = 0.55f;
+    public float urgentChaseRadius = 6f;
 
     public LayerMask occlusionMask;
     public float occlusionPenalty = 0.55f; // reduces loudness if blocked
@@ -56,6 +59,10 @@ public class GhostHearing : MonoBehaviour
             controller.context.lastHeardPosition = pos;
             controller.context.lastHeardTime = Time.time;
             controller.context.lastHeardLoudness = effective;
+
+            float dist = Vector3.Distance(controller.transform.position, pos);
+            controller.context.lastHeardWasUrgent =
+                effective >= urgentHearingThreshold || dist <= urgentChaseRadius;
         }
 
         controller.context.heardNoiseThisFrame = true;

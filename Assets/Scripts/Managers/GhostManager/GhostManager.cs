@@ -88,4 +88,14 @@ public class GhostManager : MonoBehaviour
             ResetGhostAfterCaught(ghost);
         }
     }
+
+    public GhostController getGhostByTag(string tag)
+    {
+        GameObject ghost = GameObject.FindGameObjectWithTag(tag);
+        
+        if (ghost == null) 
+            return null;
+        else 
+            return ghost.GetComponent<GhostController>();
+    }
 }

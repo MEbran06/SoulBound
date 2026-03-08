@@ -9,6 +9,29 @@ public class ChaseState : GhostState
 
     public override void Execute()
     {
+        if (controller.context.playerIsHidden &&
+        controller.context.playerHideSpot != null &&
+        controller.StillRemembersPlayer())
+        {
+            HideSpot spot = controller.context.playerHideSpot;
+
+            controller.agent.SetDestination(spot.transform.position);
+
+            if (!controller.agent.pathPending &&
+                controller.agent.remainingDistance <= 1.2f)
+            {
+                if (spot.IsPlayerInside())
+                {
+                    spot.ForceExit();
+                    controller.context.lastTimePlayerSeen = Time.time;
+                    controller.context.lastKnownPlayerPosition = controller.player.position;
+                }
+            }
+
+            return;
+        }
+
+
         // 1) Predict target a bit (reduces jukes)
         Vector3 targetPos = controller.player.position;
         var cc = controller.player.GetComponent<CharacterController>();
@@ -48,7 +71,7 @@ public class ChaseState : GhostState
                 controller.transform.rotation, rot, Time.deltaTime * chaseTurnSpeed);
         }
 
-        // 4) Speed logic (keep yours)
+        // 4) Speed logic
         float agression01 = 1 + controller.context.emotion.Get01(Ghosts.Emotions.EmotionType.Aggression);
         float mult = controller.context.difficulty.Get(DifficultyChannel.ChaseCooldown);
         Debug.Log($"Father Chase Speed: {ghostSpeed * agression01 * mult}");

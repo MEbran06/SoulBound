@@ -55,6 +55,8 @@ public class GhostContext
     // Search state runtime
     public bool searchComplete = false;
     public float searchEndTime = -Mathf.Infinity;
+    public int lastSearchCycle = -1;
+    public int currentSearchCycle = 0;
 
 
     public Vector3 lastHeardPosition;
@@ -62,6 +64,7 @@ public class GhostContext
     public float lastHeardLoudness;     // 0-1
     public bool heardNoiseThisFrame;
     public bool noiseTriggeredSearch;
+    public bool lastHeardWasUrgent;
 
     // Child ghost
     public bool childHasActiveRequest;      // specific request currently active

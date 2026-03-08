@@ -3,9 +3,11 @@ using Items.Ghosts;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 public class GhostController : MonoBehaviour
 {
+
     // context + planning
     private GhostStateMachine stateMachine;
     public NavMeshAgent agent;
@@ -29,6 +31,8 @@ public class GhostController : MonoBehaviour
     public float speed = 2f;
     public float rotSpeed = 5f;
     public Transform[] patrolPoints;
+    public float searchRadius = 20f;
+    public int currentArea = -1;
     // minimum distance between ghost and target position in order to move
     public float minDistance = 0.3f;
     public float spawnRadius = 5f;

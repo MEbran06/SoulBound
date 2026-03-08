@@ -6,22 +6,47 @@ public class Area : MonoBehaviour
 
     void Start()
     {
-        HouseAreaManager.Instance.areaList.Add(this);
+        HouseAreaManager.Instance.areaList.Add(area.houseAreaId, this);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("FatherGhost"))
+        {
+            var ghost = other.GetComponentInParent<GhostController>();
+            if (ghost != null)
+                ghost.currentArea = area.houseAreaId;
+        }
+
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<PlayerController>().currentHouseAreaId = area.houseAreaId;
+            var player = other.GetComponentInParent<PlayerController>();
+            if (player != null)
+                player.currentHouseAreaId = area.houseAreaId;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("FatherGhost"))
+        {
+            var ghost = other.GetComponentInParent<GhostController>();
+            if (ghost != null)
+                ghost.currentArea = area.houseAreaId;
+        }
+
+        if (other.CompareTag("Player"))
+        {
+            var player = other.GetComponentInParent<PlayerController>();
+            if (player != null)
+                player.currentHouseAreaId = area.houseAreaId;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            other.GetComponent<PlayerController>().currentHouseAreaId = -1;
-        }
+        var player = other.GetComponentInParent<PlayerController>();
+        if (player != null)
+            player.currentHouseAreaId = -1;
     }
 }

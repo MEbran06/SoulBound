@@ -3,6 +3,7 @@ using UnityEngine;
 public class PatrolState : GhostState
 {
     private int patrolIndex = 0;
+    private int patrolDirection = 1; // 1 = forward, -1 = backward
     public PatrolState(GhostController controller) : base(controller) {}
 
     public override void Execute()
@@ -30,8 +31,12 @@ public class PatrolState : GhostState
     public override void Enter() 
     {
         Debug.Log("Patrolling");
+        controller.agent.updateRotation = true;
     }
-    public override void Exit() {}
+    public override void Exit() 
+    {
+        controller.agent.updateRotation = false;
+    }
 
     public Vector3 GetCurrentPatrolPoint()
     {
@@ -44,6 +49,20 @@ public class PatrolState : GhostState
 
     public void AdvancePatrolPoint()
     {
-        patrolIndex = (patrolIndex + 1) % controller.patrolPoints.Length;
+        patrolIndex += patrolDirection;
+
+        // reached the end -> reverse direction
+        if (patrolIndex >= controller.patrolPoints.Length)
+        {
+            patrolDirection = -1;
+            patrolIndex = controller.patrolPoints.Length - 2;
+        }
+
+        // reached the beginning -> reverse direction
+        else if (patrolIndex < 0)
+        {
+            patrolDirection = 1;
+            patrolIndex = 1;
+        }
     }
 }
