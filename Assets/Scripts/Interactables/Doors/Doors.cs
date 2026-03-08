@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class Doors : Interactable
 {
@@ -20,6 +21,9 @@ public class Doors : Interactable
 
     private Quaternion closedRotation;
     private Quaternion openedRotation;
+
+    public AudioSource asource;
+    public AudioClip openDoor, closeDoor;
 
     private void Start()
     {
@@ -45,11 +49,11 @@ public class Doors : Interactable
     {
         if (isMoving) return;
 
-        Inventory inv = player.inventoryUI;
+        ItemSO heldItem = player.inventoryUI.ItemOnHand;
 
         if (isUnlockable && !isUnlocked)
         {
-            bool hasKey = inv.HasKey(requiredKeyId);
+            bool hasKey = heldItem.isKey;
 
             if (!hasKey)
             {
@@ -57,15 +61,21 @@ public class Doors : Interactable
                 PopupMessage.Instance.ShowMessage("The door is locked. I need a key.");
                 return;
             }
+            else if (!heldItem.keyId.Equals(requiredKeyId))
+            {
+                Debug.Log("Wrong Key.");
+                PopupMessage.Instance.ShowMessage("This is not the right key.");
+                return;
+            }
 
             isUnlocked = true;
             
             if (consumeKeyOnUnlock)
-                inv.TryConsumeKey(requiredKeyId);
+                player.inventoryUI.TryConsumeKey(requiredKeyId);
 
             Debug.Log("Door unlocked.");
         }
-
+     
         StartCoroutine(RotateDoor(isOpen ? closedRotation : openedRotation));
         isOpen = !isOpen;
         // Update prompt
@@ -75,7 +85,8 @@ public class Doors : Interactable
     private IEnumerator RotateDoor(Quaternion targetRotation)
     {
         isMoving = true;
-
+        asource.clip = !isOpen ? openDoor : closeDoor;
+        asource.Play();
         while (Quaternion.Angle(doorPivot.localRotation, targetRotation) > 0.5f)
         {
             doorPivot.localRotation = Quaternion.RotateTowards(
@@ -86,7 +97,6 @@ public class Doors : Interactable
 
             yield return null;
         }
-
         doorPivot.localRotation = targetRotation;
         isMoving = false;
     }

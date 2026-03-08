@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6845611731946649548}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: HidingSpot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1995435885952971184}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: ExitSpot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 6687630134402112769}
   - component: {fileID: 5562972152572163400}
   - component: {fileID: 5548252316890551005}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: CanvasWorld
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 8060131691680056996}
   - component: {fileID: 702988113619091560}
   - component: {fileID: 5530459464523521230}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: InteractiveDot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5672ebe61410f7e990ddfb01feaa3a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DistanceScalerUI
-  player: {fileID: 2710269964976398502, guid: a4ef38c01872cd0478937f6a464cea27, type: 3}
+  player: {fileID: 8866273144555468259, guid: 3b1ca752c3309964fa9c1faadac363fb, type: 3}
   minScale: 0.5
   maxScale: 1.5
 --- !u!1 &6252381083780559880
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 6200867885483550495}
   - component: {fileID: 914596756282611085}
   - component: {fileID: 5405548427970952391}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: TextPrompt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 4048001475958149145}
   - component: {fileID: 571373749626569863}
   - component: {fileID: 3970171176486834564}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 7948300671663052238}
   - component: {fileID: 6767852545335128958}
   - component: {fileID: 6266407019725162254}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: locker_hiding
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -9,15 +9,8 @@ public static class SlotRegistry
 
     public static void Register(Slot p)
     {
-        if (p == null ) return;
-
-        // avoid re-registering the same slot
-        if (ById.ContainsKey(p.UniqueId))
-        {
-            return;
-        }
-
-        ById.TryAdd(p.UniqueId, p);
+        if (p == null) return;
+        ById[p.UniqueId] = p;
     }
 
     public static void Unregister(Slot p)
@@ -32,7 +25,7 @@ public static class SlotRegistry
     {
         foreach (var slot in ById.Values)
         {
-            if (slot.GetItem().itemName == itemName)
+            if (slot != null && slot.HasItem() && slot.GetItem().itemName == itemName)
                 return slot;
         }
         return null;

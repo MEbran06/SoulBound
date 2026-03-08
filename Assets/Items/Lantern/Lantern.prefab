@@ -385,7 +385,7 @@ MonoBehaviour:
   dotDistance: 2
   item: {fileID: 11400000, guid: 8a388b4d9dbfcfe4194b797368447a29, type: 2}
   amount: 1
-  worldIdString: 83ea87ee-6d67-4141-ae19-fa41d5557a6c
+  worldIdString: 816b141c-765c-425c-99a1-385e167c23ab
 --- !u!54 &4250824413731368220
 Rigidbody:
   m_ObjectHideFlags: 0

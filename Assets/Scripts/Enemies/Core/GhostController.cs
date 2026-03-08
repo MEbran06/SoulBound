@@ -155,16 +155,11 @@ public class GhostController : MonoBehaviour
         return false;
     }
 
-    public bool IsPointInAllowedArea(Vector3 point, float sampleRadius = 1.0f)
+    public bool IsPlayerInAllowedArea()
     {
-        if (agent == null || !agent.enabled) return false;
-
-        if (!NavMesh.SamplePosition(point, out NavMeshHit hit, sampleRadius, agent.areaMask))
-            return false;
-
-        // Optional: make sure it's roughly the same spot, not some nearby valid area through a wall
-        float maxOffset = 1.5f;
-        return Vector3.Distance(hit.position, point) <= maxOffset;
+        int areaId = player.GetComponent<PlayerController>().currentHouseAreaId;
+        // if the area Id of the player is not -1, then the player is in a valid house area for chasing
+        return areaId != -1;
     }
 
     public void SetVisible(bool visible)

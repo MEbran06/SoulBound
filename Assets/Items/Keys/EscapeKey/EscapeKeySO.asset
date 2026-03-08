@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7608977b7a9073746aadcee7e94279ca, type: 3}
+  m_Name: EscapeKeySO
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSO
+  itemName: EscapeKey
+  icon: {fileID: 21300000, guid: 972c2faa81afa68409547bbff05fc7f6, type: 3}
+  maxStackSize: 1
+  itemPrefab: {fileID: 4405475209345011292, guid: 2d78009f58c92c84bb1200d510173702, type: 3}
+  handItemPrefab: {fileID: 4405475209345011292, guid: 289ea3f9837f0254cb26153a97fc8058, type: 3}
+  handPositionOffset: {x: 0, y: 0, z: 0}
+  handRotationOffset: {x: 0, y: 0, z: 0}
+  handScale: {x: 1, y: 1, z: 1}
+  usableData: {fileID: 0}
+  isKey: 1
+  keyId: EscapeKey

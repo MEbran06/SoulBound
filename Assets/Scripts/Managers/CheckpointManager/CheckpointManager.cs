@@ -29,6 +29,17 @@ public class CheckpointManager : MonoBehaviour
 
     void Start()
     {
+        // ensure lamp is given on start
+        ItemSO lamp = ItemDatabase.Instance.GetByName("Lamp");
+        if (lamp != null)
+        {
+            Inventory.Instance.AddItem(lamp, 1);
+        }
+        else
+        {
+            Debug.Log("NO LAMP");
+        }
+
         activeMilestoneIdForRespawn = PlayerPrefs.GetInt(ActiveKey, -1);
 
         // Save initial checkpoint at game start if none exists
@@ -148,7 +159,7 @@ public class CheckpointManager : MonoBehaviour
         {
             var saved = kv.Value;
 
-            // Look up the slot by ID (you have this)
+            // Look up the slot by ID 
             if (!SlotRegistry.ById.TryGetValue(Guid.Parse(saved.SlotID), out var slot) || slot == null)
             {
                 Debug.Log("No slot found");

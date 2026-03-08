@@ -24,7 +24,7 @@ public class Inventory : MonoBehaviour
 
     private List<Slot> inventorySlots = new List<Slot>();
     private List<Slot> hotbarSlots = new List<Slot>();
-    private List<Slot> allSlots = new List<Slot>();
+    public List<Slot> allSlots = new List<Slot>();
     public Dictionary<Guid, SavedPickedupItemsState> pickedItems = new Dictionary<Guid, SavedPickedupItemsState>();
     
     private Slot draggedSlot = null;
@@ -66,15 +66,6 @@ public class Inventory : MonoBehaviour
 
         allSlots.AddRange(inventorySlots);
         allSlots.AddRange(hotbarSlots);    
-    }
-
-    private void Start()
-    {
-        ItemSO lamp = ItemDatabase.Instance.GetByName("Lamp");
-        if (lamp != null)
-        {
-            AddItem(lamp, 1);
-        }
     }
 
     void Update()

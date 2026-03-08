@@ -45,6 +45,9 @@ public class PlayerController : MonoBehaviour
     // enemy sight layer
     [SerializeField] LayerMask enemyMask;
 
+    // current house area id
+    public int currentHouseAreaId;
+
     private bool isInSafeRoom = false;
     public bool IsInSafeRoom
     {

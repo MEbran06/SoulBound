@@ -36,13 +36,18 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 #endif
 
 
-private void Awake()
+    private void Awake()
     {
         iconImage = transform.GetChild(0).GetComponent<Image>();
         amountTxt = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
         // register all slots so we can restore Inventory
         SlotRegistry.Register(this);
+    }
+
+    private void OnDestroy()
+    {
+        SlotRegistry.Unregister(this);
     }
 
     public ItemSO GetItem()

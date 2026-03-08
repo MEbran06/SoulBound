@@ -1,6 +1,7 @@
 using Items.Ghosts;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -70,5 +71,15 @@ public class GameManager : MonoBehaviour
         {
             lantern.SetOn(true);
         }
+    }
+
+    public void GameCompleted()
+    {
+        isGameOver = true;
+        SaveSystem.ClearAll(); // clear all chekpoint data
+        Cursor.lockState = CursorLockMode.None; // unlock cursor
+        Time.timeScale = 1f; // make sure time is restored
+        // load the start menu scene
+        SceneManager.LoadScene("Menu");
     }
 }
