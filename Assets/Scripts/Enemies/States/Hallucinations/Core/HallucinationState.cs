@@ -8,6 +8,9 @@ public class HallucinationState : GhostState
 
     public override void Enter()
     {
+        // log that the player has started hallucinating
+        controller.player.GetComponent<PlayerController>().playerLogger.EnteredHallucination();
+
         controller.SetVisible(false);
         director = controller.director;
         director?.Begin(controller);

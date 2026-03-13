@@ -517,6 +517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5672ebe61410f7e990ddfb01feaa3a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DistanceScalerUI
-  player: {fileID: 0}
+  player: {fileID: 8866273144555468259, guid: 3b1ca752c3309964fa9c1faadac363fb, type: 3}
   minScale: 0.5
   maxScale: 1.5

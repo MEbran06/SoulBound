@@ -697,11 +697,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: e7fad9d6-261c-4025-ada0-606320f830f6
+  cloudProjectId: 4556c06e-46a0-4149-822f-a80eb61e3c30
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: Soul Bound
-  organizationId: chronicallycreating
+  organizationId: branconardimanuel
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

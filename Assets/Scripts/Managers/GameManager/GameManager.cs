@@ -1,5 +1,4 @@
-using Items.Ghosts;
-using NUnit.Framework;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +7,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public int Seed = 123;
     public bool isGameOver = false;
+
+    public event Action<string> OnSessionEnded;
+
     public bool isPlayerBeingChased = false;
     [SerializeField] PlayerController player;
 
@@ -33,7 +35,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        Random.InitState(Seed);
+        UnityEngine.Random.InitState(Seed);
     }
 
     // Update is called once per frame
@@ -50,6 +52,8 @@ public class GameManager : MonoBehaviour
 
         player.InputDisabled = true;
         ghost?.StopMoving();
+        Debug.Log("GameManager firing OnSessionEnded: CAUGHT");
+        OnSessionEnded?.Invoke("CAUGHT");
 
         // restart from last saved checkpoint
         RestartGame();
@@ -80,6 +84,8 @@ public class GameManager : MonoBehaviour
         SaveSystem.ClearAll(); // clear all chekpoint data
         Cursor.lockState = CursorLockMode.None; // unlock cursor
         Time.timeScale = 1f; // make sure time is restored
+        Debug.Log("GameManager firing OnSessionEnded: COMPLETED");
+        OnSessionEnded?.Invoke("COMPLETED");
         // load the start menu scene
         SceneManager.LoadScene("Menu");
     }

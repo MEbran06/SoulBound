@@ -92,6 +92,16 @@ public class ChaseState : GhostState
     {
         GameManager.Instance.isPlayerBeingChased = true;
 
+        // update player's logger depending on the ghost
+        if (controller.gameObject.CompareTag("MotherGhost"))
+        {
+            controller.player.GetComponent<PlayerController>().playerLogger.EncounteredMom();
+        }
+        else if (controller.gameObject.CompareTag("FatherGhost"))
+        {
+            controller.player.GetComponent<PlayerController>().playerLogger.EncounteredDad();
+        }
+
         controller.agent.isStopped = false;      // IMPORTANT (in case HardStop was used)
         controller.agent.autoBraking = true;     // prevents overshoot close to target
         controller.agent.acceleration = 40f;     // tighter response (try 30–60)

@@ -61,7 +61,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             currentInteractable = hit.collider.GetComponentInParent<Interactable>();
 
-            if (currentInteractable != null && currentInteractable.dotFader.isActiveAndEnabled)
+            if (currentInteractable != null && currentInteractable.dotFader != null && currentInteractable.dotFader.isActiveAndEnabled)
             {
 
                 currentInteractable.dotFader.img.enabled = true;
@@ -77,7 +77,7 @@ public class PlayerInteraction : MonoBehaviour
     // clear the image if we're out of range
     void ClearInteractable()
     {
-        if (currentInteractable != null && currentInteractable.dotFader.isActiveAndEnabled)
+        if (currentInteractable != null && currentInteractable.dotFader != null && currentInteractable.dotFader.isActiveAndEnabled)
         {
             currentInteractable.HidePrompt();
             currentInteractable.dotFader.img.enabled = false;

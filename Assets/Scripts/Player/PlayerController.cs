@@ -45,6 +45,10 @@ public class PlayerController : MonoBehaviour
     // enemy sight layer
     [SerializeField] LayerMask enemyMask;
 
+    // logger
+    [Header("Logger")]
+    public PlayerLogger playerLogger;
+
     // current house area id
     public int currentHouseAreaId;
 
