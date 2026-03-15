@@ -47,7 +47,7 @@ public class GhostController : MonoBehaviour
     public Canvas childUI;
 
     // hallucination effects (if needed)
-    public HallucinationDirector director;
+    public PressureDirector director;
 
     // hearing
     public GhostHearing hearing;

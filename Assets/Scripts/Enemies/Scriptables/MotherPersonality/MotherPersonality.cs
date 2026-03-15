@@ -27,7 +27,7 @@ public class MotherPersonality : GhostPersonality
         else
         {
             if (sanity <= GetThreshold(EmotionType.Fear))
-                return GhostStateID.Hallucination;
+                return GhostStateID.Pressure;
 
             return GhostStateID.Stalk;
         }

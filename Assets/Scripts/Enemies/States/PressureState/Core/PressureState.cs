@@ -1,10 +1,10 @@
 using UnityEngine;
 using Ghosts.Emotions;
-public class HallucinationState : GhostState
+public class PressureState : GhostState
 {
-    private HallucinationDirector director;
+    private PressureDirector director;
 
-    public HallucinationState(GhostController controller) : base(controller) { }
+    public PressureState(GhostController controller) : base(controller) { }
 
     public override void Enter()
     {

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HallucinationDirector : MonoBehaviour
+public class PressureDirector : MonoBehaviour
 {
     [Header("Beat Catalog")]
-    public List<HallucinationBeat> beats = new();
+    public List<PressureBeat> beats = new();
 
     [Header("Pacing")]
     public float warmupMin = 3f;
@@ -188,7 +188,7 @@ public class HallucinationDirector : MonoBehaviour
         return new Vector2(minI, maxI);
     }
 
-    protected virtual void PlayBeat(HallucinationBeat beat, float intensity)
+    protected virtual void PlayBeat(PressureBeat beat, float intensity)
     {
         beat.effect?.Play(this, intensity);
     }

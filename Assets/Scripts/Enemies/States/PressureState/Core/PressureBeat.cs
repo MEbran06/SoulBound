@@ -1,7 +1,17 @@
 using UnityEngine;
 
+public enum PressureBeatType
+{
+    LightSabotage,
+    Mirror,
+    Environment,
+    Hallucination,
+    Reveal,
+    AttackCommit
+}
+
 [System.Serializable]
-public class HallucinationBeat
+public class PressureBeat
 {
     public string id;
 
@@ -18,6 +28,9 @@ public class HallucinationBeat
     [Min(0f)]
     public float dominanceBias = 1f;
 
+    // beat type
+    public PressureBeatType type;
+
     // beat behavior
-    public HallucinationEffect effect;
+    public PressureEffect effect;
 }
