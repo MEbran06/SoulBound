@@ -9,6 +9,8 @@ public class GhostMirror : MonoBehaviour
     [SerializeField] float turnSpeed = 60f;      // degrees per second
     [SerializeField] float snapAngle = 2f;
 
+    public GameObject GhostObject => ghostTransform.gameObject;
+
     Quaternion baseRotation;
 
     void Start()

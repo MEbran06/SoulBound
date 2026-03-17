@@ -54,7 +54,7 @@ public class SearchState : GhostState
 
         if (controller.context.noiseTriggeredSearch)
         {
-            Debug.Log("Heard Something");
+            //Debug.Log("Heard Something");
             controller.context.lastKnownPlayerPosition = controller.context.lastHeardPosition;
         }
 
@@ -74,7 +74,7 @@ public class SearchState : GhostState
 
     public override void Execute()
     {
-        Debug.Log("Searching");
+        //Debug.Log("Searching");
         // If we see player, search is done; decision tree will switch to Chase
         if (controller.context.canSeePlayer)
         {
@@ -100,7 +100,7 @@ public class SearchState : GhostState
             controller.context.playerHideSpot != null &&
             Time.time - controller.context.lastTimePlayerSeen < 0.75f)
         {
-            Debug.Log("Inside the hide spot");
+            //Debug.Log("Inside the hide spot");
             phase = Phase.CheckHideSpots;
 
             // make sure the plan starts with the player's hide spot

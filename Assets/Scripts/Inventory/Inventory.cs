@@ -154,7 +154,7 @@ public class Inventory : MonoBehaviour
 
             int place = Mathf.Min(itemToAdd.maxStackSize, remaining);
             slot.SetItem(itemToAdd, place);
-            Debug.Log("picking up item");
+            //Debug.Log("picking up item");
             // add it to the picked items dictionary
             SavedPickedupItemsState savedItem = new SavedPickedupItemsState()
             {
@@ -169,10 +169,6 @@ public class Inventory : MonoBehaviour
             {
                 Debug.Log("Item Pick Failed");
                 Debug.Log($"item: {slot.UniqueId}, value: {slot.GetItem().itemName}");
-                foreach (var item in pickedItems)
-                {
-                    Debug.Log($"item: {item.Key}, value: {item.Value.itemName}");
-                }
             }
             remaining -= place;
         }
@@ -402,6 +398,9 @@ public class Inventory : MonoBehaviour
         {
             lantern.SetOn(false);
         }
+
+        // remove from picked items dictionary
+        pickedItems.Remove(equippedSlot.UniqueId);
 
         RefreshAfterInventoryChange();
     }

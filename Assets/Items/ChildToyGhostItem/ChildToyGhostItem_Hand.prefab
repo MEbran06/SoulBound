@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 260418208495615638}
   - component: {fileID: 5529807716805870578}
   - component: {fileID: 5436837076048932364}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: ChildToyGhostItem_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}

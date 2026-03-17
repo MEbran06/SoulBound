@@ -131,7 +131,7 @@ public class ChildInteraction : Interactable
     private void ApplyNoItemPunishment()
     {
         child.context.emotion.AddFromItem(EmotionType.Attachment, -noItemGivenPunishment);
-        Debug.Log("Child request ignored. Applying attachment punishment.");
+        //Debug.Log("Child request ignored. Applying attachment punishment.");
     }
 
     private void CancelRequestWindow()

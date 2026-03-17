@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff99b135aac6229392795aae483c6a2, type: 3}
+  m_Name: MirrorFlashEffect
+  m_EditorClassIdentifier: Assembly-CSharp::MirrorFlashEffect
+  stareTimeToAttack: 3
+  lostSightGraceTime: 0.15
+  maxLifetime: 6
+  aggressionSpike: 75
+  sanityDamage: 15
+  attackCommitSeconds: 4
+  emergeDelay: 2.5
+  appearOffsetForward: 0.5
+  appearOffsetUp: 0
+  appearClip: {fileID: 8300000, guid: a30f60ac0d8f752ad97b804eb1d60499, type: 3}
+  warningClip: {fileID: 8300000, guid: 2723650f27678c8379b6a6eca49b1463, type: 3}
+  punishClip: {fileID: 8300000, guid: 929da34660c36b972bed5a8d88857124, type: 3}

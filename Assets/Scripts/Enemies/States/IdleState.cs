@@ -6,7 +6,6 @@ public class IdleState : GhostState
 
     public override void Enter()
     {
-        Debug.Log("ENTERED IDLE");
         if (controller.agent != null && controller.agent.enabled)
         {
             controller.agent.isStopped = true;

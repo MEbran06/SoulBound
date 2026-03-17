@@ -30,7 +30,6 @@ public class PatrolState : GhostState
     }
     public override void Enter() 
     {
-        Debug.Log("Patrolling");
         controller.agent.updateRotation = true;
     }
     public override void Exit() 

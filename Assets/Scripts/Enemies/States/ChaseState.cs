@@ -74,7 +74,7 @@ public class ChaseState : GhostState
         // 4) Speed logic
         float agression01 = 1 + controller.context.emotion.Get01(Ghosts.Emotions.EmotionType.Aggression);
         float mult = controller.context.difficulty.Get(DifficultyChannel.ChaseCooldown);
-        Debug.Log($"Father Chase Speed: {ghostSpeed * agression01 * mult}");
+        //Debug.Log($"Father Chase Speed: {ghostSpeed * agression01 * mult}");
         controller.SetSpeed(ghostSpeed * agression01 * mult);
     }
 

@@ -59,7 +59,7 @@ public class InsanitySystem : MonoBehaviour
             ModifyDisturbance(-disturbanceDrainRate * Time.deltaTime);
         }
 
-        Debug.Log($"Insanity: {CurrentInsanity:F1}, Disturbance: {CurrentDisturbance:F1}, HasLight: {HasLight}, Hidden: {player.isHidden}, Disturbed: {IsDisturbed}");
+        //Debug.Log($"Insanity: {CurrentInsanity:F1}, Disturbance: {CurrentDisturbance:F1}, HasLight: {HasLight}, Hidden: {player.isHidden}, Disturbed: {IsDisturbed}");
     }
 
     public void ModifyInsanity(float amount)

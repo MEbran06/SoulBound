@@ -12,8 +12,8 @@ public class FatherPersonality : GhostPersonality
     public override GhostStateID DecideNextState(GhostController controller)
     {
         EmotionTrace lastTrace = controller.context.emotion.GetLastTrace(EmotionType.Aggression);
-        Debug.Log($"Aggression: {controller.context.emotion.GetEmotion(EmotionType.Aggression)}");
-        Debug.Log($"change: {lastTrace.delta} time: {lastTrace.time} source: {lastTrace.source}");
+        //Debug.Log($"Aggression: {controller.context.emotion.GetEmotion(EmotionType.Aggression)}");
+        //Debug.Log($"change: {lastTrace.delta} time: {lastTrace.time} source: {lastTrace.source}");
 
         if (controller.context.emotion.GetEmotion(EmotionType.Confusion) >= GetThreshold(EmotionType.Confusion))
         {
@@ -63,7 +63,7 @@ public class FatherPersonality : GhostPersonality
 
         if (controller.StillRemembersPlayer() || hiddenNearbyWithEvidence)
         {
-            Debug.Log("[FatherPersonality] Search conditions met");
+            //Debug.Log("[FatherPersonality] Search conditions met");
             if (controller.GetCurrentState() == GhostStateID.Search &&
                 controller.context.searchComplete)
                 return GhostStateID.Patrol;

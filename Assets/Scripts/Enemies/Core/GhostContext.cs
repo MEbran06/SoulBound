@@ -72,6 +72,12 @@ public class GhostContext
     public bool childInteractionAllowed;    // can the player interact if summoned (delivery window)
     public float childNextAllowedRequestTime;
 
+    public bool pressureRevealQueued;
+    public bool pressureAttackQueued;
+
+    public float attackCommittedUntilTime;
+    public float nextAllowedRevealTime;
+
     public GhostContext(InsanitySystem insanity)
     {
         emotion = new GhostEmotion();
@@ -89,6 +95,10 @@ public class GhostContext
         childInteractionAllowed = false;
         childNextAllowedRequestTime = 0f;
         childRequestedItemId = -1;
+        pressureRevealQueued = false;
+        pressureAttackQueued = false;
+        attackCommittedUntilTime = -Mathf.Infinity;
+        nextAllowedRevealTime = 0f;
 
     }
 

@@ -24,7 +24,7 @@ public class ChildPersonality : GhostPersonality
     public override GhostStateID DecideNextState(GhostController controller)
     {
         GhostStateID current = controller.GetCurrentState();
-        Debug.Log($"Attachment (child): {controller.context.emotion.GetEmotion(Ghosts.Emotions.EmotionType.Attachment)}");
+        //Debug.Log($"Attachment (child): {controller.context.emotion.GetEmotion(Ghosts.Emotions.EmotionType.Attachment)}");
 
         // Hidden state
         if (current == GhostStateID.Hidden)
