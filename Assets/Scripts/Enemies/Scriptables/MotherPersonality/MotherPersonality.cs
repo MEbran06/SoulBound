@@ -46,7 +46,7 @@ public class MotherPersonality : GhostPersonality
         }
 
         // Rare reveal request
-        if (ctx.pressureRevealQueued && Time.time >= ctx.nextAllowedRevealTime)
+        if (ctx.pressureRevealQueued)
         {
             ctx.pressureRevealQueued = false;
             return GhostStateID.Stalk;

@@ -28,7 +28,7 @@ public class PressureDirector : MonoBehaviour
     private readonly Dictionary<string, float> cooldownUntilById = new();
     private string lastBeatId;
 
-    [HideInInspector] public Transform PlayerCamera;
+    public Transform PlayerCamera;
 
     public Transform Player => controller.player;
     public Transform Ghost => controller.transform;
@@ -38,7 +38,6 @@ public class PressureDirector : MonoBehaviour
         controller = ghost;
         cooldownUntilById.Clear();
         lastBeatId = null;
-        PlayerCamera = Camera.main != null ? Camera.main.transform : null;
 
         nextBeatTime = Time.time + Random.Range(warmupMin, warmupMax);
     }
@@ -186,6 +185,16 @@ public class PressureDirector : MonoBehaviour
         controller.context.pressureAttackQueued = true;
         controller.context.attackCommittedUntilTime = Mathf.Max(
             controller.context.attackCommittedUntilTime,
+            Time.time + commitSeconds
+        );
+    }
+
+    public void QueueRevealAppearance(float commitSeconds = 1.25f)
+    {
+        if (controller == null) return;
+        controller.context.pressureRevealQueued = true;
+        controller.context.nextAllowedRevealTime = Mathf.Max(
+            controller.context.nextAllowedRevealTime,
             Time.time + commitSeconds
         );
     }
