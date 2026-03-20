@@ -61,6 +61,7 @@ public class GhostController : MonoBehaviour
     [Header("Respawn")]
     [SerializeField] private Transform respawnPoint;
 
+    public Transform GhostRespawn => respawnPoint;
 
     private Renderer[] renderers;
     private Collider[] colliders;
