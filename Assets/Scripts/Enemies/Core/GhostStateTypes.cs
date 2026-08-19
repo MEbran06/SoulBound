@@ -7,7 +7,7 @@ namespace AI.Ghosts.States
         Patrol,
         Chase,
         Stunned,
-        Hallucination,
+        Pressure,
         Stalk,
         Hidden,
         Appear,

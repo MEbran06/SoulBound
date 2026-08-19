@@ -5,7 +5,6 @@ public class AppearState : GhostState
     public AppearState(GhostController controller) : base(controller) { }
     public override void Enter()
     {
-        Debug.Log("CHILD APPEARED!!!");
         // Start the appear timer used by DecideNextState()
         if (GameManager.Instance != null)
             GameManager.Instance.ChildAppearedTime = Time.time;

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2820255701676268011}
   - component: {fileID: 7846017804202046950}
   - component: {fileID: 633736703732174230}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: CalmGhostItem_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}

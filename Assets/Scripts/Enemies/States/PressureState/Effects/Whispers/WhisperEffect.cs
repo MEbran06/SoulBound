@@ -1,13 +1,13 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Hallucination/WhisperEffect")]
-public class WhisperEffect : HallucinationEffect
+[CreateAssetMenu(menuName = "Pressure/WhisperEffect")]
+public class WhisperEffect : PressureEffect
 {
     public AudioClip[] AudioLines;
 
     public float distanceBehindPlayer = 2f;
 
-    public override void Play(HallucinationDirector director, float intensity)
+    public override void Play(PressureDirector director, float intensity)
     {
         Transform player = director.Player;
 

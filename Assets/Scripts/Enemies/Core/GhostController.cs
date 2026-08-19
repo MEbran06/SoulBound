@@ -47,7 +47,7 @@ public class GhostController : MonoBehaviour
     public Canvas childUI;
 
     // hallucination effects (if needed)
-    public HallucinationDirector director;
+    public PressureDirector director;
 
     // hearing
     public GhostHearing hearing;
@@ -61,6 +61,7 @@ public class GhostController : MonoBehaviour
     [Header("Respawn")]
     [SerializeField] private Transform respawnPoint;
 
+    public Transform GhostRespawn => respawnPoint;
 
     private Renderer[] renderers;
     private Collider[] colliders;

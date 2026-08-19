@@ -23,6 +23,7 @@ public class StalkState : GhostState
 
     public override void Enter()
     {
+        //Debug.Log("Entered Stalk State");
         // make it stop if it was moving
         controller.StopMoving();
         controller.SetVisible(false);
@@ -99,7 +100,7 @@ public class StalkState : GhostState
 
             if (next != null)
             {
-                controller.transform.position = next.position;
+                controller.agent.Warp(next.position);
                 currentPoint = next;
 
                 // make ghost look at player
@@ -122,6 +123,7 @@ public class StalkState : GhostState
 
     public override void Exit() 
     {
+        //Debug.Log("Exited Stalk State");
         controller.SetVisible(false );
     }
 

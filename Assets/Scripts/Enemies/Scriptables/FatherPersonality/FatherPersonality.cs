@@ -12,14 +12,22 @@ public class FatherPersonality : GhostPersonality
     public override GhostStateID DecideNextState(GhostController controller)
     {
         EmotionTrace lastTrace = controller.context.emotion.GetLastTrace(EmotionType.Aggression);
-        Debug.Log($"Aggression: {controller.context.emotion.GetEmotion(EmotionType.Aggression)}");
-        Debug.Log($"change: {lastTrace.delta} time: {lastTrace.time} source: {lastTrace.source}");
+        //Debug.Log($"Aggression: {controller.context.emotion.GetEmotion(EmotionType.Aggression)}");
+        //Debug.Log($"change: {lastTrace.delta} time: {lastTrace.time} source: {lastTrace.source}");
 
         if (controller.context.emotion.GetEmotion(EmotionType.Confusion) >= GetThreshold(EmotionType.Confusion))
         {
             return GhostStateID.Stunned;
         }
 
+        // disappear dad ghost item effect
+        if (controller.context.emotion.GetEmotion(EmotionType.Fear) >= GetThreshold(EmotionType.Fear))
+        {
+            // make the ghost disappear
+            Disappear(controller);
+            // tell the ghost to start patrolling
+            return GhostStateID.Patrol;
+        }
 
         bool isSafe = controller.player.GetComponent<PlayerController>().IsInSafeRoom;
         if (isSafe || !controller.IsPlayerInAllowedArea())
@@ -63,7 +71,7 @@ public class FatherPersonality : GhostPersonality
 
         if (controller.StillRemembersPlayer() || hiddenNearbyWithEvidence)
         {
-            Debug.Log("[FatherPersonality] Search conditions met");
+            //Debug.Log("[FatherPersonality] Search conditions met");
             if (controller.GetCurrentState() == GhostStateID.Search &&
                 controller.context.searchComplete)
                 return GhostStateID.Patrol;
@@ -91,5 +99,20 @@ public class FatherPersonality : GhostPersonality
         }
     }
 
+    public void Disappear(GhostController controller)
+    {
+        // move ghost back to respawn
+        controller.WarpTo(controller.GhostRespawn.position, controller.GhostRespawn.rotation);
+        
+        // forget the player
+        controller.context.canSeePlayer = false;
+        controller.context.lastTimePlayerSeen = -Mathf.Infinity;
+        controller.context.lastHeardTime = -Mathf.Infinity;
+        controller.context.lastHeardWasUrgent = false;
+
+        // reset fear (avoid staying in patrol forever)
+        float delta = GetThreshold(EmotionType.Fear) + 10; // make fear go below the threshold
+        controller.context.emotion.AddFromPersonality(EmotionType.Fear, -delta); // subtract
+    }
 
 }

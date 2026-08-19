@@ -1,12 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Hallucination/Peripheral Silhouette Effect")]
-public class PeripheralSilhouetteEffect : HallucinationEffect
+[CreateAssetMenu(menuName = "Pressure/Peripheral Silhouette Effect")]
+public class PeripheralSilhouetteEffect : PressureEffect
 {
     public GameObject prefab;
     public float lifetime = 1f;
 
-    public override void Play(HallucinationDirector director, float intensity)
+    public override void Play(PressureDirector director, float intensity)
     {
         var cam = director.PlayerCamera;
         if (cam == null || prefab == null) return;

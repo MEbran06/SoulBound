@@ -17,15 +17,21 @@ MonoBehaviour:
     multiplier: 2
   - emotion: 1
     multiplier: 1.5
+  - emotion: 2
+    multiplier: 1.5
   thresholds:
   - emotion: 0
     value: 50
   - emotion: 1
     value: 50
+  - emotion: 2
+    value: 50
   startingEmotions:
   - emotion: 0
     value: 50
   - emotion: 1
+    value: 0
+  - emotion: 2
     value: 0
   attachmentDifficulty:
   - channel: 0
@@ -40,4 +46,4 @@ MonoBehaviour:
   aggressionBuildUpRate: 5
   aggressionDecayRate: 1
   baseDuration: 3
-  catchRadius: 1
+  pursuitGraceTime: 2

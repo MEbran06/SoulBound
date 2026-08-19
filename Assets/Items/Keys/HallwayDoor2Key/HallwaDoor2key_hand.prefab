@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2160164824512262959}
   - component: {fileID: 509617905169909443}
   - component: {fileID: 558391963420455522}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HallwaDoor2key_hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
